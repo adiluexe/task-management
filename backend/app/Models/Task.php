@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Builder;
 
 class Task extends Model
 {
@@ -38,7 +36,7 @@ class Task extends Model
     /**
      * Get the user that owns the task.
      */
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
@@ -46,7 +44,7 @@ class Task extends Model
     /**
      * Scope a query to only include pending tasks.
      */
-    public function scopePending(Builder $query): Builder
+    public function scopePending($query)
     {
         return $query->where('status', 'pending');
     }
@@ -54,7 +52,7 @@ class Task extends Model
     /**
      * Scope a query to only include completed tasks.
      */
-    public function scopeCompleted(Builder $query): Builder
+    public function scopeCompleted($query)
     {
         return $query->where('status', 'completed');
     }
@@ -62,7 +60,7 @@ class Task extends Model
     /**
      * Scope a query to filter by status.
      */
-    public function scopeByStatus(Builder $query, string $status): Builder
+    public function scopeByStatus($query, string $status)
     {
         return $query->where('status', $status);
     }
@@ -70,7 +68,7 @@ class Task extends Model
     /**
      * Scope a query to filter by priority.
      */
-    public function scopeByPriority(Builder $query, string $priority): Builder
+    public function scopeByPriority($query, string $priority)
     {
         return $query->where('priority', $priority);
     }
@@ -78,7 +76,7 @@ class Task extends Model
     /**
      * Scope a query to search by title or description.
      */
-    public function scopeSearch(Builder $query, string $search): Builder
+    public function scopeSearch($query, string $search)
     {
         return $query->where(function ($q) use ($search) {
             $q->where('title', 'like', "%{$search}%")
@@ -89,7 +87,7 @@ class Task extends Model
     /**
      * Scope a query to order tasks by their order column.
      */
-    public function scopeOrdered(Builder $query): Builder
+    public function scopeOrdered($query)
     {
         return $query->orderBy('order', 'asc')->orderBy('created_at', 'desc');
     }
