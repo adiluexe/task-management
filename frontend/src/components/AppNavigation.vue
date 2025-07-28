@@ -7,14 +7,14 @@
           <div class="flex-shrink-0 flex items-center group">
             <router-link 
               to="/" 
-              class="flex items-center space-x-4 hover:scale-105 transition-transform duration-200"
+              class="flex items-center space-x-4 hover:scale-103 transition-transform duration-200"
               ref="logoRef"
             >
               <div class="relative">
                 <img
                   src="/assets/img/taskeasy_logo.svg"
                   alt="TaskEasy"
-                  class="h-8 w-auto"
+                  class="h-6 w-auto"
                 />
               </div>
               
@@ -30,15 +30,15 @@
             class="nav-item"
             :class="{ 'nav-active': $route.path === '/' }"
           >
-            <Icon icon="solar:widget-2-bold-duotone" class="w-5 h-5" />
+            <Icon icon="lucide:layout-dashboard" class="w-5 h-5" />
             <span>Dashboard</span>
           </router-link>
           <router-link
             to="/tasks"
-            class="nav-item mr-2"
+            class="nav-item"
             :class="{ 'nav-active': $route.path === '/tasks' }"
           >
-            <Icon icon="solar:checklist-bold-duotone" class="w-5 h-5" />
+            <Icon icon="lucide:clipboard-check" class="w-5 h-5" />
             Tasks
           </router-link>
           <router-link
@@ -47,7 +47,7 @@
             class="nav-item mr-4"
             :class="{ 'nav-active': $route.path === '/admin' }"
           >
-            <Icon icon="solar:settings-bold-duotone" class="w-5 h-5" />
+            <Icon icon="lucide:settings" class="w-5 h-5" />
             Admin
           </router-link>
 
@@ -55,7 +55,7 @@
           <div class="relative" ref="userMenuRef">
             <button
               @click="userMenuOpen = !userMenuOpen"
-              class="flex items-center space-x-4 p-3 rounded-xl hover:bg-background-100 transition-colors group"
+              class="flex items-center gap-2 p-3 rounded-xl hover:bg-background-100 transition-colors group"
             >
               <div class="flex items-center gap-2">
                 <div class="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-md">
@@ -66,7 +66,7 @@
                   <div class="text-xs text-text-500">{{ authStore.user?.email }}</div>
                 </div>
               </div>
-              <Icon icon="solar:alt-arrow-down-bold" class="w-5 h-5 text-text-400 transition-transform group-hover:text-text-600" :class="{ 'rotate-180': userMenuOpen }" />
+              <Icon icon="lucide:chevron-down" class="w-5 h-5 text-text-400 transition-transform group-hover:text-text-600" :class="{ 'rotate-180': userMenuOpen }" />
             </button>
 
             <!-- User Dropdown Menu -->
@@ -81,9 +81,9 @@
                 </div>
                 <button
                   @click="handleLogout"
-                  class="w-full flex items-center px-6 py-3 text-sm font-medium text-text-700 hover:bg-red-50 hover:text-red-800 transition-colors"
+                  class="w-full flex items-center gap-1 px-6 py-3 text-sm font-medium text-text-700 hover:bg-red-50 hover:text-red-800 transition-colors"
                 >
-                  <Icon icon="solar:logout-3-bold-duotone" class="w-5 h-5 mr-3" />
+                  <Icon icon="lucide:log-out" class="w-4 h-4" />
                   Sign out
                 </button>
               </div>
@@ -97,8 +97,8 @@
             @click="mobileMenuOpen = !mobileMenuOpen"
             class="inline-flex items-center justify-center p-3 rounded-xl text-text-400 hover:text-text-500 hover:bg-background-100 transition-colors"
           >
-            <Icon v-if="!mobileMenuOpen" icon="solar:hamburger-menu-bold" class="h-7 w-7" />
-            <Icon v-else icon="solar:close-circle-bold" class="h-7 w-7" />
+            <Icon v-if="!mobileMenuOpen" icon="lucide:menu" class="h-7 w-7" />
+            <Icon v-else icon="lucide:x" class="h-7 w-7" />
           </button>
         </div>
       </div>
@@ -114,7 +114,7 @@
             :class="{ 'mobile-nav-active': $route.path === '/' }"
             @click="mobileMenuOpen = false"
           >
-            <Icon icon="solar:widget-2-bold-duotone" class="w-6 h-6 mr-4" />
+            <Icon icon="lucide:layout-dashboard" class="w-6 h-6 mr-4" />
             Dashboard
           </router-link>
           <router-link
@@ -123,7 +123,7 @@
             :class="{ 'mobile-nav-active': $route.path === '/tasks' }"
             @click="mobileMenuOpen = false"
           >
-            <Icon icon="solar:checklist-bold-duotone" class="w-6 h-6 mr-4" />
+            <Icon icon="lucide:check-square" class="w-6 h-6 mr-4" />
             Tasks
           </router-link>
           <router-link
@@ -133,7 +133,7 @@
             :class="{ 'mobile-nav-active': $route.path === '/admin' }"
             @click="mobileMenuOpen = false"
           >
-            <Icon icon="solar:settings-bold-duotone" class="w-6 h-6 mr-4" />
+            <Icon icon="lucide:settings" class="w-6 h-6 mr-4" />
             Admin
           </router-link>
         </div>
@@ -151,7 +151,7 @@
             @click="handleLogout"
             class="w-full flex items-center px-6 py-3 text-lg font-medium text-red-700 hover:text-red-800 hover:bg-red-50 transition-colors rounded-xl mx-6"
           >
-            <Icon icon="solar:logout-3-bold-duotone" class="w-6 h-6 mr-4" />
+            <Icon icon="lucide:log-out" class="w-6 h-6 mr-4" />
             Sign out
           </button>
         </div>
