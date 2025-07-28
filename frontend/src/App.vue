@@ -46,16 +46,9 @@ watch(
 </script>
 
 <template>
-  <div id="app" class="min-h-screen bg-gradient-to-br from-background-50 via-background-100 to-background-200 font-sans antialiased">
-    <!-- Background decoration -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none">
-      <div class="absolute -top-40 -right-40 w-80 h-80 bg-primary-100 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
-      <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary-100 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
-      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-accent-50 rounded-full mix-blend-multiply filter blur-2xl opacity-40"></div>
-    </div>
-
+  <div id="app" class="min-h-screen bg-background-50 font-sans antialiased">
     <!-- Main app content -->
-    <div class="relative z-10">
+    <div class="relative">
       <AppNavigation v-if="authStore.isAuthenticated" />
       
       <main class="flex-1">

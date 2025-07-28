@@ -1,13 +1,14 @@
 <template>
-  <div class="min-h-screen bg-background-50 flex flex-col items-center">
-    <div class="w-full max-w-5xl px-4 py-10">
+  <div class="min-h-screen bg-background-50">
+    <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-12">
       <!-- Page header -->
-      <div class="mb-12">
-        <h1 class="text-3xl font-bold text-text-900 mb-1">Dashboard</h1>
-        <p class="text-sm text-text-600">
+      <div class="mb-12 text-left">
+        <h1 class="text-3xl font-semibold text-text-900 mb-3">Dashboard</h1>
+        <p class="text-text-600 text-lg">
           Welcome back! Here's an overview of your tasks.
         </p>
       </div>
+      
       <!-- Stats overview -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         <div
@@ -34,85 +35,87 @@
             },
           ]"
           :key="stat.label"
-          class="bg-white/90 backdrop-blur-md shadow-lg rounded-xl border border-background-200 p-5 flex flex-col items-center hover:shadow-xl transition-shadow duration-300 animate-dashboard-card min-w-[180px]"
+          class="bg-white rounded-xl border border-background-200/60 p-8 hover:border-background-300/80 hover:shadow-lg transition-all duration-200 animate-dashboard-card"
         >
-          <div
-            :class="[
-              'w-11 h-11 rounded-full flex items-center justify-center mb-2',
-              stat.color === 'primary'
-                ? 'bg-primary-500/90'
-                : stat.color === 'accent'
-                ? 'bg-accent-500/90'
-                : 'bg-secondary-500/90',
-            ]"
-          >
-            <svg
-              v-if="stat.label === 'Total Tasks'"
-              class="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-              />
-            </svg>
-            <svg
-              v-else-if="stat.label === 'Completed'"
-              class="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-            <svg
-              v-else-if="stat.label === 'Pending'"
-              class="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <svg
-              v-else
-              class="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-              />
-            </svg>
-          </div>
-          <div class="text-xl font-semibold text-text-900 mb-0.5">
-            {{ stat.value }}
-          </div>
-          <div class="text-xs text-text-500">{{ stat.label }}</div>
-          <div v-if="stat.label === 'Completion Rate'" class="w-full mt-2">
+          <div class="flex items-center justify-between mb-4">
             <div
-              class="w-full h-2 bg-background-200 rounded-full overflow-hidden"
+              :class="[
+                'w-10 h-10 rounded-lg flex items-center justify-center',
+                stat.color === 'primary'
+                  ? 'bg-primary-50 text-primary-600'
+                  : stat.color === 'accent'
+                  ? 'bg-accent-50 text-accent-600'
+                  : 'bg-secondary-50 text-secondary-600',
+              ]"
+            >
+              <svg
+                v-if="stat.label === 'Total Tasks'"
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                />
+              </svg>
+              <svg
+                v-else-if="stat.label === 'Completed'"
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              <svg
+                v-else-if="stat.label === 'Pending'"
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <svg
+                v-else
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                />
+              </svg>
+            </div>
+            <div class="text-2xl font-bold text-text-900">
+              {{ stat.value }}
+            </div>
+          </div>
+          <div class="text-sm text-text-600 font-medium">{{ stat.label }}</div>
+          <div v-if="stat.label === 'Completion Rate'" class="w-full mt-3">
+            <div
+              class="w-full h-1.5 bg-background-100 rounded-full overflow-hidden"
             >
               <div
-                class="h-2 rounded-full bg-primary-500 transition-all duration-500"
+                class="h-1.5 rounded-full bg-primary-500 transition-all duration-500"
                 :style="{
                   width: Math.round(animatedStats.completionRate) + '%',
                 }"
@@ -121,35 +124,44 @@
           </div>
         </div>
       </div>
+      
       <!-- Recent tasks -->
       <div
-        class="w-full max-w-3xl mx-auto bg-white/95 backdrop-blur-md shadow-lg rounded-xl border border-background-200 animate-dashboard-card px-8 py-8"
+        class="bg-white rounded-xl border border-background-200/60 shadow-sm animate-dashboard-card"
       >
-        <h3 class="text-lg leading-6 font-semibold text-text-900 mb-6">
-          Recent Tasks
-        </h3>
-        <div v-if="taskStore.loading" class="flex justify-center py-8">
+        <div class="px-8 py-6 border-b border-background-100">
+          <h3 class="text-xl font-semibold text-text-900">
+            Recent Tasks
+          </h3>
+        </div>
+        <div class="p-8">
+        <div v-if="taskStore.loading" class="flex justify-center py-16">
           <div
-            class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"
+            class="animate-spin rounded-full h-10 w-10 border-2 border-background-200 border-t-primary-600"
           ></div>
         </div>
-        <div v-else-if="taskStore.tasks.length === 0" class="text-center py-8">
-          <p class="text-text-500">
+        <div v-else-if="taskStore.tasks.length === 0" class="text-center py-16">
+          <div class="w-16 h-16 mx-auto mb-6 rounded-xl bg-background-100 flex items-center justify-center">
+            <svg class="w-8 h-8 text-text-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+          </div>
+          <p class="text-text-600 mb-6 text-lg">
             No tasks yet. Create your first task to get started!
           </p>
           <router-link
             to="/tasks"
-            class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 transition-colors"
+            class="inline-flex items-center px-6 py-3 text-sm font-medium text-primary-600 bg-primary-50 rounded-xl hover:bg-primary-100 transition-colors"
             >Create Task</router-link
           >
         </div>
-        <div v-else class="space-y-3">
+        <div v-else class="space-y-4">
           <div
             v-for="task in recentTasks"
             :key="task.id"
-            class="flex items-center justify-between p-3 bg-background-50 rounded-lg border border-background-200 hover:shadow-md transition-shadow duration-200 animate-dashboard-task"
+            class="flex items-center justify-between p-5 rounded-xl border border-background-100 hover:border-background-200 hover:shadow-sm transition-all duration-200 animate-dashboard-task"
           >
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-4">
               <div class="flex-shrink-0">
                 <div
                   :class="[
@@ -162,20 +174,20 @@
                   ]"
                 ></div>
               </div>
-              <div>
-                <p class="text-sm font-medium text-text-900">
+              <div class="min-w-0 flex-1">
+                <p class="text-sm font-medium text-text-900 truncate">
                   {{ task.title }}
                 </p>
-                <p class="text-sm text-text-500">{{ task.description }}</p>
+                <p class="text-sm text-text-600 truncate">{{ task.description }}</p>
               </div>
             </div>
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center space-x-3">
               <span
                 :class="[
-                  'px-2 py-1 text-xs font-medium rounded-full',
+                  'px-2 py-1 text-xs font-medium rounded-md',
                   task.status === 'completed'
-                    ? 'bg-accent-100 text-accent-800'
-                    : 'bg-secondary-100 text-secondary-800',
+                    ? 'bg-accent-50 text-accent-600'
+                    : 'bg-background-100 text-text-600',
                 ]"
               >
                 {{ task.status }}
@@ -183,19 +195,18 @@
             </div>
           </div>
         </div>
-        <div class="mt-8">
+        <div class="mt-8 pt-6 border-t border-background-100">
           <router-link
             to="/tasks"
-            class="w-full flex justify-center items-center px-4 py-2 border border-background-300 shadow-sm text-sm font-medium rounded-md text-text-700 bg-white hover:bg-background-50 transition-colors"
+            class="w-full flex justify-center items-center px-6 py-3 text-sm font-medium text-text-700 bg-background-50 border border-background-200 rounded-xl hover:bg-background-100 hover:border-background-300 transition-all duration-200"
             >View All Tasks</router-link
           >
+        </div>
         </div>
       </div>
     </div>
   </div>
-</template>
-
-<script setup>
+</template><script setup>
 import { computed, onMounted, ref, nextTick } from "vue";
 import { useTaskStore } from "../stores/task";
 import gsap from "gsap";
