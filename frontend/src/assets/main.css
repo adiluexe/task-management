@@ -1,25 +1,79 @@
 @import './base.css';
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Author:wght@400;500;600;700&display=swap');
+
+@theme {
+  /* Custom Font */
+  --font-sans: "Author", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  
+  /* Custom Colors */
+  --color-text: #060e08;
+  --color-background: #f5faf7;
+  --color-primary: #56b36a;
+  --color-secondary: #a4d6d6;
+  --color-accent: #7db3c5;
+  
+  /* Primary color variations for better UI */
+  --color-primary-50: #f0f9f2;
+  --color-primary-100: #dcf2e1;
+  --color-primary-200: #bce5c7;
+  --color-primary-300: #8fd3a1;
+  --color-primary-400: #5eb773;
+  --color-primary-500: #56b36a;
+  --color-primary-600: #3d9150;
+  --color-primary-700: #327242;
+  --color-primary-800: #2b5a37;
+  --color-primary-900: #244a2f;
+  
+  /* Secondary color variations */
+  --color-secondary-50: #f0fafa;
+  --color-secondary-100: #d9f2f2;
+  --color-secondary-200: #b8e5e5;
+  --color-secondary-300: #a4d6d6;
+  --color-secondary-400: #7ac2c2;
+  --color-secondary-500: #52a6a6;
+  --color-secondary-600: #3d8a8a;
+  --color-secondary-700: #336f6f;
+  --color-secondary-800: #2d5a5a;
+  --color-secondary-900: #284a4a;
+  
+  /* Accent color variations */
+  --color-accent-50: #f2f8fa;
+  --color-accent-100: #ddeef3;
+  --color-accent-200: #c1dee8;
+  --color-accent-300: #97c7d6;
+  --color-accent-400: #7db3c5;
+  --color-accent-500: #5597ad;
+  --color-accent-600: #4a7d93;
+  --color-accent-700: #3f6578;
+  --color-accent-800: #385463;
+  --color-accent-900: #324653;
+  
+  /* Background variations */
+  --color-background-50: #f5faf7;
+  --color-background-100: #e8f4ec;
+  --color-background-200: #d1e9d8;
+  --color-background-300: #a8d5b8;
+  --color-background-400: #76ba90;
+  --color-background-500: #52a070;
+  --color-background-600: #3f8158;
+  --color-background-700: #356749;
+  --color-background-800: #2d523c;
+  --color-background-900: #264433;
+  
+  /* Text variations */
+  --color-text-50: #f6f7f6;
+  --color-text-100: #e1e3e1;
+  --color-text-200: #c3c7c3;
+  --color-text-300: #9ba29c;
+  --color-text-400: #6f7770;
+  --color-text-500: #545856;
+  --color-text-600: #424642;
+  --color-text-700: #373a37;
+  --color-text-800: #2f312f;
+  --color-text-900: #060e08;
+}
 
 #app {
   font-weight: normal;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
 }
