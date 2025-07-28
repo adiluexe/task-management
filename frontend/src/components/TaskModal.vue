@@ -61,15 +61,15 @@
               required
               placeholder="What needs to be done?"
               class="w-full px-4 py-4 border border-background-300 rounded-2xl text-text-900 placeholder-text-400 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white/70 hover:border-primary-300"
-              :class="{ 'border-red-300 ring-red-200': errors.title }"
+              :class="{ 'border-red-300 ring-red-200': combinedErrors.title }"
             />
             <transition name="error-fade">
               <p
-                v-if="errors.title"
+                v-if="combinedErrors.title"
                 class="mt-2 text-sm text-red-600 flex items-center"
               >
                 <Icon icon="lucide:alert-circle" class="w-4 h-4 mr-1" />
-                {{ errors.title[0] }}
+                {{ combinedErrors.title[0] }}
               </p>
             </transition>
           </div>
@@ -93,7 +93,9 @@
                 rows="4"
                 placeholder="Add some details about this task..."
                 class="w-full px-4 py-4 border border-background-300 rounded-2xl text-text-900 placeholder-text-400 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 resize-none bg-white/70 hover:border-primary-300"
-                :class="{ 'border-red-300 ring-red-200': errors.description }"
+                :class="{
+                  'border-red-300 ring-red-200': combinedErrors.description,
+                }"
               ></textarea>
               <div
                 class="absolute bottom-3 right-3 text-xs text-text-400 bg-white/80 px-2 py-1 rounded-lg"
@@ -103,11 +105,11 @@
             </div>
             <transition name="error-fade">
               <p
-                v-if="errors.description"
+                v-if="combinedErrors.description"
                 class="mt-2 text-sm text-red-600 flex items-center"
               >
                 <Icon icon="lucide:alert-circle" class="w-4 h-4 mr-1" />
-                {{ errors.description[0] }}
+                {{ combinedErrors.description[0] }}
               </p>
             </transition>
           </div>
@@ -161,11 +163,11 @@
             </div>
             <transition name="error-fade">
               <p
-                v-if="errors.priority"
+                v-if="combinedErrors.priority"
                 class="mt-2 text-sm text-red-600 flex items-center"
               >
                 <Icon icon="lucide:alert-circle" class="w-4 h-4 mr-1" />
-                {{ errors.priority[0] }}
+                {{ combinedErrors.priority[0] }}
               </p>
             </transition>
           </div>
@@ -188,16 +190,18 @@
                 v-model="form.due_date"
                 type="date"
                 class="w-full px-4 py-4 border border-background-300 rounded-2xl text-text-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white/70 hover:border-primary-300"
-                :class="{ 'border-red-300 ring-red-200': errors.due_date }"
+                :class="{
+                  'border-red-300 ring-red-200': combinedErrors.due_date,
+                }"
               />
             </div>
             <transition name="error-fade">
               <p
-                v-if="errors.due_date"
+                v-if="combinedErrors.due_date"
                 class="mt-2 text-sm text-red-600 flex items-center"
               >
                 <Icon icon="lucide:alert-circle" class="w-4 h-4 mr-1" />
-                {{ errors.due_date[0] }}
+                {{ combinedErrors.due_date[0] }}
               </p>
             </transition>
           </div>
@@ -256,11 +260,11 @@
             </div>
             <transition name="error-fade">
               <p
-                v-if="errors.status"
+                v-if="combinedErrors.status"
                 class="mt-2 text-sm text-red-600 flex items-center"
               >
                 <Icon icon="lucide:alert-circle" class="w-4 h-4 mr-1" />
-                {{ errors.status[0] }}
+                {{ combinedErrors.status[0] }}
               </p>
             </transition>
           </div>
@@ -268,7 +272,7 @@
           <!-- Error Message -->
           <transition name="error-fade">
             <div
-              v-if="errorMessage"
+              v-if="displayErrorMessage"
               class="rounded-2xl bg-red-50 border border-red-200 p-4"
             >
               <div class="flex items-center">
@@ -280,7 +284,7 @@
                 </div>
                 <div class="ml-3">
                   <h3 class="text-base font-medium text-red-800">
-                    {{ errorMessage }}
+                    {{ displayErrorMessage }}
                   </h3>
                 </div>
               </div>
@@ -326,7 +330,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from "vue";
+import { ref, reactive, watch, computed } from "vue";
 import { Icon } from "@iconify/vue";
 
 const props = defineProps({
@@ -334,13 +338,36 @@ const props = defineProps({
     type: Object,
     default: null,
   },
+  externalErrors: {
+    type: Object,
+    default: () => ({}),
+  },
+  isLoading: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(["close", "save"]);
 
-const loading = ref(false);
+const loading = computed(() => props.isLoading);
 const errorMessage = ref("");
 const errors = ref({});
+
+// Combine internal validation errors with external errors from parent
+const combinedErrors = computed(() => ({
+  ...errors.value,
+  ...props.externalErrors,
+}));
+
+// Combined error message from internal and external sources
+const displayErrorMessage = computed(() => {
+  if (errorMessage.value) return errorMessage.value;
+  if (props.externalErrors?.general?.length > 0) {
+    return props.externalErrors.general[0];
+  }
+  return "";
+});
 
 const form = reactive({
   title: "",
@@ -351,20 +378,27 @@ const form = reactive({
 });
 
 const handleSubmit = async () => {
-  loading.value = true;
   errorMessage.value = "";
   errors.value = {};
 
   try {
+    // Basic client-side validation
+    if (!form.title.trim()) {
+      errors.value.title = ["Task title is required"];
+      return;
+    }
+
+    if (form.description.length > 500) {
+      errors.value.description = [
+        "Description must be less than 500 characters",
+      ];
+      return;
+    }
+
     emit("save", { ...form });
   } catch (error) {
-    if (error.response?.status === 422) {
-      errors.value = error.response.data.errors || {};
-    } else {
-      errorMessage.value = "An error occurred. Please try again.";
-    }
-  } finally {
-    loading.value = false;
+    console.error("Task validation error:", error);
+    errorMessage.value = "Please check your input and try again.";
   }
 };
 

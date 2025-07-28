@@ -397,6 +397,8 @@
     <TaskModal
       v-if="showEditModal"
       :task="selectedTask"
+      :isLoading="modalLoading"
+      :externalErrors="modalErrors"
       @close="closeModal"
       @save="handleTaskSave"
     />
@@ -404,6 +406,8 @@
     <!-- Create Task Modal -->
     <TaskModal
       v-if="showCreateModal"
+      :isLoading="modalLoading"
+      :externalErrors="modalErrors"
       @close="closeCreateModal"
       @save="handleTaskCreate"
     />
@@ -445,6 +449,10 @@ const showDeleteModal = ref(false);
 const showCreateModal = ref(false);
 const selectedTask = ref(null);
 const taskToDelete = ref(null);
+
+// Error handling states
+const modalLoading = ref(false);
+const modalErrors = ref({});
 
 // View and filter states
 const viewMode = ref("list");
@@ -582,6 +590,8 @@ const toggleTaskStatus = async (task) => {
 };
 
 const editTask = (task) => {
+  modalErrors.value = {};
+  modalLoading.value = false;
   selectedTask.value = { ...task };
   showEditModal.value = true;
 };
@@ -616,19 +626,28 @@ const handleDeleteConfirm = async () => {
 };
 
 const closeModal = () => {
+  modalErrors.value = {};
+  modalLoading.value = false;
   showEditModal.value = false;
   selectedTask.value = null;
 };
 
 const openCreateModal = () => {
+  modalErrors.value = {};
+  modalLoading.value = false;
   showCreateModal.value = true;
 };
 
 const closeCreateModal = () => {
+  modalErrors.value = {};
+  modalLoading.value = false;
   showCreateModal.value = false;
 };
 
 const handleTaskSave = async (taskData) => {
+  modalLoading.value = true;
+  modalErrors.value = {};
+
   try {
     if (selectedTask.value?.id) {
       await taskStore.updateTask(selectedTask.value.id, taskData);
@@ -638,10 +657,31 @@ const handleTaskSave = async (taskData) => {
     closeModal();
   } catch (error) {
     console.error("Failed to save task:", error);
+
+    // Handle validation errors
+    if (error.response?.status === 422) {
+      if (error.response.data?.errors) {
+        modalErrors.value = error.response.data.errors;
+      }
+    } else {
+      // Handle other errors
+      modalErrors.value = {
+        general: [
+          error.response?.data?.message ||
+            error.message ||
+            "Failed to save task. Please try again.",
+        ],
+      };
+    }
+  } finally {
+    modalLoading.value = false;
   }
 };
 
 const handleTaskCreate = async (taskData) => {
+  modalLoading.value = true;
+  modalErrors.value = {};
+
   try {
     await taskStore.createTask(taskData);
     closeCreateModal();
@@ -652,6 +692,24 @@ const handleTaskCreate = async (taskData) => {
     });
   } catch (error) {
     console.error("Failed to create task:", error);
+
+    // Handle validation errors
+    if (error.response?.status === 422) {
+      if (error.response.data?.errors) {
+        modalErrors.value = error.response.data.errors;
+      }
+    } else {
+      // Handle other errors
+      modalErrors.value = {
+        general: [
+          error.response?.data?.message ||
+            error.message ||
+            "Failed to create task. Please try again.",
+        ],
+      };
+    }
+  } finally {
+    modalLoading.value = false;
   }
 };
 
