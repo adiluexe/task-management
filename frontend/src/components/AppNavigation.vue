@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-white shadow-sm border-b border-gray-200">
+  <nav class="bg-background-50 shadow-sm border-b border-background-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <div class="flex">
@@ -14,23 +14,23 @@
           <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
             <router-link
               to="/"
-              class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors"
-              active-class="border-primary-500 text-gray-900"
+              class="border-transparent text-text-500 hover:text-text-700 hover:border-background-300 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors"
+              active-class="border-primary-500 text-text-900"
             >
               Dashboard
             </router-link>
             <router-link
               to="/tasks"
-              class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors"
-              active-class="border-primary-500 text-gray-900"
+              class="border-transparent text-text-500 hover:text-text-700 hover:border-background-300 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors"
+              active-class="border-primary-500 text-text-900"
             >
               Tasks
             </router-link>
             <router-link
               v-if="authStore.isAdmin"
               to="/admin"
-              class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors"
-              active-class="border-primary-500 text-gray-900"
+              class="border-transparent text-text-500 hover:text-text-700 hover:border-background-300 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm transition-colors"
+              active-class="border-primary-500 text-text-900"
             >
               Admin
             </router-link>
@@ -42,12 +42,12 @@
           <!-- User Profile Dropdown -->
           <div class="ml-3 relative">
             <div class="flex items-center space-x-4">
-              <span class="text-sm text-gray-700">
+              <span class="text-sm text-text-700">
                 {{ authStore.user?.name }}
               </span>
               <button
                 @click="handleLogout"
-                class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                class="bg-background-100 hover:bg-background-200 text-text-700 px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 Logout
               </button>
@@ -59,7 +59,7 @@
         <div class="sm:hidden flex items-center">
           <button
             @click="mobileMenuOpen = !mobileMenuOpen"
-            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
+            class="inline-flex items-center justify-center p-2 rounded-md text-text-400 hover:text-text-500 hover:bg-background-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
           >
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path v-if="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -75,7 +75,7 @@
       <div class="pt-2 pb-3 space-y-1">
         <router-link
           to="/"
-          class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:border-gray-300"
+          class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-text-500 hover:text-text-700 hover:bg-background-50 hover:border-background-300"
           active-class="border-primary-500 text-primary-700 bg-primary-50"
           @click="mobileMenuOpen = false"
         >
@@ -83,7 +83,7 @@
         </router-link>
         <router-link
           to="/tasks"
-          class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:border-gray-300"
+          class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-text-500 hover:text-text-700 hover:bg-background-50 hover:border-background-300"
           active-class="border-primary-500 text-primary-700 bg-primary-50"
           @click="mobileMenuOpen = false"
         >
@@ -92,22 +92,22 @@
         <router-link
           v-if="authStore.isAdmin"
           to="/admin"
-          class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50 hover:border-gray-300"
+          class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium border-transparent text-text-500 hover:text-text-700 hover:bg-background-50 hover:border-background-300"
           active-class="border-primary-500 text-primary-700 bg-primary-50"
           @click="mobileMenuOpen = false"
         >
           Admin
         </router-link>
       </div>
-      <div class="pt-4 pb-3 border-t border-gray-200">
+      <div class="pt-4 pb-3 border-t border-background-200">
         <div class="flex items-center px-4">
-          <div class="text-base font-medium text-gray-800">{{ authStore.user?.name }}</div>
-          <div class="text-sm text-gray-500">{{ authStore.user?.email }}</div>
+          <div class="text-base font-medium text-text-800">{{ authStore.user?.name }}</div>
+          <div class="text-sm text-text-500">{{ authStore.user?.email }}</div>
         </div>
         <div class="mt-3 space-y-1">
           <button
             @click="handleLogout"
-            class="block w-full text-left px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+            class="block w-full text-left px-4 py-2 text-base font-medium text-text-500 hover:text-text-700 hover:bg-background-100"
           >
             Logout
           </button>

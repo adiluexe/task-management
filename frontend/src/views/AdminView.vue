@@ -1,19 +1,19 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-background-50">
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
       <!-- Page header -->
       <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-        <p class="mt-2 text-sm text-gray-600">Manage users and system-wide tasks.</p>
+        <h1 class="text-3xl font-bold text-text-900">Admin Dashboard</h1>
+        <p class="mt-2 text-sm text-text-600">Manage users and system-wide tasks.</p>
       </div>
 
       <!-- Admin Stats -->
       <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
-        <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="bg-background-50 overflow-hidden shadow rounded-lg border border-background-200">
           <div class="p-5">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                <div class="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
                   <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
                   </svg>
@@ -21,19 +21,19 @@
               </div>
               <div class="ml-5 w-0 flex-1">
                 <dl>
-                  <dt class="text-sm font-medium text-gray-500 truncate">Total Users</dt>
-                  <dd class="text-lg font-medium text-gray-900">{{ adminStats.totalUsers }}</dd>
+                  <dt class="text-sm font-medium text-text-500 truncate">Total Users</dt>
+                  <dd class="text-lg font-medium text-text-900">{{ adminStats.totalUsers }}</dd>
                 </dl>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="bg-background-50 overflow-hidden shadow rounded-lg border border-background-200">
           <div class="p-5">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                <div class="w-8 h-8 bg-secondary-500 rounded-full flex items-center justify-center">
                   <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
@@ -41,19 +41,19 @@
               </div>
               <div class="ml-5 w-0 flex-1">
                 <dl>
-                  <dt class="text-sm font-medium text-gray-500 truncate">Total Tasks</dt>
-                  <dd class="text-lg font-medium text-gray-900">{{ adminStats.totalTasks }}</dd>
+                  <dt class="text-sm font-medium text-text-500 truncate">Total Tasks</dt>
+                  <dd class="text-lg font-medium text-text-900">{{ adminStats.totalTasks }}</dd>
                 </dl>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="bg-background-50 overflow-hidden shadow rounded-lg border border-background-200">
           <div class="p-5">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+                <div class="w-8 h-8 bg-accent-500 rounded-full flex items-center justify-center">
                   <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -61,19 +61,19 @@
               </div>
               <div class="ml-5 w-0 flex-1">
                 <dl>
-                  <dt class="text-sm font-medium text-gray-500 truncate">Pending Tasks</dt>
-                  <dd class="text-lg font-medium text-gray-900">{{ adminStats.pendingTasks }}</dd>
+                  <dt class="text-sm font-medium text-text-500 truncate">Pending Tasks</dt>
+                  <dd class="text-lg font-medium text-text-900">{{ adminStats.pendingTasks }}</dd>
                 </dl>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="bg-background-50 overflow-hidden shadow rounded-lg border border-background-200">
           <div class="p-5">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
+                <div class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center">
                   <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -81,8 +81,8 @@
               </div>
               <div class="ml-5 w-0 flex-1">
                 <dl>
-                  <dt class="text-sm font-medium text-gray-500 truncate">Completed Tasks</dt>
-                  <dd class="text-lg font-medium text-gray-900">{{ adminStats.completedTasks }}</dd>
+                  <dt class="text-sm font-medium text-text-500 truncate">Completed Tasks</dt>
+                  <dd class="text-lg font-medium text-text-900">{{ adminStats.completedTasks }}</dd>
                 </dl>
               </div>
             </div>
@@ -91,60 +91,60 @@
       </div>
 
       <!-- Users Management -->
-      <div class="bg-white shadow rounded-lg mb-8">
+      <div class="bg-background-50 shadow rounded-lg border border-background-200 mb-8">
         <div class="px-4 py-5 sm:p-6">
-          <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">User Management</h3>
+          <h3 class="text-lg leading-6 font-medium text-text-900 mb-4">User Management</h3>
           
           <div v-if="loading" class="flex justify-center py-8">
             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
           </div>
           
           <div v-else>
-            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-              <table class="min-w-full divide-y divide-gray-300">
-                <thead class="bg-gray-50">
+            <div class="overflow-hidden shadow ring-1 ring-background-200 ring-opacity-75 md:rounded-lg">
+              <table class="min-w-full divide-y divide-background-300">
+                <thead class="bg-background-100">
                   <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tasks</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-text-500 uppercase tracking-wider">User</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-text-500 uppercase tracking-wider">Role</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-text-500 uppercase tracking-wider">Tasks</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-text-500 uppercase tracking-wider">Joined</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-text-500 uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="bg-background-50 divide-y divide-background-200">
                   <tr v-for="user in users" :key="user.id">
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="flex items-center">
                         <div class="flex-shrink-0 h-10 w-10">
-                          <div class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
-                            <span class="text-sm font-medium text-gray-700">{{ user.name.charAt(0).toUpperCase() }}</span>
+                          <div class="h-10 w-10 rounded-full bg-background-300 flex items-center justify-center">
+                            <span class="text-sm font-medium text-text-700">{{ user.name.charAt(0).toUpperCase() }}</span>
                           </div>
                         </div>
                         <div class="ml-4">
-                          <div class="text-sm font-medium text-gray-900">{{ user.name }}</div>
-                          <div class="text-sm text-gray-500">{{ user.email }}</div>
+                          <div class="text-sm font-medium text-text-900">{{ user.name }}</div>
+                          <div class="text-sm text-text-500">{{ user.email }}</div>
                         </div>
                       </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                       <span :class="[
                         'px-2 py-1 text-xs font-medium rounded-full',
-                        user.is_admin ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800'
+                        user.is_admin ? 'bg-primary-100 text-primary-800' : 'bg-background-100 text-text-800'
                       ]">
                         {{ user.is_admin ? 'Admin' : 'User' }}
                       </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-900">
                       {{ user.tasks_count || 0 }}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-500">
                       {{ formatDate(user.created_at) }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <button
                         v-if="!user.is_admin"
                         @click="toggleAdminStatus(user)"
-                        class="text-primary-600 hover:text-primary-900 mr-3"
+                        class="text-primary-600 hover:text-primary-900 mr-3 transition-colors"
                       >
                         Make Admin
                       </button>
