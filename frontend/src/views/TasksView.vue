@@ -1,153 +1,185 @@
 <template>
   <div class="min-h-screen bg-background-50">
-    <!-- Header Section -->
-    <div class="bg-white border-b border-background-100">
-      <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8">
-        <div class="flex items-center justify-between">
-          <div>
-            <h1 class="text-2xl font-semibold text-text-900 mb-2">Tasks</h1>
-            <p class="text-text-600">
-              Manage and organize your tasks efficiently
+    <!-- Enhanced Header Section -->
+    <div class="bg-gradient-to-br from-white via-primary-50/20 to-accent-50/10 border-b border-background-100/40">
+      <div class="w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div class="text-center lg:text-left">
+            <h1 ref="heroTitle" class="text-4xl lg:text-5xl font-semibold text-text-900 mb-3 tracking-tight">
+              Tasks
+            </h1>
+            <p ref="heroSubtitle" class="text-lg text-text-600 max-w-2xl">
+              Manage and organize your tasks efficiently with our modern interface
             </p>
           </div>
           
-          <!-- Quick Stats -->
-          <div class="hidden md:flex items-center space-x-6">
-            <div class="text-center" v-for="(stat, index) in taskStats" :key="index">
-              <div class="text-lg font-semibold text-text-900">{{ stat.value }}</div>
-              <div class="text-sm text-text-600">{{ stat.label }}</div>
+          <!-- Enhanced Quick Stats -->
+          <div class="flex flex-wrap justify-center lg:justify-end gap-4">
+            <div 
+              v-for="(stat, index) in taskStats" 
+              :key="index"
+              ref="statCards"
+              class="stat-card group"
+            >
+              <div class="text-2xl font-bold text-text-900 mb-1 group-hover:text-primary-600 transition-colors duration-200">
+                {{ stat.value }}  
+              </div>
+              <div class="text-xs font-medium text-text-600 group-hover:text-text-700 transition-colors duration-200">
+                {{ stat.label }}
+              </div>
             </div>
+            
+            <!-- Quick Add Task Button -->
+            <button
+              @click="openCreateModal"
+              class="flex items-center gap-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white px-4 py-2 rounded-xl font-medium transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg transform shadow-sm"
+            >
+              <Icon icon="lucide:plus" class="w-4 h-4" />
+              <span class="hidden sm:inline">Add Task</span>
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8">
-      <!-- Filter Panel -->
-      <div class="bg-white rounded-lg border border-background-100 p-6 mb-6">
+    <div class="w-full px-4 sm:px-6 lg:px-8 py-6">
+      <!-- Enhanced Filter Panel -->
+      <div ref="filterPanel" class="bg-white/90 backdrop-blur-lg rounded-2xl border border-background-200/50 p-6 mb-6 shadow-sm hover:shadow-md transition-all duration-200">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <!-- Search -->
+          <!-- Enhanced Search -->
           <div class="md:col-span-2">
-            <label class="block text-sm font-medium text-text-700 mb-2">Search Tasks</label>
-            <div class="relative">
+            <label class="flex items-center text-sm font-medium text-text-700 mb-2">
+              <Icon icon="lucide:search" class="w-4 h-4 mr-2 text-primary-500" />
+              Search Tasks
+            </label>
+            <div class="relative group">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg class="h-4 w-4 text-text-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
+                <Icon icon="lucide:search" class="h-4 w-4 text-text-400 group-focus-within:text-primary-500 transition-colors duration-200" />
               </div>
               <input
                 v-model="filters.search"
                 type="text"
-                placeholder="Search tasks..."
-                class="block w-full pl-10 pr-3 py-2.5 border border-background-200 rounded-lg text-sm text-text-900 placeholder-text-400 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                placeholder="Search by title or description..."
+                class="block w-full pl-10 pr-3 py-3 border border-background-200 rounded-xl text-text-900 placeholder-text-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 bg-white/80 hover:bg-white focus:bg-white"
               />
             </div>
           </div>
 
-          <!-- Status Filter -->
+          <!-- Enhanced Status Filter -->
           <div>
-            <label class="block text-sm font-medium text-text-700 mb-2">Status</label>
+            <label class="flex items-center text-sm font-medium text-text-700 mb-2">
+              <Icon icon="lucide:check-circle" class="w-4 h-4 mr-2 text-primary-500" />
+              Status
+            </label>
             <select
               v-model="filters.status"
-              class="block w-full px-3 py-2.5 border border-background-200 rounded-lg text-sm text-text-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+              class="block w-full px-3 py-3 border border-background-200 rounded-xl text-text-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 bg-white/80 hover:bg-white focus:bg-white appearance-none cursor-pointer"
             >
               <option value="">All Status</option>
               <option value="pending">Pending</option>
+              <option value="in_progress">In Progress</option>
               <option value="completed">Completed</option>
             </select>
           </div>
 
-          <!-- Priority Filter -->
+          <!-- Enhanced Priority Filter -->
           <div>
-            <label class="block text-sm font-medium text-text-700 mb-2">Priority</label>
+            <label class="flex items-center text-sm font-medium text-text-700 mb-2">
+              <Icon icon="lucide:flag" class="w-4 h-4 mr-2 text-primary-500" />
+              Priority
+            </label>
             <select
               v-model="filters.priority"
-              class="block w-full px-3 py-2.5 border border-background-200 rounded-lg text-sm text-text-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+              class="block w-full px-3 py-3 border border-background-200 rounded-xl text-text-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 bg-white/80 hover:bg-white focus:bg-white appearance-none cursor-pointer"
             >
               <option value="">All Priority</option>
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
+              <option value="low">Low Priority</option>
+              <option value="medium">Medium Priority</option>
+              <option value="high">High Priority</option>
             </select>
           </div>
         </div>
       </div>
 
-      <!-- Main Content Grid -->
-      <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
-        <!-- Tasks List -->
-        <div class="xl:col-span-3">
-          <div class="bg-white rounded-lg border border-background-100 overflow-hidden">
-            <!-- Header -->
-            <div class="px-6 py-4 border-b border-background-100 bg-background-50/30">
+      <!-- Enhanced Main Content -->
+      <div class="w-full">
+        <!-- Enhanced Tasks List -->
+        <div class="w-full">
+          <div ref="tasksContainer" class="bg-white/95 backdrop-blur-lg rounded-2xl border border-background-200/50 overflow-hidden shadow-sm hover:shadow-md transition-all duration-200">
+            <!-- Enhanced Header -->
+            <div class="px-6 py-4 border-b border-background-100/50 bg-gradient-to-r from-background-50/30 to-primary-50/20">
               <div class="flex items-center justify-between">
-                <h2 class="text-lg font-semibold text-text-900 flex items-center">
-                  <svg class="w-5 h-5 text-primary-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                  </svg>
+                <h2 class="text-xl font-semibold text-text-900 flex items-center gap-1.5">
+                  <Icon icon="lucide:clipboard-check" class="w-4 h-4 text-primary" />
                   Tasks
-                  <span class="ml-3 px-2 py-1 bg-primary-100 text-primary-700 text-xs font-medium rounded-md">
+                  <span class="ml-3 px-3 py-1 bg-gradient-to-r from-primary-500 to-primary-600 text-white text-sm font-medium rounded-lg ">
                     {{ filteredTasks.length }}
                   </span>
                 </h2>
                 
-                <!-- View Toggle -->
-                <div class="flex items-center space-x-1 bg-background-100 p-1 rounded-lg">
+                <!-- Enhanced View Toggle -->
+                <div class="flex items-center space-x-1 bg-background-100/60 p-1 rounded-xl backdrop-blur-sm">
                   <button
                     @click="viewMode = 'list'"
                     :class="[
-                      'p-2 rounded-md transition-all duration-200 flex items-center',
-                      viewMode === 'list' ? 'bg-primary-500 text-white shadow-sm' : 'text-text-400 hover:text-primary-500 hover:bg-white'
+                      'p-2.5 rounded-lg transition-all duration-200 flex items-center',
+                      viewMode === 'list' 
+                        ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-md transform scale-105' 
+                        : 'text-text-400 hover:text-primary-500 hover:bg-white/70'
                     ]"
                   >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                    </svg>
+                    <Icon icon="lucide:list" class="w-4 h-4" />
                   </button>
                   <button
                     @click="viewMode = 'grid'"
                     :class="[
-                      'p-2 rounded-md transition-all duration-200 flex items-center',
-                      viewMode === 'grid' ? 'bg-primary-500 text-white shadow-sm' : 'text-text-400 hover:text-primary-500 hover:bg-white'
+                      'p-2.5 rounded-lg transition-all duration-200 flex items-center',
+                      viewMode === 'grid' 
+                        ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-md transform scale-105' 
+                        : 'text-text-400 hover:text-primary-500 hover:bg-white/70'
                     ]"
                   >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                    </svg>
+                    <Icon icon="lucide:grid-3x3" class="w-4 h-4" />
                   </button>
                 </div>
               </div>
             </div>
             
-            <!-- Loading State -->
-            <div v-if="taskStore.loading" class="flex justify-center py-16">
-              <div class="w-8 h-8 border-2 border-background-200 border-t-primary-600 rounded-full animate-spin"></div>
+            <!-- Enhanced Loading State -->
+            <div v-if="taskStore.loading" class="flex flex-col items-center justify-center py-16">
+              <div class="relative">
+                <div class="w-12 h-12 border-3 border-background-200 border-t-primary-500 rounded-full animate-spin"></div>
+                <div class="absolute inset-0 w-12 h-12 border-3 border-transparent border-t-accent-400 rounded-full animate-spin animation-delay-150"></div>
+              </div>
+              <p class="mt-4 text-text-600 font-medium">Loading your tasks...</p>
             </div>
             
-            <!-- Empty State -->
-            <div v-else-if="filteredTasks.length === 0" class="text-center py-16 px-6">
-              <div class="w-16 h-16 mx-auto mb-4 rounded-lg bg-background-100 flex items-center justify-center">
-                <svg class="w-8 h-8 text-text-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                </svg>
+            <!-- Enhanced Empty State -->
+            <div v-else-if="filteredTasks.length === 0" ref="emptyState" class="text-center py-16 px-6">
+              <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-primary-50 to-accent-50 flex items-center justify-center group hover:from-primary-100 hover:to-accent-100 transition-all duration-200">
+                <Icon icon="lucide:clipboard-check" class="w-8 h-8 text-primary-400 group-hover:text-primary-500 transition-colors duration-200" />
               </div>
-              <h3 class="text-lg font-semibold text-text-900 mb-2">No tasks found</h3>
-              <p class="text-text-600 mb-6">Create your first task to get started!</p>
+              <h3 class="text-xl font-semibold text-text-900 mb-3">No tasks found</h3>
+              <p class="text-text-600 mb-6 max-w-md mx-auto">
+                {{ filters.search || filters.status || filters.priority 
+                  ? 'No tasks match your current filters. Try adjusting your search criteria.' 
+                  : 'Create your first task to get started on your productivity journey!' 
+                }}
+              </p>
               <button
-                @click="scrollToCreateForm"
-                class="inline-flex items-center px-4 py-2 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors"
+                v-if="!filters.search && !filters.status && !filters.priority"
+                @click="openCreateModal"
+                class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-medium rounded-xl hover:from-primary-600 hover:to-primary-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 transform"
               >
-                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                Add Your First Task
+                <Icon icon="lucide:plus" class="w-5 h-5 mr-2" />
+                Create Your First Task
               </button>
             </div>
 
             <!-- Tasks List/Grid -->
             <div v-else class="min-h-[400px]">
               <!-- List View -->
-              <div v-if="viewMode === 'list'" class="divide-y divide-background-100/80">
+              <div v-if="viewMode === 'list'" class="p-6">
                 <VueDraggable
                   v-model="filteredTasks"
                   :animation="200"
@@ -155,24 +187,29 @@
                   chosenClass="chosen-task"
                   dragClass="drag-task"
                   @end="onDragEnd"
-                  class="task-list"
+                  class="task-list-container"
                 >
-                  <TaskCard
+                  <div 
                     v-for="(task, index) in filteredTasks"
                     :key="task.id"
-                    :task="task"
-                    :index="index"
-                    :view-mode="viewMode"
-                    @toggle-status="toggleTaskStatus"
-                    @edit="editTask"
-                    @delete="deleteTask"
-                    ref="taskCards"
-                  />
+                    class="task-item"
+                    :class="{ 'mb-6': index < filteredTasks.length - 1 }"
+                  >
+                    <TaskCard
+                      :task="task"
+                      :index="index"
+                      :view-mode="viewMode"
+                      @toggle-status="toggleTaskStatus"
+                      @edit="editTask"
+                      @delete="deleteTask"
+                      ref="taskCards"
+                    />
+                  </div>
                 </VueDraggable>
               </div>
 
               <!-- Grid View -->
-              <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-8">
+              <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 p-6">
                 <VueDraggable
                   v-model="filteredTasks"
                   :animation="200"
@@ -197,26 +234,24 @@
             </div>
 
             <!-- Enhanced Pagination -->
-            <div v-if="taskStore.pagination.lastPage > 1" class="px-8 py-6 border-t border-background-200/50 bg-background-50/50">
+            <div v-if="taskStore.pagination.lastPage > 1" class="px-6 py-4 border-t border-background-200/40 bg-background-50/30">
               <div class="flex items-center justify-between">
                 <div class="text-sm text-text-600">
                   Showing <span class="font-semibold text-text-900">{{ taskStore.pagination.from }}</span> to 
                   <span class="font-semibold text-text-900">{{ taskStore.pagination.to }}</span> of 
                   <span class="font-semibold text-text-900">{{ taskStore.pagination.total }}</span> tasks
                 </div>
-                <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-2">
                   <button
                     @click="previousPage"
                     :disabled="taskStore.pagination.currentPage === 1"
                     class="pagination-btn"
                     :class="{ 'opacity-50 cursor-not-allowed': taskStore.pagination.currentPage === 1 }"
                   >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
+                    <Icon icon="lucide:chevron-left" class="w-4 h-4" />
                     Previous
                   </button>
-                  <span class="px-4 py-3 text-sm font-semibold text-text-700 bg-background-100 rounded-xl">
+                  <span class="px-3 py-2 text-sm font-medium text-text-700 bg-background-100 rounded-lg">
                     Page {{ taskStore.pagination.currentPage }} of {{ taskStore.pagination.lastPage }}
                   </span>
                   <button
@@ -226,27 +261,23 @@
                     :class="{ 'opacity-50 cursor-not-allowed': taskStore.pagination.currentPage === taskStore.pagination.lastPage }"
                   >
                     Next
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
+                    <Icon icon="lucide:chevron-right" class="w-4 h-4" />
                   </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- Enhanced Add New Task Sidebar -->
-        <div class="xl:col-span-2">
-          <div class="sticky top-28">
-            <CreateTaskForm 
-              @task-created="handleTaskCreated"
-              ref="createFormRef"
-            />
-          </div>
-        </div>
       </div>
     </div>
+
+    <!-- Floating Action Button (Mobile/Tablet) -->
+    <button
+      @click="openCreateModal"
+      class="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center hover:scale-105 transform z-40 lg:hidden"
+    >
+      <Icon icon="lucide:plus" class="w-6 h-6" />
+    </button>
 
     <!-- Enhanced Modals -->
     <TaskModal
@@ -255,6 +286,42 @@
       @close="closeModal"
       @save="handleTaskSave"
     />
+
+    <!-- Create Task Modal -->
+    <div
+      v-if="showCreateModal"
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+      @click="closeCreateModal"
+    >
+      <div
+        class="bg-white rounded-2xl shadow-xl w-full max-w-md transform transition-all duration-200"
+        @click.stop
+      >
+        <div class="bg-gradient-to-r from-primary-50 to-accent-50 px-6 py-4 border-b border-background-100/50 rounded-t-2xl">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xl font-semibold text-text-900 flex items-center">
+              <div class="w-8 h-8 rounded-xl bg-primary-500 flex items-center justify-center mr-3">
+                <Icon icon="lucide:plus" class="w-4 h-4 text-white" />
+              </div>
+              Create New Task
+            </h3>
+            <button
+              @click="closeCreateModal"
+              class="text-text-400 hover:text-text-600 transition-colors duration-200"
+            >
+              <Icon icon="lucide:x" class="w-6 h-6" />
+            </button>
+          </div>
+          <p class="text-sm text-text-600 mt-1">Add a new task to your list</p>
+        </div>
+        <div class="p-6">
+          <CreateTaskForm 
+            @task-created="handleTaskCreated"
+            ref="createFormRef"
+          />
+        </div>
+      </div>
+    </div>
 
     <ConfirmDialog
       v-if="showDeleteModal"
@@ -270,6 +337,7 @@
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useTaskStore } from '../stores/task'
 import { VueDraggable } from 'vue-draggable-plus'
+import { Icon } from '@iconify/vue'
 import TaskModal from '../components/TaskModal.vue'
 import ConfirmDialog from '../components/ConfirmDialog.vue'
 import TaskCard from '../components/TaskCard.vue'
@@ -291,6 +359,7 @@ const createFormRef = ref(null)
 // Modal states
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
+const showCreateModal = ref(false)
 const selectedTask = ref(null)
 const taskToDelete = ref(null)
 
@@ -345,25 +414,25 @@ const animateHeroEntrance = () => {
   const tl = gsap.timeline()
   
   tl.fromTo(heroTitle.value, 
-    { opacity: 0, y: 30 },
-    { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+    { opacity: 0, y: 15 },
+    { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
   )
   .fromTo(heroSubtitle.value,
-    { opacity: 0, y: 20 },
-    { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-    "-=0.4"
+    { opacity: 0, y: 10 },
+    { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+    "-=0.3"
   )
   .fromTo(statCards.value,
-    { opacity: 0, y: 20, scale: 0.9 },
+    { opacity: 0, y: 10, scale: 0.95 },
     { 
       opacity: 1, 
       y: 0, 
       scale: 1, 
-      duration: 0.5, 
+      duration: 0.3, 
       stagger: 0.1, 
       ease: "power2.out" 
     },
-    "-=0.3"
+    "-=0.2"
   )
 }
 
@@ -372,16 +441,16 @@ const animateContentEntrance = () => {
   
   if (filterPanel.value) {
     tl.fromTo(filterPanel.value,
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
     )
   }
   
   if (tasksContainer.value) {
     tl.fromTo(tasksContainer.value,
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-      "-=0.4"
+      { opacity: 0, y: 15 },
+      { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
+      "-=0.3"
     )
   }
 }
@@ -389,12 +458,12 @@ const animateContentEntrance = () => {
 const animateTaskCards = () => {
   if (taskCards.value.length > 0) {
     gsap.fromTo(taskCards.value,
-      { opacity: 0, x: -20 },
+      { opacity: 0, x: -10 },
       { 
         opacity: 1, 
         x: 0, 
-        duration: 0.4, 
-        stagger: 0.1, 
+        duration: 0.3, 
+        stagger: 0.05, 
         ease: "power2.out" 
       }
     )
@@ -459,6 +528,14 @@ const closeModal = () => {
   selectedTask.value = null
 }
 
+const openCreateModal = () => {
+  showCreateModal.value = true
+}
+
+const closeCreateModal = () => {
+  showCreateModal.value = false
+}
+
 const handleTaskSave = async (taskData) => {
   try {
     if (selectedTask.value?.id) {
@@ -473,6 +550,9 @@ const handleTaskSave = async (taskData) => {
 }
 
 const handleTaskCreated = () => {
+  // Close the create modal
+  showCreateModal.value = false
+  
   // Animate new task appearance
   nextTick(() => {
     animateTaskCards()
@@ -516,27 +596,6 @@ const nextPage = () => {
 }
 
 // Utility functions
-const scrollToCreateForm = () => {
-  if (createFormRef.value) {
-    createFormRef.value.$el.scrollIntoView({ 
-      behavior: 'smooth',
-      block: 'center' 
-    })
-    
-    // Highlight the form
-    gsap.fromTo(createFormRef.value.$el,
-      { scale: 1 },
-      { 
-        scale: 1.02, 
-        duration: 0.3, 
-        yoyo: true, 
-        repeat: 1, 
-        ease: "power2.inOut" 
-      }
-    )
-  }
-}
-
 const formatDate = (date) => {
   return new Date(date).toLocaleDateString()
 }
@@ -572,104 +631,146 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* Stat Cards */
+/* Enhanced Stat Cards */
 .stat-card {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.8) 100%);
+  backdrop-filter: blur(12px);
   border-radius: 1.5rem;
-  padding: 2rem;
+  padding: 1.5rem 1rem;
   text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  min-height: 120px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
+  min-width: 120px;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: -1;
 }
 
 .stat-card:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.85) 100%);
 }
 
-/* Pagination Buttons */
+.stat-card:hover::before {
+  opacity: 1;
+}
+
+/* Enhanced Pagination Buttons */
 .pagination-btn {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background-color: white;
+  background: linear-gradient(135deg, white 0%, rgba(249, 250, 251, 0.95) 100%);
   color: rgb(75 85 99);
-  border: 1px solid rgb(209 213 219);
+  border: 1px solid rgb(229 231 235);
   border-radius: 1rem;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.875rem;
+  backdrop-filter: blur(8px);
 }
 
 .pagination-btn:hover:not(:disabled) {
-  background-color: rgb(240 253 244);
+  background: linear-gradient(135deg, rgb(240 253 244) 0%, rgb(220 252 231) 100%);
   color: rgb(21 128 61);
   border-color: rgb(34 197 94);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15);
 }
 
-/* Drag and Drop Styles */
+/* Enhanced Form Elements */
+input:focus, select:focus {
+  transform: translateY(-0.5px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.08);
+}
+
+/* Drag and Drop Enhanced Styles */
 .ghost-task {
   opacity: 0.5;
-  background: rgba(59, 130, 246, 0.1);
-  transform: rotate(2deg);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%);
+  transform: rotate(1deg) scale(0.99);
+  border: 1px dashed rgba(59, 130, 246, 0.2);
 }
 
 .chosen-task {
   cursor: grabbing !important;
-  transform: scale(1.02);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transform: scale(1.02) rotate(0.5deg);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
   z-index: 1000;
+  background: linear-gradient(135deg, white 0%, rgba(249, 250, 251, 0.98) 100%);
 }
 
 .drag-task {
-  transform: rotate(1deg);
-  opacity: 0.9;
+  transform: rotate(0.5deg) scale(1.01);
+  opacity: 0.95;
+  filter: brightness(1.05);
 }
 
 .task-list {
-  min-height: 200px;
+  min-height: 300px;
 }
 
-/* Enhanced hover effects */
-.filter-input:focus {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15);
+/* Task List Spacing */
+.task-list-container {
+  min-height: 300px;
 }
 
-/* Loading animation enhancement */
+.task-item {
+  margin-bottom: 0;
+}
+
+.task-item:not(:last-child) {
+  margin-bottom: 0.5rem;
+}
+
+/* Enhanced Loading Animation */
 @keyframes float-up-down {
   0%, 100% {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-8px);
   }
 }
 
 .floating-element {
-  animation: float-up-down 3s ease-in-out infinite;
+  animation: float-up-down 2s ease-in-out infinite;
+}
+
+/* Custom Animation Delays */
+.animation-delay-150 {
+  animation-delay: 150ms;
 }
 
 /* Success/Error animations */
 @keyframes bounce-in {
   0% {
-    transform: scale(0.3);
+    transform: scale(0.5);
     opacity: 0;
   }
   50% {
     transform: scale(1.05);
   }
   70% {
-    transform: scale(0.9);
+    transform: scale(0.95);
   }
   100% {
     transform: scale(1);
@@ -678,13 +779,13 @@ onMounted(async () => {
 }
 
 .bounce-in {
-  animation: bounce-in 0.5s ease;
+  animation: bounce-in 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Custom scrollbar */
+/* Enhanced Custom Scrollbar */
 .tasks-container {
   scrollbar-width: thin;
-  scrollbar-color: rgba(34, 197, 94, 0.3) transparent;
+  scrollbar-color: rgba(59, 130, 246, 0.2) transparent;
 }
 
 .tasks-container::-webkit-scrollbar {
@@ -693,28 +794,69 @@ onMounted(async () => {
 
 .tasks-container::-webkit-scrollbar-track {
   background: transparent;
+  border-radius: 8px;
 }
 
 .tasks-container::-webkit-scrollbar-thumb {
-  background: rgba(34, 197, 94, 0.3);
-  border-radius: 3px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%);
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background-clip: content-box;
 }
 
 .tasks-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(34, 197, 94, 0.5);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(16, 185, 129, 0.3) 100%);
+  background-clip: content-box;
 }
 
-/* Priority indicator animations */
-@keyframes priority-pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
+/* Enhanced Glassmorphism Effects */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-.priority-high {
-  animation: priority-pulse 2s ease-in-out infinite;
+/* Hover Glow Effects */
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Enhanced Button Animations */
+button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:hover {
+  transform: translateY(-0.5px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Modern Focus Rings */
+*:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.08);
+}
+
+/* Smooth Page Transitions */
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(15px);
 }
 </style>
