@@ -14,7 +14,7 @@
                 <img
                   src="/assets/img/taskeasy_logo.svg"
                   alt="TaskEasy"
-                  class="h-10 w-auto"
+                  class="h-8 w-auto"
                 />
               </div>
               
@@ -23,45 +23,33 @@
         </div>
 
         <!-- Right Side Menu -->
-        <div class="hidden sm:ml-8 sm:flex sm:items-center space-x-4">
+        <div class="hidden sm:ml-8 sm:flex sm:items-center">
           <!-- Navigation Links -->
           <router-link
             to="/"
             class="nav-item"
             :class="{ 'nav-active': $route.path === '/' }"
           >
-            <Icon icon="solar:widget-2-bold-duotone" class="w-5 h-5 mr-3" />
-            Dashboard
+            <Icon icon="solar:widget-2-bold-duotone" class="w-5 h-5" />
+            <span>Dashboard</span>
           </router-link>
           <router-link
             to="/tasks"
-            class="nav-item"
+            class="nav-item mr-2"
             :class="{ 'nav-active': $route.path === '/tasks' }"
           >
-            <Icon icon="solar:checklist-bold-duotone" class="w-5 h-5 mr-3" />
+            <Icon icon="solar:checklist-bold-duotone" class="w-5 h-5" />
             Tasks
           </router-link>
           <router-link
             v-if="authStore.isAdmin"
             to="/admin"
-            class="nav-item"
+            class="nav-item mr-4"
             :class="{ 'nav-active': $route.path === '/admin' }"
           >
-            <Icon icon="solar:settings-bold-duotone" class="w-5 h-5 mr-3" />
+            <Icon icon="solar:settings-bold-duotone" class="w-5 h-5" />
             Admin
           </router-link>
-
-          <!-- Divider -->
-          <div class="w-px h-8 bg-background-300 mx-4"></div>
-
-          <!-- Notifications Bell -->
-          <button 
-            class="relative p-3 text-text-400 hover:text-text-500 transition-colors rounded-xl hover:bg-background-100"
-            @click="showNotifications = !showNotifications"
-          >
-            <Icon icon="solar:bell-bold-duotone" class="w-6 h-6" />
-            <div class="absolute -top-1 -right-1 w-3 h-3 bg-accent-500 rounded-full animate-pulse"></div>
-          </button>
 
           <!-- User Profile -->
           <div class="relative" ref="userMenuRef">
@@ -69,7 +57,7 @@
               @click="userMenuOpen = !userMenuOpen"
               class="flex items-center space-x-4 p-3 rounded-xl hover:bg-background-100 transition-colors group"
             >
-              <div class="flex items-center space-x-4">
+              <div class="flex items-center gap-2">
                 <div class="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-md">
                   {{ authStore.user?.name?.charAt(0)?.toUpperCase() }}
                 </div>
@@ -277,7 +265,7 @@ async function handleLogout() {
   color: rgb(75 85 99);
   position: relative;
   overflow: hidden;
-  margin: 0 0.25rem;
+  gap: 0.25rem;
 }
 
 .nav-item:hover {
