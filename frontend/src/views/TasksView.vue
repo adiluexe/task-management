@@ -1,319 +1,267 @@
 <template>
-  <div class="min-h-screen bg-background-50">
-    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-      <!-- Page header -->
-      <div class="flex justify-between items-center mb-8">
-        <div>
-          <h1 class="text-3xl font-bold text-text-900">Tasks</h1>
-          <p class="mt-2 text-sm text-text-600">Manage your tasks and stay organized.</p>
-        </div>
+  <div class="min-h-screen bg-gradient-to-br from-background-50 via-background-100 to-background-200">
+    <!-- Hero Section -->
+    <div class="relative overflow-hidden bg-gradient-to-r from-primary-600 via-primary-500 to-secondary-500 py-12">
+      <div class="absolute inset-0 opacity-30">
+        <div class="absolute inset-0" style="background-image: radial-gradient(circle, rgba(255,255,255,0.1) 2px, transparent 2px); background-size: 60px 60px;"></div>
       </div>
-
-      <!-- Main content grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Left column - Tasks list and filters -->
-        <div class="lg:col-span-2 space-y-6">
-          <!-- Filters -->
-          <div class="bg-background-50 p-4 rounded-lg shadow border border-background-200">
-            <div class="flex flex-wrap gap-4">
-              <div>
-                <label for="status-filter" class="block text-sm font-medium text-text-700">Status</label>
-                <select
-                  id="status-filter"
-                  v-model="filters.status"
-                  class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-background-300 text-text-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
-                >
-                  <option value="">All</option>
-                  <option value="pending">Pending</option>
-                  <option value="completed">Completed</option>
-                </select>
-              </div>
-              <div>
-                <label for="priority-filter" class="block text-sm font-medium text-text-700">Priority</label>
-                <select
-                  id="priority-filter"
-                  v-model="filters.priority"
-                  class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-background-300 text-text-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
-                >
-                  <option value="">All</option>
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                </select>
-              </div>
-              <div class="flex-1">
-                <label for="search" class="block text-sm font-medium text-text-700">Search</label>
-                <input
-                  id="search"
-                  v-model="filters.search"
-                  type="text"
-                  placeholder="Search tasks..."
-                  class="mt-1 block w-full border-background-300 text-text-900 placeholder-text-400 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                />
-              </div>
-            </div>
-          </div>
-
-          <!-- Your Tasks section -->
-          <div class="bg-background-50 shadow rounded-lg border border-background-200">
-            <div class="px-6 py-4 border-b border-background-200">
-              <h2 class="text-lg font-medium text-text-900">Your Tasks</h2>
-            </div>
-            
-            <div v-if="taskStore.loading" class="flex justify-center py-12">
-              <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
-            </div>
-            
-            <div v-else-if="filteredTasks.length === 0" class="text-center py-12">
-              <svg class="mx-auto h-12 w-12 text-text-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              <h3 class="mt-2 text-sm font-medium text-text-900">No tasks</h3>
-              <p class="mt-1 text-sm text-text-500">Get started by creating a new task.</p>
-            </div>
-
-            <div v-else class="divide-y divide-background-200">
-              <div
-                v-for="task in filteredTasks"
-                :key="task.id"
-                class="p-6 hover:bg-background-100 transition-colors"
-              >
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center space-x-4 flex-1">
-                    <button
-                      @click="toggleTaskStatus(task)"
-                      class="flex-shrink-0"
-                    >
-                      <div :class="[
-                        'w-5 h-5 rounded border-2 flex items-center justify-center transition-colors',
-                        task.status === 'completed' 
-                          ? 'bg-primary-500 border-primary-500' 
-                          : 'border-background-300 hover:border-background-400'
-                      ]">
-                        <svg
-                          v-if="task.status === 'completed'"
-                          class="w-3 h-3 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                    </button>
-                    
-                    <div class="flex-1">
-                      <div class="flex items-center space-x-2">
-                        <h3 :class="[
-                          'text-sm font-medium',
-                          task.status === 'completed' ? 'line-through text-text-500' : 'text-text-900'
-                        ]">
-                          {{ task.title }}
-                        </h3>
-                        <span :class="[
-                          'px-2 py-1 text-xs font-medium rounded-full',
-                          task.priority === 'high' ? 'bg-accent-100 text-accent-800' :
-                          task.priority === 'medium' ? 'bg-secondary-100 text-secondary-800' : 'bg-primary-100 text-primary-800'
-                        ]">
-                          {{ task.priority }}
-                        </span>
-                      </div>
-                      <p :class="[
-                        'mt-1 text-sm',
-                        task.status === 'completed' ? 'line-through text-text-400' : 'text-text-600'
-                      ]">
-                        {{ task.description }}
-                      </p>
-                      <p class="mt-1 text-xs text-text-500">
-                        Created {{ formatDate(task.created_at) }}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center space-x-2">
-                    <button
-                      @click="editTask(task)"
-                      class="text-text-400 hover:text-text-600 transition-colors"
-                    >
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                      </svg>
-                    </button>
-                    <button
-                      @click="deleteTask(task)"
-                      class="text-accent-400 hover:text-accent-600 transition-colors"
-                    >
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Pagination -->
-            <div v-if="taskStore.pagination.lastPage > 1" class="px-6 py-4 border-t border-background-200">
-              <div class="flex items-center justify-between">
-                <div class="flex-1 flex justify-between sm:hidden">
-                  <button
-                    @click="previousPage"
-                    :disabled="taskStore.pagination.currentPage === 1"
-                    class="relative inline-flex items-center px-4 py-2 border border-background-300 text-sm font-medium rounded-md text-text-700 bg-background-50 hover:bg-background-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    Previous
-                  </button>
-                  <button
-                    @click="nextPage"
-                    :disabled="taskStore.pagination.currentPage === taskStore.pagination.lastPage"
-                    class="ml-3 relative inline-flex items-center px-4 py-2 border border-background-300 text-sm font-medium rounded-md text-text-700 bg-background-50 hover:bg-background-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    Next
-                  </button>
-                </div>
-                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                  <div>
-                    <p class="text-sm text-text-700">
-                      Showing
-                      <span class="font-medium">{{ taskStore.pagination.from }}</span>
-                      to
-                      <span class="font-medium">{{ taskStore.pagination.to }}</span>
-                      of
-                      <span class="font-medium">{{ taskStore.pagination.total }}</span>
-                      results
-                    </p>
-                  </div>
-                  <div>
-                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                      <button
-                        @click="previousPage"
-                        :disabled="taskStore.pagination.currentPage === 1"
-                        class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-background-300 bg-background-50 text-sm font-medium text-text-500 hover:bg-background-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                      >
-                        Previous
-                      </button>
-                      <button
-                        @click="nextPage"
-                        :disabled="taskStore.pagination.currentPage === taskStore.pagination.lastPage"
-                        class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-background-300 bg-background-50 text-sm font-medium text-text-500 hover:bg-background-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                      >
-                        Next
-                      </button>
-                    </nav>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right column - Add New Task -->
-        <div class="lg:col-span-1">
-          <div class="bg-background-50 shadow rounded-lg border border-background-200 sticky top-6">
-            <div class="px-6 py-4 border-b border-background-200">
-              <div class="flex items-center">
-                <svg class="w-5 h-5 text-primary-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                <h2 class="text-lg font-medium text-text-900">Add New Task</h2>
-              </div>
-            </div>
-            
-            <div class="p-6">
-              <form @submit.prevent="handleTaskCreate" class="space-y-4">
-                <div>
-                  <label for="new-task-title" class="block text-sm font-medium text-text-700 mb-1">
-                    Title
-                  </label>
-                  <input
-                    id="new-task-title"
-                    v-model="newTaskForm.title"
-                    type="text"
-                    placeholder="What needs to be done?"
-                    required
-                    class="block w-full border-background-300 text-text-900 placeholder-text-400 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                    :class="{ 'border-accent-300': newTaskErrors.title }"
-                  />
-                  <p v-if="newTaskErrors.title" class="mt-1 text-sm text-accent-600">{{ newTaskErrors.title[0] }}</p>
-                </div>
-
-                <div>
-                  <label for="new-task-description" class="block text-sm font-medium text-text-700 mb-1">
-                    Description
-                  </label>
-                  <textarea
-                    id="new-task-description"
-                    v-model="newTaskForm.description"
-                    rows="3"
-                    placeholder="Add some details..."
-                    class="block w-full border-background-300 text-text-900 placeholder-text-400 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                    :class="{ 'border-accent-300': newTaskErrors.description }"
-                  ></textarea>
-                  <p v-if="newTaskErrors.description" class="mt-1 text-sm text-accent-600">{{ newTaskErrors.description[0] }}</p>
-                </div>
-
-                <div>
-                  <label for="new-task-priority" class="block text-sm font-medium text-text-700 mb-1">
-                    Priority
-                  </label>
-                  <select
-                    id="new-task-priority"
-                    v-model="newTaskForm.priority"
-                    class="block w-full border-background-300 text-text-900 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                    :class="{ 'border-accent-300': newTaskErrors.priority }"
-                  >
-                    <option value="low">🟢 Low Priority</option>
-                    <option value="medium">🟡 Medium Priority</option>
-                    <option value="high">🔴 High Priority</option>
-                  </select>
-                  <p v-if="newTaskErrors.priority" class="mt-1 text-sm text-accent-600">{{ newTaskErrors.priority[0] }}</p>
-                </div>
-
-                <div class="pt-2">
-                  <button
-                    type="submit"
-                    :disabled="createTaskLoading"
-                    class="w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    <svg v-if="createTaskLoading" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <svg v-else class="-ml-1 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                    {{ createTaskLoading ? 'Adding Task...' : 'Add Task' }}
-                  </button>
-                </div>
-
-                <div v-if="createTaskError" class="rounded-md bg-accent-50 p-3">
-                  <div class="flex">
-                    <div class="flex-shrink-0">
-                      <svg class="h-4 w-4 text-accent-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                      </svg>
-                    </div>
-                    <div class="ml-2">
-                      <p class="text-sm text-accent-800">{{ createTaskError }}</p>
-                    </div>
-                  </div>
-                </div>
-              </form>
+      <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <h1 class="text-4xl font-bold text-white mb-4 opacity-0" ref="heroTitle">
+            Manage Your Tasks
+          </h1>
+          <p class="text-xl text-primary-100 mb-8 opacity-0" ref="heroSubtitle">
+            Stay organized and boost your productivity
+          </p>
+          
+          <!-- Quick Stats -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-md mx-auto">
+            <div class="stat-card" v-for="(stat, index) in taskStats" :key="index" ref="statCards">
+              <div class="text-2xl font-bold text-white">{{ stat.value }}</div>
+              <div class="text-primary-100 text-sm">{{ stat.label }}</div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Create/Edit Task Modal -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
+      <!-- Modern Filter Panel -->
+      <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/50 p-6 mb-8" ref="filterPanel">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <!-- Search -->
+          <div class="md:col-span-2">
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-text-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <input
+                v-model="filters.search"
+                type="text"
+                placeholder="Search tasks..."
+                class="block w-full pl-10 pr-4 py-3 border border-background-300 rounded-xl text-text-900 placeholder-text-400 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+              />
+            </div>
+          </div>
+
+          <!-- Status Filter -->
+          <div>
+            <select
+              v-model="filters.status"
+              class="block w-full px-4 py-3 border border-background-300 rounded-xl text-text-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+            >
+              <option value="">All Status</option>
+              <option value="pending">🔄 Pending</option>
+              <option value="completed">✅ Completed</option>
+            </select>
+          </div>
+
+          <!-- Priority Filter -->
+          <div>
+            <select
+              v-model="filters.priority"
+              class="block w-full px-4 py-3 border border-background-300 rounded-xl text-text-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+            >
+              <option value="">All Priority</option>
+              <option value="low">🟢 Low</option>
+              <option value="medium">🟡 Medium</option>
+              <option value="high">🔴 High</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Tasks List - Enhanced -->
+        <div class="lg:col-span-3">
+          <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/50 overflow-hidden" ref="tasksContainer">
+            <!-- Header -->
+            <div class="px-6 py-4 border-b border-background-200/50 bg-gradient-to-r from-background-50 to-background-100">
+              <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold text-text-900 flex items-center">
+                  <svg class="w-6 h-6 text-primary-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                  </svg>
+                  Your Tasks
+                  <span class="ml-2 px-3 py-1 bg-primary-100 text-primary-800 text-sm rounded-full">
+                    {{ filteredTasks.length }}
+                  </span>
+                </h2>
+                
+                <!-- View Toggle -->
+                <div class="flex items-center space-x-2">
+                  <button
+                    @click="viewMode = 'list'"
+                    :class="[
+                      'p-2 rounded-lg transition-all duration-200',
+                      viewMode === 'list' ? 'bg-primary-500 text-white shadow-lg' : 'text-text-400 hover:text-primary-500 hover:bg-primary-50'
+                    ]"
+                  >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                    </svg>
+                  </button>
+                  <button
+                    @click="viewMode = 'grid'"
+                    :class="[
+                      'p-2 rounded-lg transition-all duration-200',
+                      viewMode === 'grid' ? 'bg-primary-500 text-white shadow-lg' : 'text-text-400 hover:text-primary-500 hover:bg-primary-50'
+                    ]"
+                  >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Loading State -->
+            <div v-if="taskStore.loading" class="flex justify-center py-16">
+              <div class="relative">
+                <div class="w-12 h-12 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
+                <div class="absolute inset-0 w-12 h-12 border-4 border-transparent border-r-secondary-400 rounded-full animate-ping"></div>
+              </div>
+            </div>
+            
+            <!-- Empty State -->
+            <div v-else-if="filteredTasks.length === 0" class="text-center py-16" ref="emptyState">
+              <div class="relative inline-block">
+                <svg class="mx-auto h-16 w-16 text-text-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+                <div class="absolute top-0 left-0 w-full h-full">
+                  <div class="w-16 h-16 border-2 border-primary-200 rounded-full animate-pulse"></div>
+                </div>
+              </div>
+              <h3 class="text-lg font-medium text-text-900 mb-2">No tasks found</h3>
+              <p class="text-text-500 mb-6">Create your first task to get started with your productivity journey!</p>
+              <button
+                @click="scrollToCreateForm"
+                class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-medium rounded-xl hover:from-primary-600 hover:to-primary-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+              >
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Add Your First Task
+              </button>
+            </div>
+
+            <!-- Tasks List/Grid -->
+            <div v-else>
+              <!-- List View -->
+              <div v-if="viewMode === 'list'" class="divide-y divide-background-100">
+                <VueDraggable
+                  v-model="filteredTasks"
+                  :animation="200"
+                  ghostClass="ghost-task"
+                  chosenClass="chosen-task"
+                  dragClass="drag-task"
+                  @end="onDragEnd"
+                  class="task-list"
+                >
+                  <TaskCard
+                    v-for="(task, index) in filteredTasks"
+                    :key="task.id"
+                    :task="task"
+                    :index="index"
+                    :view-mode="viewMode"
+                    @toggle-status="toggleTaskStatus"
+                    @edit="editTask"
+                    @delete="deleteTask"
+                    ref="taskCards"
+                  />
+                </VueDraggable>
+              </div>
+
+              <!-- Grid View -->
+              <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
+                <VueDraggable
+                  v-model="filteredTasks"
+                  :animation="200"
+                  ghostClass="ghost-task"
+                  chosenClass="chosen-task"
+                  dragClass="drag-task"
+                  @end="onDragEnd"
+                  class="contents"
+                >
+                  <TaskCard
+                    v-for="(task, index) in filteredTasks"
+                    :key="task.id"
+                    :task="task"
+                    :index="index"
+                    :view-mode="viewMode"
+                    @toggle-status="toggleTaskStatus"
+                    @edit="editTask"
+                    @delete="deleteTask"
+                  />
+                </VueDraggable>
+              </div>
+            </div>
+
+            <!-- Enhanced Pagination -->
+            <div v-if="taskStore.pagination.lastPage > 1" class="px-6 py-4 border-t border-background-200/50 bg-background-50/50">
+              <div class="flex items-center justify-between">
+                <div class="text-sm text-text-600">
+                  Showing <span class="font-medium text-text-900">{{ taskStore.pagination.from }}</span> to 
+                  <span class="font-medium text-text-900">{{ taskStore.pagination.to }}</span> of 
+                  <span class="font-medium text-text-900">{{ taskStore.pagination.total }}</span> tasks
+                </div>
+                <div class="flex items-center space-x-2">
+                  <button
+                    @click="previousPage"
+                    :disabled="taskStore.pagination.currentPage === 1"
+                    class="pagination-btn"
+                    :class="{ 'opacity-50 cursor-not-allowed': taskStore.pagination.currentPage === 1 }"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Previous
+                  </button>
+                  <span class="px-3 py-2 text-sm font-medium text-text-700">
+                    Page {{ taskStore.pagination.currentPage }} of {{ taskStore.pagination.lastPage }}
+                  </span>
+                  <button
+                    @click="nextPage"
+                    :disabled="taskStore.pagination.currentPage === taskStore.pagination.lastPage"
+                    class="pagination-btn"
+                    :class="{ 'opacity-50 cursor-not-allowed': taskStore.pagination.currentPage === taskStore.pagination.lastPage }"
+                  >
+                    Next
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enhanced Add New Task Sidebar -->
+        <div class="lg:col-span-1">
+          <div class="sticky top-24">
+            <CreateTaskForm 
+              @task-created="handleTaskCreated"
+              ref="createFormRef"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enhanced Modals -->
     <TaskModal
-      v-if="showCreateModal || showEditModal"
+      v-if="showEditModal"
       :task="selectedTask"
       @close="closeModal"
       @save="handleTaskSave"
     />
 
-    <!-- Delete Confirmation Modal -->
     <ConfirmDialog
       v-if="showDeleteModal"
       title="Delete Task"
@@ -325,38 +273,44 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useTaskStore } from '../stores/task'
+import { VueDraggable } from 'vue-draggable-plus'
 import TaskModal from '../components/TaskModal.vue'
 import ConfirmDialog from '../components/ConfirmDialog.vue'
+import TaskCard from '../components/TaskCard.vue'
+import CreateTaskForm from '../components/CreateTaskForm.vue'
+import gsap from 'gsap'
 
 const taskStore = useTaskStore()
 
-const showCreateModal = ref(false)
+// Refs for animations
+const heroTitle = ref(null)
+const heroSubtitle = ref(null)
+const statCards = ref([])
+const filterPanel = ref(null)
+const tasksContainer = ref(null)
+const emptyState = ref(null)
+const taskCards = ref([])
+const createFormRef = ref(null)
+
+// Modal states
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
 const selectedTask = ref(null)
 const taskToDelete = ref(null)
 
+// View and filter states
+const viewMode = ref('list')
 const filters = ref({
   status: '',
   priority: '',
   search: ''
 })
 
-// Inline task creation form
-const newTaskForm = ref({
-  title: '',
-  description: '',
-  priority: 'medium'
-})
-
-const newTaskErrors = ref({})
-const createTaskLoading = ref(false)
-const createTaskError = ref('')
-
+// Computed properties
 const filteredTasks = computed(() => {
-  let tasks = taskStore.tasks
+  let tasks = [...taskStore.tasks]
 
   if (filters.value.status) {
     tasks = tasks.filter(task => task.status === filters.value.status)
@@ -377,8 +331,97 @@ const filteredTasks = computed(() => {
   return tasks
 })
 
+const taskStats = computed(() => [
+  {
+    label: 'Total Tasks',
+    value: taskStore.tasks.length
+  },
+  {
+    label: 'Completed',
+    value: taskStore.tasks.filter(task => task.status === 'completed').length
+  },
+  {
+    label: 'Pending',
+    value: taskStore.tasks.filter(task => task.status === 'pending').length
+  }
+])
+
+// Animation functions
+const animateHeroEntrance = () => {
+  const tl = gsap.timeline()
+  
+  tl.fromTo(heroTitle.value, 
+    { opacity: 0, y: 30 },
+    { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+  )
+  .fromTo(heroSubtitle.value,
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+    "-=0.4"
+  )
+  .fromTo(statCards.value,
+    { opacity: 0, y: 20, scale: 0.9 },
+    { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1, 
+      duration: 0.5, 
+      stagger: 0.1, 
+      ease: "back.out(1.7)" 
+    },
+    "-=0.3"
+  )
+}
+
+const animateContentEntrance = () => {
+  const tl = gsap.timeline()
+  
+  if (filterPanel.value) {
+    tl.fromTo(filterPanel.value,
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+    )
+  }
+  
+  if (tasksContainer.value) {
+    tl.fromTo(tasksContainer.value,
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+      "-=0.4"
+    )
+  }
+}
+
+const animateTaskCards = () => {
+  if (taskCards.value.length > 0) {
+    gsap.fromTo(taskCards.value,
+      { opacity: 0, x: -20 },
+      { 
+        opacity: 1, 
+        x: 0, 
+        duration: 0.4, 
+        stagger: 0.1, 
+        ease: "power2.out" 
+      }
+    )
+  }
+}
+
+// Task operations
 const toggleTaskStatus = async (task) => {
   try {
+    // Optimistic UI update with animation
+    const taskElement = document.querySelector(`[data-task-id="${task.id}"]`)
+    if (taskElement) {
+      gsap.to(taskElement, {
+        scale: 0.95,
+        duration: 0.1,
+        yoyo: true,
+        repeat: 1,
+        ease: "power2.inOut"
+      })
+    }
+    
     await taskStore.toggleTaskStatus(task.id)
   } catch (error) {
     console.error('Failed to toggle task status:', error)
@@ -397,6 +440,18 @@ const deleteTask = (task) => {
 
 const handleDeleteConfirm = async () => {
   try {
+    // Animate task removal
+    const taskElement = document.querySelector(`[data-task-id="${taskToDelete.value.id}"]`)
+    if (taskElement) {
+      await gsap.to(taskElement, {
+        opacity: 0,
+        x: -100,
+        scale: 0.8,
+        duration: 0.3,
+        ease: "power2.in"
+      })
+    }
+    
     await taskStore.deleteTask(taskToDelete.value.id)
     showDeleteModal.value = false
     taskToDelete.value = null
@@ -406,41 +461,8 @@ const handleDeleteConfirm = async () => {
 }
 
 const closeModal = () => {
-  showCreateModal.value = false
   showEditModal.value = false
   selectedTask.value = null
-}
-
-// Handle inline task creation
-const handleTaskCreate = async () => {
-  createTaskLoading.value = true
-  createTaskError.value = ''
-  newTaskErrors.value = {}
-
-  try {
-    await taskStore.createTask(newTaskForm.value)
-    
-    // Reset form on success
-    newTaskForm.value = {
-      title: '',
-      description: '',
-      priority: 'medium'
-    }
-    
-    // Show success feedback (optional)
-    console.log('Task created successfully!')
-    
-  } catch (error) {
-    console.error('Failed to create task:', error)
-    
-    if (error.response?.data?.errors) {
-      newTaskErrors.value = error.response.data.errors
-    } else {
-      createTaskError.value = error.response?.data?.message || 'Failed to create task. Please try again.'
-    }
-  } finally {
-    createTaskLoading.value = false
-  }
 }
 
 const handleTaskSave = async (taskData) => {
@@ -456,6 +478,37 @@ const handleTaskSave = async (taskData) => {
   }
 }
 
+const handleTaskCreated = () => {
+  // Animate new task appearance
+  nextTick(() => {
+    animateTaskCards()
+  })
+}
+
+// Drag and drop
+const onDragEnd = async (event) => {
+  try {
+    const { oldIndex, newIndex } = event
+    if (oldIndex === newIndex) return
+    
+    // Update task order in backend
+    const taskIds = filteredTasks.value.map(task => task.id)
+    await taskStore.updateTaskOrder(taskIds)
+    
+    // Success feedback
+    gsap.to(event.item, {
+      scale: 1.05,
+      duration: 0.2,
+      yoyo: true,
+      repeat: 1,
+      ease: "power2.inOut"
+    })
+  } catch (error) {
+    console.error('Failed to update task order:', error)
+  }
+}
+
+// Pagination
 const previousPage = () => {
   if (taskStore.pagination.currentPage > 1) {
     taskStore.fetchTasks({ page: taskStore.pagination.currentPage - 1 })
@@ -468,11 +521,33 @@ const nextPage = () => {
   }
 }
 
+// Utility functions
+const scrollToCreateForm = () => {
+  if (createFormRef.value) {
+    createFormRef.value.$el.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'center' 
+    })
+    
+    // Highlight the form
+    gsap.fromTo(createFormRef.value.$el,
+      { scale: 1 },
+      { 
+        scale: 1.02, 
+        duration: 0.3, 
+        yoyo: true, 
+        repeat: 1, 
+        ease: "power2.inOut" 
+      }
+    )
+  }
+}
+
 const formatDate = (date) => {
   return new Date(date).toLocaleDateString()
 }
 
-// Watch filters and refetch tasks
+// Watchers
 watch(filters, () => {
   taskStore.fetchTasks({ 
     ...filters.value,
@@ -480,11 +555,165 @@ watch(filters, () => {
   })
 }, { deep: true })
 
+watch(filteredTasks, () => {
+  nextTick(() => {
+    animateTaskCards()
+  })
+})
+
+// Lifecycle
 onMounted(async () => {
   try {
     await taskStore.fetchTasks()
+    
+    // Stagger entrance animations
+    setTimeout(() => animateHeroEntrance(), 100)
+    setTimeout(() => animateContentEntrance(), 500)
+    setTimeout(() => animateTaskCards(), 800)
+    
   } catch (error) {
     console.error('Failed to fetch tasks:', error)
   }
 })
 </script>
+
+<style scoped>
+/* Stat Cards */
+.stat-card {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Pagination Buttons */
+.pagination-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: white;
+  color: rgb(75 85 99);
+  border: 1px solid rgb(209 213 219);
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: rgb(240 253 244);
+  color: rgb(21 128 61);
+  border-color: rgb(34 197 94);
+  transform: scale(1.05);
+}
+
+/* Drag and Drop Styles */
+.ghost-task {
+  opacity: 0.5;
+  background: rgba(59, 130, 246, 0.1);
+  transform: rotate(2deg);
+}
+
+.chosen-task {
+  cursor: grabbing !important;
+  transform: scale(1.02);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+}
+
+.drag-task {
+  transform: rotate(1deg);
+  opacity: 0.9;
+}
+
+.task-list {
+  min-height: 200px;
+}
+
+/* Enhanced hover effects */
+.filter-input:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15);
+}
+
+/* Loading animation enhancement */
+@keyframes float-up-down {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.floating-element {
+  animation: float-up-down 3s ease-in-out infinite;
+}
+
+/* Success/Error animations */
+@keyframes bounce-in {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.bounce-in {
+  animation: bounce-in 0.5s ease;
+}
+
+/* Custom scrollbar */
+.tasks-container {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 197, 94, 0.3) transparent;
+}
+
+.tasks-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tasks-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tasks-container::-webkit-scrollbar-thumb {
+  background: rgba(34, 197, 94, 0.3);
+  border-radius: 3px;
+}
+
+.tasks-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 197, 94, 0.5);
+}
+
+/* Priority indicator animations */
+@keyframes priority-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.priority-high {
+  animation: priority-pulse 2s ease-in-out infinite;
+}
+</style>

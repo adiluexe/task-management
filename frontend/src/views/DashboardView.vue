@@ -1,15 +1,15 @@
 <template>
-  <div class="min-h-screen bg-background-50">
-    <div class="max-w-7xl mx-auto py-8 sm:px-6 lg:px-8">
+  <div class="min-h-screen bg-background-50 flex flex-col items-center">
+    <div class="w-full max-w-5xl px-4 py-10">
       <!-- Page header -->
-      <div class="mb-10">
+      <div class="mb-12">
         <h1 class="text-3xl font-bold text-text-900 mb-1">Dashboard</h1>
         <p class="text-sm text-text-600">
           Welcome back! Here's an overview of your tasks.
         </p>
       </div>
       <!-- Stats overview -->
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-10">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         <div
           v-for="(stat, idx) in [
             {
@@ -34,11 +34,11 @@
             },
           ]"
           :key="stat.label"
-          class="bg-white/80 backdrop-blur-md shadow-xl rounded-2xl border border-background-200 p-6 flex flex-col items-center hover:shadow-2xl transition-shadow duration-300 animate-dashboard-card"
+          class="bg-white/90 backdrop-blur-md shadow-lg rounded-xl border border-background-200 p-5 flex flex-col items-center hover:shadow-xl transition-shadow duration-300 animate-dashboard-card min-w-[180px]"
         >
           <div
             :class="[
-              'w-12 h-12 rounded-full flex items-center justify-center mb-3',
+              'w-11 h-11 rounded-full flex items-center justify-center mb-2',
               stat.color === 'primary'
                 ? 'bg-primary-500/90'
                 : stat.color === 'accent'
@@ -103,11 +103,11 @@
               />
             </svg>
           </div>
-          <div class="text-lg font-semibold text-text-900 mb-1">
+          <div class="text-xl font-semibold text-text-900 mb-0.5">
             {{ stat.value }}
           </div>
-          <div class="text-sm text-text-500">{{ stat.label }}</div>
-          <div v-if="stat.label === 'Completion Rate'" class="w-full mt-3">
+          <div class="text-xs text-text-500">{{ stat.label }}</div>
+          <div v-if="stat.label === 'Completion Rate'" class="w-full mt-2">
             <div
               class="w-full h-2 bg-background-200 rounded-full overflow-hidden"
             >
@@ -123,77 +123,72 @@
       </div>
       <!-- Recent tasks -->
       <div
-        class="bg-white/80 backdrop-blur-md shadow-xl rounded-2xl border border-background-200 animate-dashboard-card"
+        class="w-full max-w-3xl mx-auto bg-white/95 backdrop-blur-md shadow-lg rounded-xl border border-background-200 animate-dashboard-card px-8 py-8"
       >
-        <div class="px-6 py-7">
-          <h3 class="text-lg leading-6 font-semibold text-text-900 mb-5">
-            Recent Tasks
-          </h3>
-          <div v-if="taskStore.loading" class="flex justify-center py-8">
-            <div
-              class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"
-            ></div>
-          </div>
+        <h3 class="text-lg leading-6 font-semibold text-text-900 mb-6">
+          Recent Tasks
+        </h3>
+        <div v-if="taskStore.loading" class="flex justify-center py-8">
           <div
-            v-else-if="taskStore.tasks.length === 0"
-            class="text-center py-8"
+            class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"
+          ></div>
+        </div>
+        <div v-else-if="taskStore.tasks.length === 0" class="text-center py-8">
+          <p class="text-text-500">
+            No tasks yet. Create your first task to get started!
+          </p>
+          <router-link
+            to="/tasks"
+            class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 transition-colors"
+            >Create Task</router-link
           >
-            <p class="text-text-500">
-              No tasks yet. Create your first task to get started!
-            </p>
-            <router-link
-              to="/tasks"
-              class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 transition-colors"
-              >Create Task</router-link
-            >
-          </div>
-          <div v-else class="space-y-3">
-            <div
-              v-for="task in recentTasks"
-              :key="task.id"
-              class="flex items-center justify-between p-3 bg-background-50 rounded-lg border border-background-200 hover:shadow-md transition-shadow duration-200 animate-dashboard-task"
-            >
-              <div class="flex items-center space-x-3">
-                <div class="flex-shrink-0">
-                  <div
-                    :class="[
-                      'w-3 h-3 rounded-full',
-                      task.priority === 'high'
-                        ? 'bg-red-500'
-                        : task.priority === 'medium'
-                        ? 'bg-accent-500'
-                        : 'bg-primary-500',
-                    ]"
-                  ></div>
-                </div>
-                <div>
-                  <p class="text-sm font-medium text-text-900">
-                    {{ task.title }}
-                  </p>
-                  <p class="text-sm text-text-500">{{ task.description }}</p>
-                </div>
-              </div>
-              <div class="flex items-center space-x-2">
-                <span
+        </div>
+        <div v-else class="space-y-3">
+          <div
+            v-for="task in recentTasks"
+            :key="task.id"
+            class="flex items-center justify-between p-3 bg-background-50 rounded-lg border border-background-200 hover:shadow-md transition-shadow duration-200 animate-dashboard-task"
+          >
+            <div class="flex items-center space-x-3">
+              <div class="flex-shrink-0">
+                <div
                   :class="[
-                    'px-2 py-1 text-xs font-medium rounded-full',
-                    task.status === 'completed'
-                      ? 'bg-accent-100 text-accent-800'
-                      : 'bg-secondary-100 text-secondary-800',
+                    'w-3 h-3 rounded-full',
+                    task.priority === 'high'
+                      ? 'bg-red-500'
+                      : task.priority === 'medium'
+                      ? 'bg-accent-500'
+                      : 'bg-primary-500',
                   ]"
-                >
-                  {{ task.status }}
-                </span>
+                ></div>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-text-900">
+                  {{ task.title }}
+                </p>
+                <p class="text-sm text-text-500">{{ task.description }}</p>
               </div>
             </div>
+            <div class="flex items-center space-x-2">
+              <span
+                :class="[
+                  'px-2 py-1 text-xs font-medium rounded-full',
+                  task.status === 'completed'
+                    ? 'bg-accent-100 text-accent-800'
+                    : 'bg-secondary-100 text-secondary-800',
+                ]"
+              >
+                {{ task.status }}
+              </span>
+            </div>
           </div>
-          <div class="mt-7">
-            <router-link
-              to="/tasks"
-              class="w-full flex justify-center items-center px-4 py-2 border border-background-300 shadow-sm text-sm font-medium rounded-md text-text-700 bg-white hover:bg-background-50 transition-colors"
-              >View All Tasks</router-link
-            >
-          </div>
+        </div>
+        <div class="mt-8">
+          <router-link
+            to="/tasks"
+            class="w-full flex justify-center items-center px-4 py-2 border border-background-300 shadow-sm text-sm font-medium rounded-md text-text-700 bg-white hover:bg-background-50 transition-colors"
+            >View All Tasks</router-link
+          >
         </div>
       </div>
     </div>
