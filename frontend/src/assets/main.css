@@ -1,6 +1,12 @@
 @import './base.css';
 @import "tailwindcss";
 
+/* Ensure app is always visible - Fallback for GSAP issues */
+#app {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+}
+
 @font-face {
   font-family: 'Author';
   src: url('/assets/fonts/Author-Regular.otf') format('opentype');

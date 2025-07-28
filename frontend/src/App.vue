@@ -11,7 +11,8 @@ const route = useRoute();
 onMounted(() => {
   authStore.initializeAuth();
   
-  // Initial page load animation
+  // Initial page load animation - ensure app is always visible
+  gsap.set("#app", { opacity: 1 });
   gsap.fromTo(
     "#app",
     { opacity: 0 },
@@ -22,6 +23,9 @@ onMounted(() => {
 watch(
   () => route.fullPath,
   async () => {
+    // Ensure app stays visible during route transitions
+    gsap.set("#app", { opacity: 1, scale: 1 });
+    
     // Smooth page transitions
     await nextTick();
     

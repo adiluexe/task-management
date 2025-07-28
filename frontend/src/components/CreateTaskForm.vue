@@ -314,7 +314,7 @@ const handleSubmit = async () => {
     // Animate success
     gsap.fromTo('.success-message', 
       { scale: 0.5, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)" }
+      { scale: 1, opacity: 1, duration: 0.5, ease: "power2.out" }
     )
     
     // Reset form after delay

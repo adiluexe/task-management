@@ -153,7 +153,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 
@@ -168,6 +168,15 @@ const form = reactive({
   email: "",
   password: "",
   remember: false,
+});
+
+onMounted(() => {
+  // Ensure the page is always visible when mounted
+  const app = document.getElementById('app');
+  if (app) {
+    app.style.opacity = '1';
+    app.style.transform = 'scale(1)';
+  }
 });
 
 const handleLogin = async () => {

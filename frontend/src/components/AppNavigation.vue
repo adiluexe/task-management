@@ -201,7 +201,7 @@ onMounted(() => {
       y: 0, 
       scale: 1,
       duration: 0.8, 
-      ease: "back.out(1.7)" 
+      ease: "power2.out" 
     }
   );
 
@@ -238,18 +238,28 @@ const handleClickOutside = (event) => {
 
 async function handleLogout() {
   try {
-    // Logout animation
-    await gsap.to("#app", {
-      opacity: 0,
-      scale: 0.95,
-      duration: 0.3,
-      ease: "power2.in"
+    // Clear authentication immediately for faster response
+    await authStore.logout();
+    
+    // Navigate to login page
+    await router.push("/login");
+    
+    // Reset app appearance after navigation to prevent black screen
+    gsap.set("#app", {
+      opacity: 1,
+      scale: 1,
+      clearProps: "all"
     });
     
-    await authStore.logout();
-    router.push("/login");
   } catch (error) {
     console.error("Logout error:", error);
+    
+    // Ensure app is visible even if logout fails
+    gsap.set("#app", {
+      opacity: 1,
+      scale: 1,
+      clearProps: "all"
+    });
   }
 }
 </script>

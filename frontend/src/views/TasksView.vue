@@ -372,7 +372,7 @@ const animateHeroEntrance = () => {
       scale: 1, 
       duration: 0.5, 
       stagger: 0.1, 
-      ease: "back.out(1.7)" 
+      ease: "power2.out" 
     },
     "-=0.3"
   )
