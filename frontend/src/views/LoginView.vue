@@ -1,59 +1,84 @@
 <template>
-  <div class="min-h-screen bg-background-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-md">
-      <h2 class="mt-6 text-center text-3xl font-bold text-text-900">
-        Sign in to your account
-      </h2>
-      <p class="mt-2 text-center text-sm text-text-600">
-        Or
-        <router-link to="/register" class="font-medium text-primary-600 hover:text-primary-500">
-          create a new account
-        </router-link>
-      </p>
+  <div
+    class="min-h-screen bg-gradient-to-br from-background-100 via-background-50 to-primary-100 flex items-center justify-center relative overflow-hidden"
+  >
+    <div class="absolute inset-0 pointer-events-none z-0">
+      <div
+        class="absolute top-1/4 left-1/3 w-96 h-96 bg-gradient-to-br from-primary-100 via-secondary-100 to-accent-100 rounded-full opacity-20 blur-xl animate-float"
+      ></div>
+      <div
+        class="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tr from-accent-100 via-primary-100 to-secondary-100 rounded-full opacity-10 blur-lg animate-float2"
+      ></div>
     </div>
-
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-      <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 border border-background-200">
-        <form @submit.prevent="handleLogin" class="space-y-6">
+    <div class="w-full max-w-md flex flex-col items-center z-10">
+      <img
+        src="/assets/img/taskeasy_logo.svg"
+        alt="Taskeasy Logo"
+        class="h-14 w-auto mb-3 animate-logo-fadein drop-shadow-lg"
+      />
+      <div
+        class="text-center text-base text-text-500 mb-7 font-sans tracking-wide"
+      >
+        Effortless Task Management
+      </div>
+      <div
+        class="bg-white/60 backdrop-blur-md py-12 px-10 shadow-2xl rounded-2xl border border-background-200 animate-card-fadein w-full flex flex-col items-center"
+      >
+        <h2
+          class="text-center text-3xl font-bold text-text-900 font-sans mb-3 tracking-tight"
+        >
+          Sign in to your account
+        </h2>
+        <p class="mb-8 text-center text-sm text-text-600">
+          Or
+          <router-link
+            to="/register"
+            class="font-medium text-primary-600 hover:text-primary-500 underline underline-offset-2"
+            >create a new account</router-link
+          >
+        </p>
+        <form @submit.prevent="handleLogin" class="space-y-7 w-full">
           <div>
-            <label for="email" class="block text-sm font-medium text-text-700">
-              Email address
-            </label>
-            <div class="mt-1">
-              <input
-                id="email"
-                v-model="form.email"
-                name="email"
-                type="email"
-                autocomplete="email"
-                required
-                class="appearance-none block w-full px-3 py-2 border border-background-300 rounded-md placeholder-text-400 text-text-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                :class="{ 'border-accent-300': errors.email }"
-              />
-              <p v-if="errors.email" class="mt-2 text-sm text-accent-600">{{ errors.email[0] }}</p>
-            </div>
+            <label
+              for="email"
+              class="block text-sm font-medium text-text-700 mb-1"
+              >Email address</label
+            >
+            <input
+              id="email"
+              v-model="form.email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+              class="animated-input appearance-none block w-full px-4 py-2 border border-background-300 rounded-lg placeholder-text-400 text-text-900 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 bg-white/80 shadow-sm transition-all"
+              :class="{ 'border-accent-300': errors.email }"
+            />
+            <p v-if="errors.email" class="mt-2 text-sm text-accent-600">
+              {{ errors.email[0] }}
+            </p>
           </div>
-
           <div>
-            <label for="password" class="block text-sm font-medium text-text-700">
-              Password
-            </label>
-            <div class="mt-1">
-              <input
-                id="password"
-                v-model="form.password"
-                name="password"
-                type="password"
-                autocomplete="current-password"
-                required
-                class="appearance-none block w-full px-3 py-2 border border-background-300 rounded-md placeholder-text-400 text-text-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                :class="{ 'border-accent-300': errors.password }"
-              />
-              <p v-if="errors.password" class="mt-2 text-sm text-accent-600">{{ errors.password[0] }}</p>
-            </div>
+            <label
+              for="password"
+              class="block text-sm font-medium text-text-700 mb-1"
+              >Password</label
+            >
+            <input
+              id="password"
+              v-model="form.password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              class="animated-input appearance-none block w-full px-4 py-2 border border-background-300 rounded-lg placeholder-text-400 text-text-900 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 bg-white/80 shadow-sm transition-all"
+              :class="{ 'border-accent-300': errors.password }"
+            />
+            <p v-if="errors.password" class="mt-2 text-sm text-accent-600">
+              {{ errors.password[0] }}
+            </p>
           </div>
-
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between w-full mt-2 mb-2">
             <div class="flex items-center">
               <input
                 id="remember-me"
@@ -62,39 +87,63 @@
                 type="checkbox"
                 class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-background-300 rounded"
               />
-              <label for="remember-me" class="ml-2 block text-sm text-text-700">
-                Remember me
-              </label>
+              <label for="remember-me" class="ml-2 block text-sm text-text-700"
+                >Remember me</label
+              >
             </div>
           </div>
-
           <div>
             <button
               type="submit"
               :disabled="loading"
-              class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              class="w-full flex justify-center py-2.5 px-4 rounded-lg shadow-md text-sm font-semibold text-white bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               <span v-if="loading" class="flex items-center">
-                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg
+                  class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
                 </svg>
                 Signing in...
               </span>
               <span v-else>Sign in</span>
             </button>
           </div>
-
-          <div v-if="errorMessage" class="rounded-md bg-accent-50 p-4">
-            <div class="flex">
-              <div class="flex-shrink-0">
-                <svg class="h-5 w-5 text-accent-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                </svg>
-              </div>
-              <div class="ml-3">
-                <h3 class="text-sm font-medium text-accent-800">{{ errorMessage }}</h3>
-              </div>
+          <div
+            v-if="errorMessage"
+            class="rounded-md bg-accent-50 p-4 mt-2 w-full"
+          >
+            <div class="flex items-center">
+              <svg
+                class="h-5 w-5 text-accent-400 mr-2"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <span class="text-sm font-medium text-accent-800">{{
+                errorMessage
+              }}</span>
             </div>
           </div>
         </form>
@@ -104,41 +153,100 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '../stores/auth'
+import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "../stores/auth";
 
-const router = useRouter()
-const authStore = useAuthStore()
+const router = useRouter();
+const authStore = useAuthStore();
 
-const loading = ref(false)
-const errorMessage = ref('')
-const errors = ref({})
+const loading = ref(false);
+const errorMessage = ref("");
+const errors = ref({});
 
 const form = reactive({
-  email: '',
-  password: '',
-  remember: false
-})
+  email: "",
+  password: "",
+  remember: false,
+});
 
 const handleLogin = async () => {
-  loading.value = true
-  errorMessage.value = ''
-  errors.value = {}
+  loading.value = true;
+  errorMessage.value = "";
+  errors.value = {};
 
   try {
-    await authStore.login(form)
-    router.push('/')
+    await authStore.login(form);
+    router.push("/");
   } catch (error) {
     if (error.response?.status === 422) {
-      errors.value = error.response.data.errors || {}
+      errors.value = error.response.data.errors || {};
     } else if (error.response?.status === 401) {
-      errorMessage.value = 'Invalid email or password'
+      errorMessage.value = "Invalid email or password";
     } else {
-      errorMessage.value = 'An error occurred. Please try again.'
+      errorMessage.value = "An error occurred. Please try again.";
     }
   } finally {
-    loading.value = false
+    loading.value = false;
+  }
+};
+</script>
+
+<style scoped>
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
   }
 }
-</script>
+.animate-float {
+  animation: float 12s ease-in-out infinite;
+}
+@keyframes float2 {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(30px) scale(1.05);
+  }
+}
+.animate-float2 {
+  animation: float2 16s ease-in-out infinite;
+}
+@keyframes logo-fadein {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-logo-fadein {
+  animation: logo-fadein 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes card-fadein {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.animate-card-fadein {
+  animation: card-fadein 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.animated-input:focus {
+  border-color: var(--color-primary-400);
+  box-shadow: 0 0 0 2px var(--color-primary-100);
+  background: #fff;
+  transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
+}
+</style>
