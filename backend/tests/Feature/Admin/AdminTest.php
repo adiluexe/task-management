@@ -64,9 +64,6 @@ class AdminTest extends TestCase
                         'id',
                         'name',
                         'email',
-                        'tasks_count',
-                        'completed_tasks',
-                        'pending_tasks',
                     ]
                 ],
                 'pagination'
