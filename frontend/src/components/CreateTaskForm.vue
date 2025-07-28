@@ -98,7 +98,8 @@
               :class="[
                 'relative cursor-pointer rounded-2xl border-2 p-4 transition-all duration-200 hover:scale-105',
                 form.priority === priority.value
-                  ? getPriorityStyles(priority.value).border + ' ring-4 ring-opacity-20'
+                  ? getPriorityStyles(priority.value).border +
+                    ' ring-4 ring-opacity-20'
                   : 'border-background-300 bg-white/50 hover:border-background-400',
               ]"
             >

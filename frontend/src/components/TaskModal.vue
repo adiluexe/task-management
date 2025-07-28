@@ -14,7 +14,7 @@
         class="bg-gradient-to-r from-primary-50 to-primary-100 px-8 py-6 border-b border-primary-200/50"
       >
         <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-4">
+          <div class="flex items-center gap-2">
             <div
               class="bg-gradient-to-br from-primary-500 to-primary-600 p-3 rounded-2xl shadow-lg"
             >
@@ -44,12 +44,12 @@
 
       <!-- Form Content -->
       <div class="p-8 overflow-y-auto max-h-[calc(90vh-200px)]">
-        <form @submit.prevent="handleSubmit" class="space-y-8">
+        <form @submit.prevent="handleSubmit" class="flex flex-col gap-2">
           <!-- Title Field -->
           <div class="form-group">
             <label
               for="modal-title"
-              class="flex items-center text-base font-semibold text-text-700 mb-3"
+              class="flex items-center text-base font-semibold text-text-700 mb-3 gap-1"
             >
               <Icon icon="lucide:tag" class="w-5 h-5 mr-3 text-primary-500" />
               Task Title *
@@ -78,7 +78,7 @@
           <div class="form-group">
             <label
               for="modal-description"
-              class="flex items-center text-base font-semibold text-text-700 mb-3"
+              class="flex items-center text-base font-semibold text-text-700 mb-3 gap-1"
             >
               <Icon
                 icon="lucide:align-left"
@@ -115,12 +115,9 @@
           <!-- Priority Field -->
           <div class="form-group">
             <label
-              class="flex items-center text-base font-semibold text-text-700 mb-4"
+              class="flex items-center text-base font-semibold text-text-700 mb-4 gap-1"
             >
-              <Icon
-                icon="lucide:flag"
-                class="w-5 h-5 mr-3 text-primary-500"
-              />
+              <Icon icon="lucide:flag" class="w-5 h-5 mr-3 text-primary-500" />
               Priority Level
             </label>
             <div class="grid grid-cols-3 gap-3">
@@ -131,7 +128,8 @@
                 :class="[
                   'relative cursor-pointer rounded-2xl border-2 p-4 transition-all duration-200 hover:scale-105',
                   form.priority === priority
-                    ? getPriorityStyles(priority).border + ' ring-4 ring-opacity-20'
+                    ? getPriorityStyles(priority).border +
+                      ' ring-4 ring-opacity-20'
                     : 'border-background-300 bg-white/50 hover:border-background-400',
                 ]"
               >
@@ -176,7 +174,7 @@
           <div class="form-group">
             <label
               for="modal-due-date"
-              class="flex items-center text-base font-semibold text-text-700 mb-3"
+              class="flex items-center text-base font-semibold text-text-700 mb-3 gap-1"
             >
               <Icon
                 icon="lucide:calendar"
@@ -191,10 +189,6 @@
                 type="date"
                 class="w-full px-4 py-4 border border-background-300 rounded-2xl text-text-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white/70 hover:border-primary-300"
                 :class="{ 'border-red-300 ring-red-200': errors.due_date }"
-              />
-              <Icon
-                icon="lucide:calendar"
-                class="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-text-400 pointer-events-none"
               />
             </div>
             <transition name="error-fade">
@@ -211,7 +205,7 @@
           <!-- Status Field (only show when editing) -->
           <div v-if="task" class="form-group">
             <label
-              class="flex items-center text-base font-semibold text-text-700 mb-4"
+              class="flex items-center text-base font-semibold text-text-700 mb-4 gap-1"
             >
               <Icon
                 icon="lucide:activity"
@@ -297,7 +291,7 @@
 
       <!-- Footer Actions -->
       <div
-        class="bg-background-50/50 px-8 py-6 border-t border-background-200/50 flex justify-end space-x-4"
+        class="bg-background-50/50 px-8 py-6 border-t border-background-200/50 flex justify-end space-x-4 gap-2"
       >
         <button
           type="button"
@@ -489,6 +483,10 @@ const getStatusLabel = (status) => {
 .icon-fade-leave-to {
   opacity: 0;
   transform: scale(0.8);
+}
+
+.form-group label {
+  margin-bottom: 0.25rem;
 }
 
 /* Priority and Status Selection Cards */
