@@ -5,6 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * @OA\Schema(
+ *     schema="Task",
+ *     title="Task",
+ *     description="Task model",
+ *     @OA\Property(property="id", type="integer", format="int64", example=1),
+ *     @OA\Property(property="title", type="string", example="Complete project documentation"),
+ *     @OA\Property(property="description", type="string", nullable=true, example="Write comprehensive documentation for the API"),
+ *     @OA\Property(property="status", type="string", enum={"pending", "completed"}, example="pending"),
+ *     @OA\Property(property="priority", type="string", enum={"low", "medium", "high"}, example="medium"),
+ *     @OA\Property(property="order", type="integer", example=1),
+ *     @OA\Property(property="user_id", type="integer", format="int64", example=1),
+ *     @OA\Property(property="created_at", type="string", format="date-time"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time"),
+ *     @OA\Property(property="user", ref="#/components/schemas/User")
+ * )
+ */
 class Task extends Model
 {
     use HasFactory;

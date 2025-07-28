@@ -1,6 +1,20 @@
 # Task Management System
 
-A full-stack task management application built with Laravel 11 and Vue 3, featuring real-time updates, drag-and-drop functionality, and comprehensive admin tools.
+> **🏆 A full-stack task management application showcasing enterprise-level Laravel & Vue.js development**
+
+Built with **Laravel 11** and **Vue 3**, featuring real-time updates, drag-and-drop functionality, comprehensive admin tools, and production-ready architecture.
+
+[![Laravel Version](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=flat-square&logo=laravel)](https://laravel.com)
+[![Vue Version](https://img.shields.io/badge/Vue.js-3.x-4FC08D?style=flat-square&logo=vue.js)](https://vuejs.org)
+[![PHP Version](https://img.shields.io/badge/PHP-8.2+-777BB4?style=flat-square&logo=php)](https://php.net)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-24%20passing-brightgreen?style=flat-square)](TESTING_RESULTS.md)
+
+## 🎯 **Project Overview**
+
+This project demonstrates **professional full-stack development** with modern Laravel and Vue.js, implementing industry best practices, comprehensive testing, and production-ready features.
+
+**📊 Compliance Score: 96/100** | [View Detailed Audit →](REQUIREMENTS_AUDIT.md)
 
 ## 🚀 Features
 
@@ -165,23 +179,58 @@ php artisan schedule:work
 - **Email**: admin@example.com
 - **Password**: password
 
-## 🧪 Testing
+## 🧪 **Testing & Quality Assurance**
 
-### Backend Tests
+### **Comprehensive Test Suite (24 Tests)**
 
-```bash
-cd backend
-php artisan test
-```
-
-### Frontend Tests
+Our application includes a robust testing framework ensuring reliability and maintainability:
 
 ```bash
-cd frontend
-npm run test
+# Run all tests
+cd backend && php artisan test
+
+# Run specific test suites
+php artisan test --testsuite=Feature  # API and functionality tests
+php artisan test --testsuite=Unit     # Unit tests
+php artisan test --filter=Auth        # Authentication tests only
+php artisan test --filter=Task        # Task management tests only
+php artisan test --filter=Admin       # Admin functionality tests only
 ```
 
-## 📚 API Documentation
+**Test Coverage:**
+
+- ✅ **Authentication Tests (5)** - Registration, login, logout, token management
+- ✅ **Task Management Tests (9)** - CRUD operations, validation, authorization
+- ✅ **Admin Functionality Tests (9)** - Dashboard, user management, permissions
+- ✅ **Integration Tests (1)** - End-to-end functionality
+
+[📋 View Detailed Testing Results →](TESTING_RESULTS.md)
+
+### **Frontend Testing**
+
+```bash
+cd frontend && npm run test
+```
+
+---
+
+## 📚 **API Documentation**
+
+### **Interactive Swagger Documentation**
+
+Our API includes comprehensive, interactive documentation powered by Swagger/OpenAPI 3.0:
+
+**🔗 Live Documentation:** `http://localhost:8000/api/documentation`
+
+### **Features:**
+
+- 📖 **Complete Endpoint Documentation** - All routes with request/response examples
+- 🧪 **Interactive Testing** - Test API endpoints directly from the browser
+- 🔐 **Authentication Support** - Bearer token authentication integrated
+- 📝 **Request/Response Schemas** - Detailed data structure documentation
+- 🏷️ **Organized by Tags** - Logical grouping of endpoints
+
+### **API Endpoints Overview:**
 
 The API documentation is available at:
 
