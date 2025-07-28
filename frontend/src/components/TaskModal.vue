@@ -26,7 +26,7 @@
               v-model="form.title"
               type="text"
               required
-              class="mt-1 block w-full border-background-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+              class="mt-1 block w-full border-background-300 text-text-900 placeholder-text-400 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
               :class="{ 'border-accent-300': errors.title }"
             />
             <p v-if="errors.title" class="mt-1 text-sm text-accent-600">{{ errors.title[0] }}</p>
@@ -40,7 +40,7 @@
               id="description"
               v-model="form.description"
               rows="3"
-              class="mt-1 block w-full border-background-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+              class="mt-1 block w-full border-background-300 text-text-900 placeholder-text-400 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
               :class="{ 'border-accent-300': errors.description }"
             ></textarea>
             <p v-if="errors.description" class="mt-1 text-sm text-accent-600">{{ errors.description[0] }}</p>
@@ -53,7 +53,7 @@
             <select
               id="priority"
               v-model="form.priority"
-              class="mt-1 block w-full border-background-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+              class="mt-1 block w-full border-background-300 text-text-900 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
               :class="{ 'border-accent-300': errors.priority }"
             >
               <option value="low">Low</option>
@@ -70,7 +70,7 @@
             <select
               id="status"
               v-model="form.status"
-              class="mt-1 block w-full border-background-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+              class="mt-1 block w-full border-background-300 text-text-900 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
               :class="{ 'border-accent-300': errors.status }"
             >
               <option value="pending">Pending</option>

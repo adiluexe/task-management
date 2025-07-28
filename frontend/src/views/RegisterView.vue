@@ -27,10 +27,10 @@
                 type="text"
                 autocomplete="name"
                 required
-                class="appearance-none block w-full px-3 py-2 border border-background-300 rounded-md placeholder-text-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                :class="{ 'border-red-300': errors.name }"
+                class="appearance-none block w-full px-3 py-2 border border-background-300 rounded-md placeholder-text-400 text-text-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                :class="{ 'border-accent-300': errors.name }"
               />
-              <p v-if="errors.name" class="mt-2 text-sm text-red-600">{{ errors.name[0] }}</p>
+              <p v-if="errors.name" class="mt-2 text-sm text-accent-600">{{ errors.name[0] }}</p>
             </div>
           </div>
 
@@ -46,10 +46,10 @@
                 type="email"
                 autocomplete="email"
                 required
-                class="appearance-none block w-full px-3 py-2 border border-background-300 rounded-md placeholder-text-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                :class="{ 'border-red-300': errors.email }"
+                class="appearance-none block w-full px-3 py-2 border border-background-300 rounded-md placeholder-text-400 text-text-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                :class="{ 'border-accent-300': errors.email }"
               />
-              <p v-if="errors.email" class="mt-2 text-sm text-red-600">{{ errors.email[0] }}</p>
+              <p v-if="errors.email" class="mt-2 text-sm text-accent-600">{{ errors.email[0] }}</p>
             </div>
           </div>
 
@@ -65,10 +65,10 @@
                 type="password"
                 autocomplete="new-password"
                 required
-                class="appearance-none block w-full px-3 py-2 border border-background-300 rounded-md placeholder-text-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                :class="{ 'border-red-300': errors.password }"
+                class="appearance-none block w-full px-3 py-2 border border-background-300 rounded-md placeholder-text-400 text-text-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                :class="{ 'border-accent-300': errors.password }"
               />
-              <p v-if="errors.password" class="mt-2 text-sm text-red-600">{{ errors.password[0] }}</p>
+              <p v-if="errors.password" class="mt-2 text-sm text-accent-600">{{ errors.password[0] }}</p>
             </div>
           </div>
 
@@ -84,10 +84,10 @@
                 type="password"
                 autocomplete="new-password"
                 required
-                class="appearance-none block w-full px-3 py-2 border border-background-300 rounded-md placeholder-text-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                :class="{ 'border-red-300': errors.password_confirmation }"
+                class="appearance-none block w-full px-3 py-2 border border-background-300 rounded-md placeholder-text-400 text-text-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                :class="{ 'border-accent-300': errors.password_confirmation }"
               />
-              <p v-if="errors.password_confirmation" class="mt-2 text-sm text-red-600">{{ errors.password_confirmation[0] }}</p>
+              <p v-if="errors.password_confirmation" class="mt-2 text-sm text-accent-600">{{ errors.password_confirmation[0] }}</p>
             </div>
           </div>
 
@@ -108,15 +108,15 @@
             </button>
           </div>
 
-          <div v-if="errorMessage" class="rounded-md bg-red-50 p-4">
+          <div v-if="errorMessage" class="rounded-md bg-accent-50 p-4">
             <div class="flex">
               <div class="flex-shrink-0">
-                <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <svg class="h-5 w-5 text-accent-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                 </svg>
               </div>
               <div class="ml-3">
-                <h3 class="text-sm font-medium text-red-800">{{ errorMessage }}</h3>
+                <h3 class="text-sm font-medium text-accent-800">{{ errorMessage }}</h3>
               </div>
             </div>
           </div>

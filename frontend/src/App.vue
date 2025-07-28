@@ -12,7 +12,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="app" class="min-h-screen bg-gray-50">
+  <div id="app" class="min-h-screen bg-background-50">
     <AppNavigation v-if="authStore.isAuthenticated" />
     
     <main class="flex-1">

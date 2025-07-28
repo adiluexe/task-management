@@ -26,7 +26,7 @@
             <select
               id="status-filter"
               v-model="filters.status"
-              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-background-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-background-300 text-text-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
             >
               <option value="">All</option>
               <option value="pending">Pending</option>
@@ -38,7 +38,7 @@
             <select
               id="priority-filter"
               v-model="filters.priority"
-              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-background-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
+              class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-background-300 text-text-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
             >
               <option value="">All</option>
               <option value="low">Low</option>
@@ -53,7 +53,7 @@
               v-model="filters.search"
               type="text"
               placeholder="Search tasks..."
-              class="mt-1 block w-full border-background-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+              class="mt-1 block w-full border-background-300 text-text-900 placeholder-text-400 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
             />
           </div>
         </div>
