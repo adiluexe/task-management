@@ -1,25 +1,25 @@
 <template>
-  <div class="create-task-form">
-    <div class="form-header">
-      <div class="flex items-center">
-        <div class="icon-wrapper">
-          <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <div class="create-task-form bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/60 overflow-hidden">
+    <div class="form-header bg-gradient-to-r from-primary-50 to-primary-100 p-8 border-b border-primary-200/50">
+      <div class="flex items-center mb-4">
+        <div class="icon-wrapper bg-primary-500 p-3 rounded-2xl mr-4">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
         </div>
-        <h2 class="text-lg font-semibold text-text-900">Create New Task</h2>
+        <h2 class="text-2xl font-bold text-text-900">Create New Task</h2>
       </div>
-      <div class="progress-indicator">
-        <div class="progress-bar" :style="{ width: formProgress + '%' }"></div>
+      <div class="progress-indicator bg-background-200 rounded-full h-2 overflow-hidden">
+        <div class="progress-bar bg-gradient-to-r from-primary-500 to-primary-600 h-full rounded-full transition-all duration-300" :style="{ width: formProgress + '%' }"></div>
       </div>
     </div>
     
-    <div class="form-content">
-      <form @submit.prevent="handleSubmit" class="space-y-6">
+    <div class="form-content p-8">
+      <form @submit.prevent="handleSubmit" class="space-y-8">
         <!-- Title Field -->
         <div class="form-group">
-          <label for="task-title" class="form-label">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <label for="task-title" class="form-label flex items-center text-base font-semibold text-text-700 mb-3">
+            <svg class="w-5 h-5 mr-3 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
             </svg>
             Task Title *
@@ -30,21 +30,21 @@
             type="text"
             placeholder="What needs to be done?"
             required
-            class="form-input"
-            :class="{ 'error': errors.title }"
+            class="form-input w-full px-4 py-4 border border-background-300 rounded-2xl text-text-900 placeholder-text-400 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white/70"
+            :class="{ 'border-red-300 ring-red-200': errors.title }"
             @input="validateField('title')"
             @focus="focusedField = 'title'"
             @blur="focusedField = null"
           />
           <transition name="error-fade">
-            <p v-if="errors.title" class="error-message">{{ errors.title[0] }}</p>
+            <p v-if="errors.title" class="error-message text-red-600 text-sm mt-2">{{ errors.title[0] }}</p>
           </transition>
         </div>
 
         <!-- Description Field -->
         <div class="form-group">
-          <label for="task-description" class="form-label">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <label for="task-description" class="form-label flex items-center text-base font-semibold text-text-700 mb-3">
+            <svg class="w-5 h-5 mr-3 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
             </svg>
             Description
@@ -55,25 +55,25 @@
               v-model="form.description"
               rows="4"
               placeholder="Add some details about this task..."
-              class="form-textarea"
-              :class="{ 'error': errors.description }"
+              class="form-textarea w-full px-4 py-4 border border-background-300 rounded-2xl text-text-900 placeholder-text-400 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 resize-none bg-white/70"
+              :class="{ 'border-red-300 ring-red-200': errors.description }"
               @input="validateField('description')"
               @focus="focusedField = 'description'"
               @blur="focusedField = null"
             ></textarea>
-            <div class="character-count">
+            <div class="character-count absolute bottom-3 right-3 text-xs text-text-400 bg-white/80 px-2 py-1 rounded-lg">
               {{ form.description.length }}/500
             </div>
           </div>
           <transition name="error-fade">
-            <p v-if="errors.description" class="error-message">{{ errors.description[0] }}</p>
+            <p v-if="errors.description" class="error-message text-red-600 text-sm mt-2">{{ errors.description[0] }}</p>
           </transition>
         </div>
 
         <!-- Priority Field -->
         <div class="form-group">
-          <label for="task-priority" class="form-label">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <label for="task-priority" class="form-label flex items-center text-base font-semibold text-text-700 mb-3">
+            <svg class="w-5 h-5 mr-3 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
             </svg>
             Priority Level
@@ -105,8 +105,8 @@
 
         <!-- Due Date Field (Optional Enhancement) -->
         <div class="form-group">
-          <label for="task-due-date" class="form-label">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <label for="task-due-date" class="form-label flex items-center text-base font-semibold text-text-700 mb-3">
+            <svg class="w-5 h-5 mr-3 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
             Due Date (Optional)
@@ -115,7 +115,7 @@
             id="task-due-date"
             v-model="form.due_date"
             type="date"
-            class="form-input"
+            class="w-full px-4 py-4 border border-background-300 rounded-2xl text-text-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white/70"
             :min="today"
             @focus="focusedField = 'due_date'"
             @blur="focusedField = null"
@@ -123,23 +123,23 @@
         </div>
 
         <!-- Submit Button -->
-        <div class="form-actions">
+        <div class="form-actions pt-6 border-t border-background-200">
           <button
             type="submit"
             :disabled="loading || !isFormValid"
-            class="submit-btn"
-            :class="{ 'loading': loading, 'disabled': !isFormValid }"
+            class="w-full mb-4 px-6 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-2xl hover:from-primary-600 hover:to-primary-700 focus:ring-4 focus:ring-primary-200 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center"
+            :class="{ 'animate-pulse': loading }"
           >
             <transition name="icon-fade" mode="out-in">
-              <svg v-if="loading" class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+              <svg v-if="loading" class="animate-spin w-6 h-6" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
             </transition>
-            <span class="ml-2">
+            <span class="ml-3 text-lg">
               {{ loading ? 'Creating Task...' : 'Create Task' }}
             </span>
           </button>
@@ -147,13 +147,13 @@
           <button
             type="button"
             @click="resetForm"
-            class="reset-btn"
+            class="w-full px-6 py-3 border border-background-300 text-text-700 font-medium rounded-2xl hover:bg-background-50 focus:ring-2 focus:ring-background-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center"
             :disabled="loading"
           >
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
-            Reset
+            Reset Form
           </button>
         </div>
 

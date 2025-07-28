@@ -9,9 +9,9 @@
     ]"
   >
     <!-- List View Layout -->
-    <div v-if="viewMode === 'list'" class="flex items-center justify-between p-6 hover:bg-background-50 transition-all duration-200 group">
+    <div v-if="viewMode === 'list'" class="flex items-center justify-between p-8 hover:bg-background-50/80 transition-all duration-200 group border-l-4" :class="getPriorityBorder(task.priority)">
       <!-- Left Section -->
-      <div class="flex items-center space-x-4 flex-1">
+      <div class="flex items-center space-x-6 flex-1">
         <!-- Status Checkbox -->
         <button
           @click="$emit('toggle-status', task)"
@@ -21,7 +21,7 @@
           <div class="checkbox-inner">
             <svg
               v-if="task.status === 'completed'"
-              class="w-3 h-3 text-white"
+              class="w-4 h-4 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -32,10 +32,10 @@
         </button>
         
         <!-- Task Content -->
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center space-x-3 mb-2">
+        <div class="flex-1 min-w-0 space-y-3">
+          <div class="flex items-center space-x-4 mb-3">
             <h3 :class="[
-              'text-lg font-semibold truncate',
+              'text-xl font-bold truncate',
               task.status === 'completed' ? 'line-through text-text-400' : 'text-text-900'
             ]">
               {{ task.title }}
@@ -51,21 +51,21 @@
           </div>
           
           <p :class="[
-            'text-sm mb-2 line-clamp-2',
+            'text-base mb-4 line-clamp-2 leading-relaxed',
             task.status === 'completed' ? 'line-through text-text-300' : 'text-text-600'
           ]">
             {{ task.description }}
           </p>
           
-          <div class="flex items-center space-x-4 text-xs text-text-500">
+          <div class="flex items-center space-x-6 text-sm text-text-500">
             <span class="flex items-center">
-              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              {{ formatDate(task.created_at) }}
+              Created {{ formatDate(task.created_at) }}
             </span>
             <span v-if="task.updated_at !== task.created_at" class="flex items-center">
-              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
               Updated {{ formatDate(task.updated_at) }}
@@ -75,7 +75,7 @@
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-all duration-200">
+      <div class="flex items-center space-x-3 opacity-0 group-hover:opacity-100 transition-all duration-200">
         <button
           @click="$emit('edit', task)"
           class="action-btn action-btn-edit"
@@ -220,6 +220,15 @@ const getPriorityIcon = (priority) => {
     high: '🔴'
   }
   return icons[priority] || '⚪'
+}
+
+const getPriorityBorder = (priority) => {
+  const borders = {
+    low: 'border-green-400',
+    medium: 'border-yellow-400', 
+    high: 'border-red-400'
+  }
+  return borders[priority] || 'border-gray-300'
 }
 
 const formatDate = (date) => {

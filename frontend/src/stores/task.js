@@ -153,12 +153,12 @@ export const useTaskStore = defineStore("task", () => {
       }));
 
       await taskService.reorderTasks(tasksWithOrder);
-      
+
       // Update local order
-      const reorderedTasks = taskIds.map(id => 
-        tasks.value.find(task => task.id === id)
-      ).filter(Boolean);
-      
+      const reorderedTasks = taskIds
+        .map((id) => tasks.value.find((task) => task.id === id))
+        .filter(Boolean);
+
       tasks.value = reorderedTasks;
     } catch (err) {
       error.value = err.message || "Failed to update task order";

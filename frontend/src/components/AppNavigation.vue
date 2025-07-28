@@ -18,9 +18,7 @@
                 />
                 <div class="absolute inset-0 bg-primary-200 rounded-full blur-xl opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
               </div>
-              <span class="text-xl font-bold text-text-900 hidden sm:block">
-                Task<span class="text-primary-600">Easy</span>
-              </span>
+              
             </router-link>
           </div>
 
