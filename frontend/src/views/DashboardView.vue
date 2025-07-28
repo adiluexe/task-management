@@ -157,43 +157,125 @@
             >Create Task</router-link
           >
         </div>
-        <div v-else class="space-y-6">
+        <div v-else class="space-y-4">
           <div
             v-for="task in recentTasks"
             :key="task.id"
-            class="flex items-center justify-between p-6 rounded-2xl border border-background-100 hover:border-primary-200 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 animate-dashboard-task group cursor-pointer"
+            class="group relative overflow-hidden bg-white border border-background-100/80 rounded-2xl hover:border-primary-200/60 hover:shadow-xl hover:-translate-y-1 transition-all duration-500 animate-dashboard-task cursor-pointer"
+            style="backdrop-filter: blur(10px);"
           >
-            <div class="flex items-center space-x-6">
-              <div class="flex-shrink-0">
-                <div
-                  :class="[
-                    'w-4 h-4 rounded-full transition-all duration-300 group-hover:scale-125',
-                    task.priority === 'high'
-                      ? 'bg-red-500 group-hover:bg-red-600'
-                      : task.priority === 'medium'
-                      ? 'bg-accent-500 group-hover:bg-accent-600'
-                      : 'bg-primary-500 group-hover:bg-primary-600',
-                  ]"
-                ></div>
+            <!-- Priority indicator with improved styling -->
+            <div class="absolute top-0 left-0 w-1 h-full transition-all duration-300"
+              :class="[
+                task.priority === 'high'
+                  ? 'bg-gradient-to-b from-red-500 to-red-600 group-hover:from-red-400 group-hover:to-red-500'
+                  : task.priority === 'medium'
+                  ? 'bg-gradient-to-b from-accent-500 to-accent-600 group-hover:from-accent-400 group-hover:to-accent-500'
+                  : 'bg-gradient-to-b from-primary-500 to-primary-600 group-hover:from-primary-400 group-hover:to-primary-500',
+              ]"
+            ></div>
+            
+            <!-- Card content with proper alignment -->
+            <div class="p-6 pl-8">
+              <!-- Header section with title and priority badge -->
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-4 flex-1 min-w-0 gap-2">
+                  <!-- Priority dot indicator -->
+                  <div class="flex-shrink-0">
+                    <div class="relative">
+                      <div
+                        :class="[
+                          'w-3 h-3 rounded-full transition-all duration-300 group-hover:scale-125',
+                          task.priority === 'high'
+                            ? 'bg-red-500 group-hover:bg-red-600 shadow-red-200'
+                            : task.priority === 'medium'
+                            ? 'bg-accent-500 group-hover:bg-accent-600 shadow-accent-200'
+                            : 'bg-primary-500 group-hover:bg-primary-600 shadow-primary-200',
+                        ]"
+                      ></div>
+                      <div
+                        :class="[
+                          'absolute inset-0 rounded-full opacity-0 group-hover:opacity-30 transition-all duration-300 animate-ping',
+                          task.priority === 'high'
+                            ? 'bg-red-400'
+                            : task.priority === 'medium'
+                            ? 'bg-accent-400'
+                            : 'bg-primary-400',
+                        ]"
+                      ></div>
+                    </div>
+                  </div>
+                  
+                  <!-- Task title -->
+                  <h4 class="text-lg font-semibold text-text-900 truncate group-hover:text-primary-700 transition-colors duration-300 leading-tight flex-1">
+                    {{ task.title }}
+                  </h4>
+                </div>
+                
+                <!-- Priority badge aligned to the right -->
+                <div class="flex items-center space-x-3 ml-4">
+                  <span
+                    :class="[
+                      'px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-300 whitespace-nowrap',
+                      task.priority === 'high'
+                        ? 'bg-red-50 text-red-700 group-hover:bg-red-100 border border-red-100'
+                        : task.priority === 'medium'
+                        ? 'bg-accent-50 text-accent-700 group-hover:bg-accent-100 border border-accent-100'
+                        : 'bg-primary-50 text-primary-700 group-hover:bg-primary-100 border border-primary-100',
+                    ]"
+                  >
+                    {{ task.priority.charAt(0).toUpperCase() + task.priority.slice(1) }}
+                  </span>
+                  
+                  <!-- Action hint -->
+                  <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
+                    <svg class="w-4 h-4 text-text-400 group-hover:text-primary-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
               </div>
-              <div class="min-w-0 flex-1">
-                <p class="text-base font-semibold text-text-900 truncate group-hover:text-primary-600 transition-colors duration-300">
-                  {{ task.title }}
+              
+              <!-- Description section -->
+              <div class="mb-4 ml-7">
+                <p class="text-sm text-text-600 line-clamp-2 group-hover:text-text-700 transition-colors duration-300 leading-relaxed">
+                  {{ task.description }}
                 </p>
-                <p class="text-sm text-text-600 truncate mt-1 group-hover:text-text-700 transition-colors duration-300">{{ task.description }}</p>
               </div>
-            </div>
-            <div class="flex items-center space-x-4">
-              <span
-                :class="[
-                  'px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-300',
-                  task.status === 'completed'
-                    ? 'bg-accent-50 text-accent-700 group-hover:bg-accent-100'
-                    : 'bg-background-100 text-text-700 group-hover:bg-background-200',
-                ]"
-              >
-                {{ task.status.charAt(0).toUpperCase() + task.status.slice(1) }}
-              </span>
+              
+              <!-- Footer section with status badge -->
+              <div class="flex items-center justify-between ml-7">
+                <div class="flex items-center">
+                  <!-- Status badge with improved styling -->
+                  <span
+                    :class="[
+                      'inline-flex gap-1 items-center px-3 py-1.5 text-xs font-semibold rounded-full transition-all duration-300 shadow-sm',
+                      task.status === 'completed'
+                        ? 'bg-gradient-to-r from-accent-50 to-accent-100 text-accent-800 group-hover:from-accent-100 group-hover:to-accent-200 border border-accent-200'
+                        : task.status === 'in_progress'
+                        ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-800 group-hover:from-blue-100 group-hover:to-blue-200 border border-blue-200'
+                        : 'bg-gradient-to-r from-background-50 to-background-100 text-text-700 group-hover:from-background-100 group-hover:to-background-200 border border-background-200',
+                    ]"
+                  >
+                    <div
+                      :class="[
+                        'w-1.5 h-1.5 rounded-full',
+                        task.status === 'completed'
+                          ? 'bg-accent-500'
+                          : task.status === 'in_progress'
+                          ? 'bg-blue-500'
+                          : 'bg-text-400',
+                      ]"
+                    ></div>
+                    {{ task.status.charAt(0).toUpperCase() + task.status.slice(1).replace('_', ' ') }}
+                  </span>
+                </div>
+                
+                <!-- Additional metadata could go here -->
+                <div class="text-xs text-text-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  Click to view details
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -298,5 +380,36 @@ onMounted(async () => {
 
 .group:active {
   transform: translateY(0);
+}
+
+/* Line clamp utility for description text */
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* Enhanced card shadows and effects */
+.group:hover {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(59, 130, 246, 0.05);
+}
+
+/* Subtle glassmorphism effect */
+.group::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.group:hover::before {
+  opacity: 1;
 }
 </style>
