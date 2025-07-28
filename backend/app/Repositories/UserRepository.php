@@ -83,4 +83,20 @@ class UserRepository
     {
         return $user->delete();
     }
+
+    /**
+     * Count total users.
+     */
+    public function count(): int
+    {
+        return $this->model->count();
+    }
+
+    /**
+     * Get recent users.
+     */
+    public function getRecent(int $limit = 10): Collection
+    {
+        return $this->model->latest()->limit($limit)->get();
+    }
 }

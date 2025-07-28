@@ -1,111 +1,34 @@
 <template>
-  <div class="min-h-screen bg-background-50">
-    <div class="max-w-7xl mx-auto py-8 sm:px-6 lg:px-8">
-      <!-- Page header -->
-      <div class="mb-10">
-        <h1 class="text-3xl font-bold text-text-900 mb-1">Admin Dashboard</h1>
-        <p class="text-sm text-text-600">Manage users and system-wide tasks.</p>
+  <div class="min-h-screen bg-gradient-to-br from-primary-100 via-background-50 to-primary-50">
+    <div class="container mx-auto px-6 py-8">
+      <!-- Header -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-text-900 mb-2">Admin Dashboard</h1>
+        <p class="text-text-600">
+          Manage users, monitor system activity, and view statistics
+        </p>
       </div>
-      <!-- Admin Stats -->
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-10">
+
+      <!-- Stats Grid -->
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+      >
         <div
-          v-for="(stat, idx) in [
-            {
-              label: 'Total Users',
-              value: adminStats.totalUsers,
-              color: 'primary',
-            },
-            {
-              label: 'Total Tasks',
-              value: adminStats.totalTasks,
-              color: 'secondary',
-            },
-            {
-              label: 'Pending Tasks',
-              value: adminStats.pendingTasks,
-              color: 'accent',
-            },
-            {
-              label: 'Completed Tasks',
-              value: adminStats.completedTasks,
-              color: 'primary',
-            },
-          ]"
+          v-for="stat in stats"
           :key="stat.label"
-          class="bg-white/80 backdrop-blur-md shadow-xl rounded-2xl border border-background-200 p-6 flex flex-col items-center hover:shadow-2xl transition-shadow duration-300 animate-dashboard-card"
+          class="bg-white/80 backdrop-blur-md shadow-xl rounded-2xl border border-background-200 p-6 hover:shadow-2xl transition-all duration-300 animate-dashboard-card"
         >
-          <div
-            :class="[
-              'w-12 h-12 rounded-full flex items-center justify-center mb-3',
-              stat.color === 'primary'
-                ? 'bg-primary-500/90'
-                : stat.color === 'accent'
-                ? 'bg-accent-500/90'
-                : 'bg-secondary-500/90',
-            ]"
-          >
-            <svg
-              v-if="stat.label === 'Total Users'"
-              class="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
-              />
-            </svg>
-            <svg
-              v-else-if="stat.label === 'Total Tasks'"
-              class="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-              />
-            </svg>
-            <svg
-              v-else-if="stat.label === 'Pending Tasks'"
-              class="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <svg
-              v-else
-              class="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+          <div class="flex items-center justify-between mb-4">
+            <Icon
+              :icon="getStatIcon(stat.label)"
+              class="w-8 h-8 text-primary-600"
+            />
           </div>
-          <div class="text-lg font-semibold text-text-900 mb-1">
+          <div class="text-3xl font-bold text-text-900 mb-2">
             {{ stat.value }}
           </div>
-          <div class="text-sm text-text-500">{{ stat.label }}</div>
-          <div v-if="stat.label === 'Completed Tasks'" class="w-full mt-3">
+          <div class="text-sm font-medium text-text-600 mb-3">{{ stat.label }}</div>
+          <div v-if="stat.label === 'Completed Tasks'" class="w-full">
             <div
               class="w-full h-2 bg-background-200 rounded-full overflow-hidden"
             >
@@ -120,19 +43,37 @@
           </div>
         </div>
       </div>
+
       <!-- Users Management -->
       <div
-        class="bg-white/80 backdrop-blur-md shadow-xl rounded-2xl border border-background-200 mb-10 animate-dashboard-card"
+        class="bg-white/80 backdrop-blur-md shadow-xl rounded-2xl border border-background-200 mb-8 animate-dashboard-card"
       >
         <div class="px-6 py-7">
-          <h3 class="text-lg leading-6 font-semibold text-text-900 mb-5">
-            User Management
-          </h3>
-          <div v-if="loading" class="flex justify-center py-8">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-semibold text-text-900">User Management</h3>
+            <div class="flex items-center space-x-2">
+              <Icon
+                icon="solar:users-group-rounded-bold"
+                class="w-5 h-5 text-primary-600"
+              />
+              <span class="text-sm text-text-600">{{ users.length }} users</span>
+            </div>
+          </div>
+          
+          <div v-if="loading" class="flex justify-center py-12">
             <div
               class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"
             ></div>
           </div>
+          
+          <div v-else-if="users.length === 0" class="text-center py-12">
+            <Icon
+              icon="solar:users-group-rounded-bold"
+              class="w-12 h-12 text-text-400 mx-auto mb-4"
+            />
+            <p class="text-text-500">No users found</p>
+          </div>
+          
           <div v-else>
             <div
               class="overflow-hidden shadow ring-1 ring-background-200 ring-opacity-75 md:rounded-lg"
@@ -177,9 +118,9 @@
                       <div class="flex items-center">
                         <div class="flex-shrink-0 h-10 w-10">
                           <div
-                            class="h-10 w-10 rounded-full bg-background-300 flex items-center justify-center"
+                            class="h-10 w-10 rounded-full bg-gradient-to-r from-primary-500 to-primary-600 flex items-center justify-center"
                           >
-                            <span class="text-sm font-medium text-text-700">{{
+                            <span class="text-sm font-medium text-white">{{
                               user.name.charAt(0).toUpperCase()
                             }}</span>
                           </div>
@@ -197,18 +138,29 @@
                     <td class="px-6 py-4 whitespace-nowrap">
                       <span
                         :class="[
-                          'px-2 py-1 text-xs font-medium rounded-full',
+                          'px-3 py-1 text-xs font-medium rounded-full flex items-center space-x-1 w-fit',
                           user.is_admin
                             ? 'bg-primary-100 text-primary-800'
                             : 'bg-background-100 text-text-800',
                         ]"
-                        >{{ user.is_admin ? "Admin" : "User" }}</span
                       >
+                        <Icon
+                          :icon="user.is_admin ? 'solar:crown-bold' : 'solar:user-rounded-bold'"
+                          class="w-3 h-3"
+                        />
+                        <span>{{ user.is_admin ? "Admin" : "User" }}</span>
+                      </span>
                     </td>
                     <td
                       class="px-6 py-4 whitespace-nowrap text-sm text-text-900"
                     >
-                      {{ user.tasks_count || 0 }}
+                      <div class="flex items-center space-x-2">
+                        <Icon
+                          icon="solar:checklist-minimalistic-bold"
+                          class="w-4 h-4 text-text-400"
+                        />
+                        <span>{{ user.tasks_count || 0 }}</span>
+                      </div>
                     </td>
                     <td
                       class="px-6 py-4 whitespace-nowrap text-sm text-text-500"
@@ -216,27 +168,44 @@
                       {{ formatDate(user.created_at) }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <button
-                        v-if="!user.is_admin"
-                        @click="toggleAdminStatus(user)"
-                        class="text-primary-600 hover:text-primary-900 mr-3 transition-colors"
-                      >
-                        Make Admin
-                      </button>
-                      <button
-                        v-else-if="user.id !== authStore.user?.id"
-                        @click="toggleAdminStatus(user)"
-                        class="text-yellow-600 hover:text-yellow-900 mr-3"
-                      >
-                        Remove Admin
-                      </button>
-                      <button
-                        v-if="user.id !== authStore.user?.id"
-                        @click="deleteUser(user)"
-                        class="text-red-600 hover:text-red-900"
-                      >
-                        Delete
-                      </button>
+                      <div class="flex items-center space-x-3">
+                        <button
+                          v-if="!user.is_admin && user.id !== authStore.user?.id"
+                          @click="toggleAdminStatus(user)"
+                          class="text-primary-600 hover:text-primary-900 transition-colors flex items-center space-x-1"
+                          :disabled="updatingUsers.includes(user.id)"
+                        >
+                          <Icon
+                            icon="solar:crown-bold"
+                            class="w-4 h-4"
+                          />
+                          <span>Make Admin</span>
+                        </button>
+                        <button
+                          v-else-if="user.is_admin && user.id !== authStore.user?.id"
+                          @click="toggleAdminStatus(user)"
+                          class="text-yellow-600 hover:text-yellow-900 transition-colors flex items-center space-x-1"
+                          :disabled="updatingUsers.includes(user.id)"
+                        >
+                          <Icon
+                            icon="solar:crown-line-duotone"
+                            class="w-4 h-4"
+                          />
+                          <span>Remove Admin</span>
+                        </button>
+                        <button
+                          v-if="user.id !== authStore.user?.id"
+                          @click="deleteUser(user)"
+                          class="text-red-600 hover:text-red-900 transition-colors flex items-center space-x-1"
+                          :disabled="updatingUsers.includes(user.id)"
+                        >
+                          <Icon
+                            icon="solar:trash-bin-trash-bold"
+                            class="w-4 h-4"
+                          />
+                          <span>Delete</span>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 </tbody>
@@ -245,15 +214,29 @@
           </div>
         </div>
       </div>
+
       <!-- Recent Activity -->
       <div
         class="bg-white/80 backdrop-blur-md shadow-xl rounded-2xl border border-background-200 animate-dashboard-card"
       >
         <div class="px-6 py-7">
-          <h3 class="text-lg leading-6 font-semibold text-gray-900 mb-5">
-            Recent Activity
-          </h3>
-          <div class="flow-root">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-xl font-semibold text-text-900">Recent Activity</h3>
+            <Icon
+              icon="solar:history-bold"
+              class="w-5 h-5 text-primary-600"
+            />
+          </div>
+          
+          <div v-if="recentActivity.length === 0" class="text-center py-8">
+            <Icon
+              icon="solar:history-bold"
+              class="w-12 h-12 text-text-400 mx-auto mb-4"
+            />
+            <p class="text-text-500">No recent activity</p>
+          </div>
+          
+          <div v-else class="flow-root">
             <ul class="-mb-8">
               <li
                 v-for="(activity, index) in recentActivity"
@@ -262,7 +245,7 @@
                 <div class="relative pb-8">
                   <span
                     v-if="index !== recentActivity.length - 1"
-                    class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
+                    class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-background-200"
                   ></span>
                   <div class="relative flex space-x-3">
                     <div>
@@ -272,29 +255,22 @@
                           getActivityColor(activity.type),
                         ]"
                       >
-                        <svg
-                          class="h-5 w-5 text-white"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                            clip-rule="evenodd"
-                          />
-                        </svg>
+                        <Icon
+                          :icon="getActivityIcon(activity.type)"
+                          class="h-4 w-4 text-white"
+                        />
                       </span>
                     </div>
                     <div
                       class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4"
                     >
                       <div>
-                        <p class="text-sm text-gray-500">
+                        <p class="text-sm text-text-600">
                           {{ activity.description }}
                         </p>
                       </div>
                       <div
-                        class="text-right text-sm whitespace-nowrap text-gray-500"
+                        class="text-right text-sm whitespace-nowrap text-text-500"
                       >
                         {{ formatDate(activity.created_at) }}
                       </div>
@@ -306,6 +282,7 @@
           </div>
         </div>
       </div>
+
       <!-- Delete User Confirmation Modal -->
       <ConfirmDialog
         v-if="showDeleteModal"
@@ -319,15 +296,17 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, nextTick } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { useAuthStore } from "../stores/auth";
+import { Icon } from "@iconify/vue";
 import ConfirmDialog from "../components/ConfirmDialog.vue";
-import gsap from "gsap";
+import AdminService from "../services/AdminService";
 
 const authStore = useAuthStore();
 const loading = ref(false);
 const showDeleteModal = ref(false);
 const userToDelete = ref(null);
+const updatingUsers = ref([]);
 
 const adminStats = reactive({
   totalUsers: 0,
@@ -340,32 +319,73 @@ const adminStats = reactive({
 const users = ref([]);
 const recentActivity = ref([]);
 
-const animateStats = () => {
-  gsap.to(adminStats, {
-    duration: 1.2,
-    totalUsers: 15,
-    totalTasks: 127,
-    pendingTasks: 34,
-    completedTasks: 93,
-    completionRate: Math.round((93 / 127) * 100),
-    ease: "power2.out",
-    onUpdate: () => {
-      // force reactivity
-      adminStats.totalUsers = Math.round(adminStats.totalUsers);
-      adminStats.totalTasks = Math.round(adminStats.totalTasks);
-      adminStats.pendingTasks = Math.round(adminStats.pendingTasks);
-      adminStats.completedTasks = Math.round(adminStats.completedTasks);
-      adminStats.completionRate = Math.round(adminStats.completionRate);
-    },
-  });
+// Computed stats array for the template
+const stats = computed(() => [
+  {
+    label: 'Total Users',
+    value: adminStats.totalUsers,
+  },
+  {
+    label: 'Total Tasks',
+    value: adminStats.totalTasks,
+  },
+  {
+    label: 'Pending Tasks',
+    value: adminStats.pendingTasks,
+  },
+  {
+    label: 'Completed Tasks',
+    value: adminStats.completedTasks,
+  },
+]);
+
+// Icon mapping for stats
+const getStatIcon = (label) => {
+  switch (label) {
+    case 'Total Users':
+      return 'solar:users-group-rounded-bold';
+    case 'Total Tasks':
+      return 'solar:checklist-minimalistic-bold';
+    case 'Pending Tasks':
+      return 'solar:clock-circle-bold';
+    case 'Completed Tasks':
+      return 'solar:check-circle-bold';
+    default:
+      return 'solar:widget-add-bold';
+  }
+};
+
+// Activity icon mapping
+const getActivityIcon = (type) => {
+  switch (type) {
+    case 'user_created':
+      return 'solar:user-plus-bold';
+    case 'task_created':
+      return 'solar:add-circle-bold';
+    case 'task_completed':
+      return 'solar:check-circle-bold';
+    default:
+      return 'solar:info-circle-bold';
+  }
 };
 
 const toggleAdminStatus = async (user) => {
+  if (updatingUsers.value.includes(user.id)) return;
+  
+  updatingUsers.value.push(user.id);
   try {
-    // TODO: Implement admin status toggle API call
-    console.log("Toggle admin status for user:", user.id);
+    await AdminService.toggleAdminStatus(user.id);
+    
+    // Update local user data
+    const userIndex = users.value.findIndex(u => u.id === user.id);
+    if (userIndex !== -1) {
+      users.value[userIndex].is_admin = !users.value[userIndex].is_admin;
+    }
   } catch (error) {
     console.error("Failed to toggle admin status:", error);
+    // You could add a toast notification here
+  } finally {
+    updatingUsers.value = updatingUsers.value.filter(id => id !== user.id);
   }
 };
 
@@ -375,13 +395,27 @@ const deleteUser = (user) => {
 };
 
 const handleDeleteConfirm = async () => {
+  if (!userToDelete.value) return;
+  
+  if (updatingUsers.value.includes(userToDelete.value.id)) return;
+  
+  updatingUsers.value.push(userToDelete.value.id);
   try {
-    // TODO: Implement delete user API call
-    console.log("Delete user:", userToDelete.value.id);
+    await AdminService.deleteUser(userToDelete.value.id);
+    
+    // Remove user from local data
+    users.value = users.value.filter(u => u.id !== userToDelete.value.id);
+    
+    // Update stats
+    adminStats.totalUsers = Math.max(0, adminStats.totalUsers - 1);
+    
     showDeleteModal.value = false;
     userToDelete.value = null;
   } catch (error) {
     console.error("Failed to delete user:", error);
+    // You could add a toast notification here
+  } finally {
+    updatingUsers.value = updatingUsers.value.filter(id => id !== userToDelete.value?.id);
   }
 };
 
@@ -392,64 +426,37 @@ const getActivityColor = (type) => {
     case "task_created":
       return "bg-blue-500";
     case "task_completed":
-      return "bg-purple-500";
+      return "bg-primary-500";
     default:
-      return "bg-gray-500";
+      return "bg-text-400";
   }
 };
 
 const formatDate = (date) => {
-  return new Date(date).toLocaleDateString();
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
 };
 
 const fetchAdminData = async () => {
   loading.value = true;
   try {
-    // TODO: Implement API calls to fetch admin data
-    // Mock data for now
-    adminStats.totalUsers = 15;
-    adminStats.totalTasks = 127;
-    adminStats.pendingTasks = 34;
-    adminStats.completedTasks = 93;
-    adminStats.completionRate = Math.round((93 / 127) * 100);
+    // Fetch dashboard stats
+    const statsResponse = await AdminService.getDashboardStats();
+    Object.assign(adminStats, statsResponse.stats);
 
-    users.value = [
-      {
-        id: 1,
-        name: "John Doe",
-        email: "john@example.com",
-        is_admin: false,
-        tasks_count: 12,
-        created_at: "2024-01-15T10:00:00Z",
-      },
-      {
-        id: 2,
-        name: "Jane Smith",
-        email: "jane@example.com",
-        is_admin: true,
-        tasks_count: 8,
-        created_at: "2024-01-10T14:30:00Z",
-      },
-    ];
+    // Fetch users
+    const usersResponse = await AdminService.getUsers();
+    users.value = usersResponse.users;
 
-    recentActivity.value = [
-      {
-        id: 1,
-        type: "user_created",
-        description: "New user John Doe registered",
-        created_at: "2024-01-20T09:00:00Z",
-      },
-      {
-        id: 2,
-        type: "task_completed",
-        description: 'Task "Setup project" completed by Jane Smith',
-        created_at: "2024-01-19T16:45:00Z",
-      },
-    ];
-    await nextTick();
-    animateStats();
+    // Fetch recent activity
+    const activityResponse = await AdminService.getRecentActivity();
+    recentActivity.value = activityResponse.activity;
   } catch (error) {
     console.error("Failed to fetch admin data:", error);
+    // You could add error handling UI here
   } finally {
     loading.value = false;
   }

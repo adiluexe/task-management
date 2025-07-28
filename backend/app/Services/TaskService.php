@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Models\Task;
 use App\Repositories\TaskRepository;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class TaskService
@@ -124,5 +125,13 @@ class TaskService
     public function cleanupOldTasks(int $days = 30): int
     {
         return $this->taskRepository->deleteOldTasks($days);
+    }
+
+    /**
+     * Get recent tasks for admin dashboard.
+     */
+    public function getRecentTasks(int $limit = 10): Collection
+    {
+        return $this->taskRepository->getRecent($limit);
     }
 }

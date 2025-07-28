@@ -175,4 +175,12 @@ class TaskRepository
     {
         Cache::flush();
     }
+
+    /**
+     * Get recent tasks with users.
+     */
+    public function getRecent(int $limit = 10): Collection
+    {
+        return $this->model->with('user')->latest()->limit($limit)->get();
+    }
 }
