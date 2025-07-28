@@ -30,6 +30,20 @@ class TaskService
     }
 
     /**
+     * Get all tasks for a user (alias for getTasksForUser).
+     */
+    public function getAllTasks(User $user, array $filters = []): LengthAwarePaginator
+    {
+        return $this->getTasksForUser(
+            $user,
+            $filters['per_page'] ?? 15,
+            $filters['status'] ?? null,
+            $filters['priority'] ?? null,
+            $filters['search'] ?? null
+        );
+    }
+
+    /**
      * Create a new task.
      */
     public function createTask(User $user, array $data): Task
@@ -47,7 +61,8 @@ class TaskService
     public function updateTask(Task $task, array $data): Task
     {
         // Ensure the user can only update their own tasks
-        if ($task->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
+        $currentUser = auth()->user();
+        if ($task->user_id !== $currentUser->id && !$currentUser->isAdmin()) {
             throw new \Exception('Unauthorized to update this task.');
         }
 
@@ -60,7 +75,8 @@ class TaskService
     public function deleteTask(Task $task): bool
     {
         // Ensure the user can only delete their own tasks or is admin
-        if ($task->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
+        $currentUser = auth()->user();
+        if ($task->user_id !== $currentUser->id && !$currentUser->isAdmin()) {
             throw new \Exception('Unauthorized to delete this task.');
         }
 

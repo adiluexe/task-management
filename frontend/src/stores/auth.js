@@ -3,8 +3,8 @@ import { authService } from "../services/auth";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
-    user: null,
-    token: localStorage.getItem("token"),
+    user: JSON.parse(localStorage.getItem("user")) || null,
+    token: localStorage.getItem("auth_token"),
     loading: false,
   }),
 
@@ -20,7 +20,8 @@ export const useAuthStore = defineStore("auth", {
         const response = await authService.login(credentials);
         this.token = response.token;
         this.user = response.user;
-        localStorage.setItem("token", response.token);
+        localStorage.setItem("auth_token", response.token);
+        localStorage.setItem("user", JSON.stringify(response.user));
         return response;
       } finally {
         this.loading = false;
@@ -33,7 +34,8 @@ export const useAuthStore = defineStore("auth", {
         const response = await authService.register(userData);
         this.token = response.token;
         this.user = response.user;
-        localStorage.setItem("token", response.token);
+        localStorage.setItem("auth_token", response.token);
+        localStorage.setItem("user", JSON.stringify(response.user));
         return response;
       } finally {
         this.loading = false;
@@ -48,7 +50,8 @@ export const useAuthStore = defineStore("auth", {
       } finally {
         this.token = null;
         this.user = null;
-        localStorage.removeItem("token");
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("user");
       }
     },
 
@@ -56,8 +59,9 @@ export const useAuthStore = defineStore("auth", {
       if (!this.token) return;
 
       try {
-        const user = await authService.getUser();
+        const user = await authService.getCurrentUser();
         this.user = user;
+        localStorage.setItem("user", JSON.stringify(user));
         return user;
       } catch (error) {
         console.error("Failed to fetch user:", error);
@@ -67,10 +71,17 @@ export const useAuthStore = defineStore("auth", {
     },
 
     initializeAuth() {
-      const token = localStorage.getItem("token");
-      if (token) {
+      const token = localStorage.getItem("auth_token");
+      const user = localStorage.getItem("user");
+
+      if (token && user) {
         this.token = token;
-        this.fetchUser();
+        this.user = JSON.parse(user);
+        // Verify token is still valid by fetching user
+        this.fetchUser().catch(() => {
+          // Token is invalid, logout
+          this.logout();
+        });
       }
     },
   },

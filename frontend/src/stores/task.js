@@ -37,7 +37,7 @@ export const useTaskStore = defineStore("task", () => {
   }));
 
   // Actions
-  async function fetchTasks(page = 1) {
+  async function fetchTasks(page = 1, refresh = false) {
     loading.value = true;
     error.value = null;
 
@@ -49,12 +49,20 @@ export const useTaskStore = defineStore("task", () => {
       };
 
       const response = await taskService.getTasks(params);
-      tasks.value = response.data;
-      pagination.value = response.meta;
+
+      if (refresh) {
+        tasks.value = response.data;
+      } else {
+        tasks.value =
+          page === 1 ? response.data : [...tasks.value, ...response.data];
+      }
+
+      pagination.value = response.pagination || response.meta;
 
       return response;
     } catch (err) {
       error.value = err.message || "Failed to fetch tasks";
+      console.error("Fetch tasks error:", err);
       throw err;
     } finally {
       loading.value = false;
@@ -67,10 +75,19 @@ export const useTaskStore = defineStore("task", () => {
 
     try {
       const newTask = await taskService.createTask(taskData);
+
+      // Add to the beginning of tasks array
       tasks.value.unshift(newTask);
+
+      // Update stats
+      if (pagination.value.total !== undefined) {
+        pagination.value.total += 1;
+      }
+
       return newTask;
     } catch (err) {
       error.value = err.message || "Failed to create task";
+      console.error("Create task error:", err);
       throw err;
     } finally {
       loading.value = false;
@@ -84,12 +101,19 @@ export const useTaskStore = defineStore("task", () => {
     try {
       const updatedTask = await taskService.updateTask(id, taskData);
       const index = tasks.value.findIndex((task) => task.id === id);
+
       if (index !== -1) {
         tasks.value[index] = updatedTask;
+      } else {
+        // If task is not in current list, try to refresh
+        console.warn("Updated task not found in current list, refreshing...");
+        await fetchTasks(pagination.value.current_page, true);
       }
+
       return updatedTask;
     } catch (err) {
       error.value = err.message || "Failed to update task";
+      console.error("Update task error:", err);
       throw err;
     } finally {
       loading.value = false;

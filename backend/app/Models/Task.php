@@ -29,6 +29,8 @@ class Task extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'user_id' => 'integer',
+        'order' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -97,6 +99,7 @@ class Task extends Model
      */
     public static function getNextOrder(int $userId): int
     {
-        return self::where('user_id', $userId)->max('order') + 1;
+        $maxOrder = self::where('user_id', $userId)->max('order');
+        return $maxOrder ? $maxOrder + 1 : 1;
     }
 }
