@@ -1,47 +1,51 @@
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-background-100 via-background-50 to-primary-100 flex items-center justify-center relative overflow-hidden"
+    class="min-h-screen bg-gradient-to-br from-primary-50 via-background-50 to-accent-50 flex items-center justify-center p-4 relative overflow-hidden"
   >
+    <!-- Enhanced Background Elements -->
     <div class="absolute inset-0 pointer-events-none z-0">
       <div
-        class="absolute top-1/4 left-1/3 w-96 h-96 bg-gradient-to-br from-primary-100 via-secondary-100 to-accent-100 rounded-full opacity-20 blur-xl animate-float"
+        class="absolute top-1/4 left-1/3 w-96 h-96 bg-gradient-to-br from-primary-200/30 via-secondary-200/20 to-accent-200/30 rounded-full opacity-60 blur-3xl animate-float"
       ></div>
       <div
-        class="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tr from-accent-100 via-primary-100 to-secondary-100 rounded-full opacity-10 blur-lg animate-float2"
+        class="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tr from-accent-200/20 via-primary-200/30 to-secondary-200/20 rounded-full opacity-40 blur-2xl animate-float2"
+      ></div>
+      <div
+        class="absolute top-0 right-1/4 w-64 h-64 bg-gradient-to-bl from-primary-100/40 to-accent-100/30 rounded-full opacity-50 blur-xl animate-float"
+        style="animation-delay: -5s"
       ></div>
     </div>
+
     <div class="w-full max-w-md flex flex-col items-center z-10">
-      <img
-        src="/assets/img/taskeasy_logo.svg"
-        alt="Taskeasy Logo"
-        class="h-14 w-auto mb-3 animate-logo-fadein drop-shadow-lg"
-      />
-      <div
-        class="text-center text-base text-text-500 mb-7 font-sans tracking-wide"
-      >
-        Effortless Task Management
+      <!-- Logo and Header -->
+      <div class="flex flex-col items-center gap-4 text-center">
+        <img
+          src="/assets/img/taskeasy_logo.svg"
+          alt="Taskeasy Logo"
+          class="h-16 w-auto animate-logo-fadein"
+        />
+        <div class="flex flex-col gap-2">
+          <h2 class="text-3xl font-bold text-text-900 tracking-tight">
+            Create your account
+          </h2>
+          <p class="text-text-600">
+            Or
+            <router-link
+              to="/login"
+              class="font-semibold text-primary-600 hover:text-primary-500 underline underline-offset-2 transition-colors"
+              >sign in to your existing account</router-link
+            >
+          </p>
+        </div>
       </div>
+
+      <!-- Registration Form -->
       <div
-        class="bg-white/60 backdrop-blur-md py-12 px-10 shadow-2xl rounded-2xl border border-background-200 animate-card-fadein w-full flex flex-col items-center"
+        class="mt-8 w-full bg-white/80 backdrop-blur-lg rounded-2xl border border-background-200/50 p-8 shadow-xl animate-card-fadein"
       >
-        <h2
-          class="text-center text-3xl font-bold text-text-900 font-sans mb-3 tracking-tight"
-        >
-          Create your account
-        </h2>
-        <p class="mb-8 text-center text-sm text-text-600">
-          Or
-          <router-link
-            to="/login"
-            class="font-medium text-primary-600 hover:text-primary-500 underline underline-offset-2"
-            >sign in to your existing account</router-link
-          >
-        </p>
-        <form @submit.prevent="handleRegister" class="space-y-7 w-full">
-          <div>
-            <label
-              for="name"
-              class="block text-sm font-medium text-text-700 mb-1"
+        <form @submit.prevent="handleRegister" class="flex flex-col gap-6">
+          <div class="flex flex-col gap-2">
+            <label for="name" class="text-sm font-semibold text-text-700"
               >Full name</label
             >
             <input
@@ -51,17 +55,20 @@
               type="text"
               autocomplete="name"
               required
-              class="animated-input appearance-none block w-full px-4 py-2 border border-background-300 rounded-lg placeholder-text-400 text-text-900 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 bg-white/80 shadow-sm transition-all"
-              :class="{ 'border-accent-300': errors.name }"
+              placeholder="Enter your full name"
+              class="w-full px-4 py-3 border border-background-200 rounded-xl text-text-900 placeholder-text-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 bg-white/80 hover:bg-white"
+              :class="{
+                'border-red-300 focus:border-red-500 focus:ring-red-500/20':
+                  errors.name,
+              }"
             />
-            <p v-if="errors.name" class="mt-2 text-sm text-accent-600">
+            <p v-if="errors.name" class="text-sm text-red-600 font-medium">
               {{ errors.name[0] }}
             </p>
           </div>
-          <div>
-            <label
-              for="email"
-              class="block text-sm font-medium text-text-700 mb-1"
+
+          <div class="flex flex-col gap-2">
+            <label for="email" class="text-sm font-semibold text-text-700"
               >Email address</label
             >
             <input
@@ -71,17 +78,20 @@
               type="email"
               autocomplete="email"
               required
-              class="animated-input appearance-none block w-full px-4 py-2 border border-background-300 rounded-lg placeholder-text-400 text-text-900 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 bg-white/80 shadow-sm transition-all"
-              :class="{ 'border-accent-300': errors.email }"
+              placeholder="Enter your email address"
+              class="w-full px-4 py-3 border border-background-200 rounded-xl text-text-900 placeholder-text-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 bg-white/80 hover:bg-white"
+              :class="{
+                'border-red-300 focus:border-red-500 focus:ring-red-500/20':
+                  errors.email,
+              }"
             />
-            <p v-if="errors.email" class="mt-2 text-sm text-accent-600">
+            <p v-if="errors.email" class="text-sm text-red-600 font-medium">
               {{ errors.email[0] }}
             </p>
           </div>
-          <div>
-            <label
-              for="password"
-              class="block text-sm font-medium text-text-700 mb-1"
+
+          <div class="flex flex-col gap-2">
+            <label for="password" class="text-sm font-semibold text-text-700"
               >Password</label
             >
             <input
@@ -91,17 +101,22 @@
               type="password"
               autocomplete="new-password"
               required
-              class="animated-input appearance-none block w-full px-4 py-2 border border-background-300 rounded-lg placeholder-text-400 text-text-900 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 bg-white/80 shadow-sm transition-all"
-              :class="{ 'border-accent-300': errors.password }"
+              placeholder="Create a strong password"
+              class="w-full px-4 py-3 border border-background-200 rounded-xl text-text-900 placeholder-text-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 bg-white/80 hover:bg-white"
+              :class="{
+                'border-red-300 focus:border-red-500 focus:ring-red-500/20':
+                  errors.password,
+              }"
             />
-            <p v-if="errors.password" class="mt-2 text-sm text-accent-600">
+            <p v-if="errors.password" class="text-sm text-red-600 font-medium">
               {{ errors.password[0] }}
             </p>
           </div>
-          <div>
+
+          <div class="flex flex-col gap-2">
             <label
               for="password_confirmation"
-              class="block text-sm font-medium text-text-700 mb-1"
+              class="text-sm font-semibold text-text-700"
               >Confirm password</label
             >
             <input
@@ -111,69 +126,70 @@
               type="password"
               autocomplete="new-password"
               required
-              class="animated-input appearance-none block w-full px-4 py-2 border border-background-300 rounded-lg placeholder-text-400 text-text-900 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:border-primary-400 bg-white/80 shadow-sm transition-all"
-              :class="{ 'border-accent-300': errors.password_confirmation }"
+              placeholder="Confirm your password"
+              class="w-full px-4 py-3 border border-background-200 rounded-xl text-text-900 placeholder-text-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 bg-white/80 hover:bg-white"
+              :class="{
+                'border-red-300 focus:border-red-500 focus:ring-red-500/20':
+                  errors.password_confirmation,
+              }"
             />
             <p
               v-if="errors.password_confirmation"
-              class="mt-2 text-sm text-accent-600"
+              class="text-sm text-red-600 font-medium"
             >
               {{ errors.password_confirmation[0] }}
             </p>
           </div>
-          <div>
-            <button
-              type="submit"
-              :disabled="loading"
-              class="w-full flex justify-center py-2.5 px-4 rounded-lg shadow-md text-sm font-semibold text-white bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-            >
-              <span v-if="loading" class="flex items-center">
-                <svg
-                  class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                  ></circle>
-                  <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                Creating account...
-              </span>
-              <span v-else>Create account</span>
-            </button>
-          </div>
+
+          <button
+            type="submit"
+            :disabled="loading"
+            class="w-full py-3 px-4 bg-gradient-to-r from-primary-600 to-accent-600 text-white font-semibold rounded-xl hover:from-primary-700 hover:to-accent-700 focus:ring-2 focus:ring-primary-500/20 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+          >
+            <span v-if="loading" class="flex items-center justify-center gap-3">
+              <svg
+                class="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              Creating account...
+            </span>
+            <span v-else>Create your account</span>
+          </button>
+
+          <!-- Error Message -->
           <div
             v-if="errorMessage"
-            class="rounded-md bg-accent-50 p-4 mt-2 w-full"
+            class="p-4 bg-red-50 border border-red-200 text-red-800 rounded-xl text-sm font-medium flex items-center gap-3"
           >
-            <div class="flex items-center">
-              <svg
-                class="h-5 w-5 text-accent-400 mr-2"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              <span class="text-sm font-medium text-accent-800">{{
-                errorMessage
-              }}</span>
-            </div>
+            <svg
+              class="h-5 w-5 text-red-500 flex-shrink-0"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            {{ errorMessage }}
           </div>
         </form>
       </div>

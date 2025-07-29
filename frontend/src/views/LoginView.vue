@@ -1,33 +1,37 @@
 <template>
-  <div class="min-h-screen bg-background-50 flex items-center justify-center">
+  <div
+    class="min-h-screen bg-gradient-to-br from-primary-50 via-background-50 to-accent-50 flex items-center justify-center p-4"
+  >
     <div class="w-full max-w-md">
       <!-- Logo and Header -->
-      <div class="text-center mb-8">
+      <div class="flex flex-col items-center gap-4 text-center">
         <img
           src="/assets/img/taskeasy_logo.svg"
           alt="Taskeasy Logo"
-          class="h-12 w-auto mx-auto mb-4"
+          class="h-14 w-auto animate-logo-fadein"
         />
-        <h2 class="text-2xl font-semibold text-text-900 mb-2">
-          Sign in to your account
-        </h2>
-        <p class="text-text-600">
-          Or
-          <router-link
-            to="/register"
-            class="font-medium text-primary-600 hover:text-primary-500"
-            >create a new account</router-link
-          >
-        </p>
+        <div class="flex flex-col gap-2">
+          <h2 class="text-3xl font-bold text-text-900 tracking-tight">
+            Welcome back
+          </h2>
+          <p class="text-text-600">
+            Or
+            <router-link
+              to="/register"
+              class="font-semibold text-primary-600 hover:text-primary-500 underline underline-offset-2 transition-colors"
+              >create a new account</router-link
+            >
+          </p>
+        </div>
       </div>
 
       <!-- Login Form -->
-      <div class="bg-white rounded-lg border border-background-100 p-6">
-        <form @submit.prevent="handleLogin" class="space-y-4">
-          <div>
-            <label
-              for="email"
-              class="block text-sm font-medium text-text-700 mb-2"
+      <div
+        class="mt-8 bg-white/90 backdrop-blur-lg rounded-2xl border border-background-200/50 p-8 shadow-xl animate-card-fadein"
+      >
+        <form @submit.prevent="handleLogin" class="flex flex-col gap-6">
+          <div class="flex flex-col gap-2">
+            <label for="email" class="text-sm font-semibold text-text-700"
               >Email address</label
             >
             <input
@@ -37,17 +41,20 @@
               type="email"
               autocomplete="email"
               required
-              class="w-full px-3 py-2.5 border border-background-200 rounded-lg text-text-900 placeholder-text-400 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-              :class="{ 'border-red-300': errors.email }"
+              placeholder="Enter your email"
+              class="w-full px-4 py-3 border border-background-200 rounded-xl text-text-900 placeholder-text-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 bg-white/80 hover:bg-white"
+              :class="{
+                'border-red-300 focus:border-red-500 focus:ring-red-500/20':
+                  errors.email,
+              }"
             />
-            <p v-if="errors.email" class="mt-1 text-sm text-red-600">
+            <p v-if="errors.email" class="text-sm text-red-600 font-medium">
               {{ errors.email[0] }}
             </p>
           </div>
-          <div>
-            <label
-              for="password"
-              class="block text-sm font-medium text-text-700 mb-2"
+
+          <div class="flex flex-col gap-2">
+            <label for="password" class="text-sm font-semibold text-text-700"
               >Password</label
             >
             <input
@@ -57,36 +64,43 @@
               type="password"
               autocomplete="current-password"
               required
-              class="w-full px-3 py-2.5 border border-background-200 rounded-lg text-text-900 placeholder-text-400 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-              :class="{ 'border-red-300': errors.password }"
+              placeholder="Enter your password"
+              class="w-full px-4 py-3 border border-background-200 rounded-xl text-text-900 placeholder-text-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all duration-200 bg-white/80 hover:bg-white"
+              :class="{
+                'border-red-300 focus:border-red-500 focus:ring-red-500/20':
+                  errors.password,
+              }"
             />
-            <p v-if="errors.password" class="mt-1 text-sm text-red-600">
+            <p v-if="errors.password" class="text-sm text-red-600 font-medium">
               {{ errors.password[0] }}
             </p>
           </div>
-          
-          <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <input
-                id="remember-me"
-                v-model="form.remember"
-                name="remember-me"
-                type="checkbox"
-                class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-background-300 rounded"
-              />
-              <label for="remember-me" class="ml-2 block text-sm text-text-700"
-                >Remember me</label
-              >
-            </div>
+
+          <div class="flex items-center gap-3">
+            <input
+              id="remember-me"
+              v-model="form.remember"
+              name="remember-me"
+              type="checkbox"
+              class="h-4 w-4 text-primary-600 focus:ring-primary-500/20 border-background-300 rounded transition-colors"
+            />
+            <label for="remember-me" class="text-sm font-medium text-text-700"
+              >Remember me for 30 days</label
+            >
           </div>
-          
+
           <button
             type="submit"
             :disabled="loading"
-            class="w-full py-2.5 px-4 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            class="w-full py-3 px-4 bg-gradient-to-r from-primary-600 to-accent-600 text-white font-semibold rounded-xl hover:from-primary-700 hover:to-accent-700 focus:ring-2 focus:ring-primary-500/20 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
-            <span v-if="loading" class="flex items-center justify-center">
-              <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <span v-if="loading" class="flex items-center justify-center gap-3">
+              <svg
+                class="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
                 <circle
                   class="opacity-25"
                   cx="12"
@@ -103,13 +117,26 @@
               </svg>
               Signing in...
             </span>
-            <span v-else>Sign in</span>
+            <span v-else>Sign in to your account</span>
           </button>
+
           <!-- Error Message -->
           <div
             v-if="errorMessage"
-            class="p-3 bg-red-50 border border-red-200 text-red-800 rounded-lg text-sm"
+            class="p-4 bg-red-50 border border-red-200 text-red-800 rounded-xl text-sm font-medium flex items-center gap-3"
           >
+            <svg
+              class="h-5 w-5 text-red-500 flex-shrink-0"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
+                clip-rule="evenodd"
+              />
+            </svg>
             {{ errorMessage }}
           </div>
         </form>
@@ -138,10 +165,10 @@ const form = reactive({
 
 onMounted(() => {
   // Ensure the page is always visible when mounted
-  const app = document.getElementById('app');
+  const app = document.getElementById("app");
   if (app) {
-    app.style.opacity = '1';
-    app.style.transform = 'scale(1)';
+    app.style.opacity = "1";
+    app.style.transform = "scale(1)";
   }
 });
 
