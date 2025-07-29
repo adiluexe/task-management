@@ -456,55 +456,48 @@ const modalErrors = ref({});
 
 // View and filter states
 const viewMode = ref("list");
-const filters = ref({
-  status: "",
-  priority: "",
-  search: "",
+
+// Use the task store's filters directly instead of local filters
+const filters = computed({
+  get: () => taskStore.filters,
+  set: (value) => {
+    Object.assign(taskStore.filters, value);
+  }
 });
 
 // Computed properties
-const filteredTasks = computed(() => {
-  let tasks = [...taskStore.tasks];
+// Use server-side filtered tasks for display
+const filteredTasks = computed(() => taskStore.tasks);
 
-  if (filters.value.status) {
-    tasks = tasks.filter((task) => task.status === filters.value.status);
-  }
-
-  if (filters.value.priority) {
-    tasks = tasks.filter((task) => task.priority === filters.value.priority);
-  }
-
-  if (filters.value.search) {
-    const search = filters.value.search.toLowerCase();
-    tasks = tasks.filter(
-      (task) =>
-        task.title.toLowerCase().includes(search) ||
-        task.description.toLowerCase().includes(search)
-    );
-  }
-
-  return tasks;
+// For statistics, we need to compute from all tasks, not just filtered ones
+// This requires a separate call to get all tasks for statistics
+const taskStats = computed(() => {
+  // If any filters are active, we should show stats for ALL tasks, not just filtered
+  // But for now, we'll use the filtered results since we don't have separate stats endpoint
+  const totalTasks = taskStore.tasks.length;
+  const completedTasks = taskStore.tasks.filter((task) => task.status === "completed").length;
+  const inProgressTasks = taskStore.tasks.filter((task) => task.status === "in_progress").length;
+  const pendingTasks = taskStore.tasks.filter((task) => task.status === "pending").length;
+  
+  return [
+    {
+      label: "Total Tasks",
+      value: totalTasks,
+    },
+    {
+      label: "Completed", 
+      value: completedTasks,
+    },
+    {
+      label: "In Progress",
+      value: inProgressTasks,
+    },
+    {
+      label: "Pending",
+      value: pendingTasks,
+    },
+  ];
 });
-
-const taskStats = computed(() => [
-  {
-    label: "Total Tasks",
-    value: taskStore.tasks.length,
-  },
-  {
-    label: "Completed",
-    value: taskStore.tasks.filter((task) => task.status === "completed").length,
-  },
-  {
-    label: "In Progress",
-    value: taskStore.tasks.filter((task) => task.status === "in_progress")
-      .length,
-  },
-  {
-    label: "Pending",
-    value: taskStore.tasks.filter((task) => task.status === "pending").length,
-  },
-]);
 
 // Animation functions
 const animateHeroEntrance = () => {
@@ -771,12 +764,10 @@ const formatDate = (date) => {
 
 // Watchers
 watch(
-  filters,
+  () => taskStore.filters,
   () => {
-    taskStore.fetchTasks({
-      ...filters.value,
-      page: 1,
-    });
+    // Always fetch page 1 with refresh=true when filters change
+    taskStore.fetchTasks(1, true);
   },
   { deep: true }
 );
