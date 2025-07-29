@@ -277,8 +277,8 @@
                 <div class="space-y-6 w-full max-w-xl mx-auto">
                   <!-- Primary Action -->
                   <div class="flex justify-center">
-                    <router-link
-                      to="/tasks"
+                    <button
+                      @click="openTaskModal(null)"
                       class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-2xl hover:from-primary-600 hover:to-primary-700 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 transform text-lg shadow-lg group"
                     >
                       <svg
@@ -308,7 +308,7 @@
                           d="M9 5l7 7-7 7"
                         />
                       </svg>
-                    </router-link>
+                    </button>
                   </div>
                 </div>
 
@@ -673,7 +673,7 @@ const handleTaskSave = async (taskData) => {
       // Update existing task
       await taskStore.updateTask(selectedTask.value.id, taskData);
     } else {
-      // Create new task (though this won't be used from dashboard)
+      // Create new task
       await taskStore.createTask(taskData);
     }
     closeTaskModal();
