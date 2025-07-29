@@ -24,7 +24,7 @@ class StoreTaskRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
-            'status' => 'sometimes|in:pending,completed',
+            'status' => 'sometimes|in:pending,in_progress,completed',
             'priority' => 'sometimes|in:low,medium,high',
             'order' => 'sometimes|integer|min:0',
         ];
@@ -39,7 +39,7 @@ class StoreTaskRequest extends FormRequest
             'title.required' => 'The task title is required.',
             'title.max' => 'The task title may not be greater than 255 characters.',
             'description.max' => 'The task description may not be greater than 1000 characters.',
-            'status.in' => 'The status must be either pending or completed.',
+            'status.in' => 'The status must be pending, in progress, or completed.',
             'priority.in' => 'The priority must be low, medium, or high.',
         ];
     }

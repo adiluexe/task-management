@@ -496,6 +496,11 @@ const taskStats = computed(() => [
     value: taskStore.tasks.filter((task) => task.status === "completed").length,
   },
   {
+    label: "In Progress",
+    value: taskStore.tasks.filter((task) => task.status === "in_progress")
+      .length,
+  },
+  {
     label: "Pending",
     value: taskStore.tasks.filter((task) => task.status === "pending").length,
   },

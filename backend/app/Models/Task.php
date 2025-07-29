@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *     @OA\Property(property="id", type="integer", format="int64", example=1),
  *     @OA\Property(property="title", type="string", example="Complete project documentation"),
  *     @OA\Property(property="description", type="string", nullable=true, example="Write comprehensive documentation for the API"),
- *     @OA\Property(property="status", type="string", enum={"pending", "completed"}, example="pending"),
+ *     @OA\Property(property="status", type="string", enum={"pending", "in_progress", "completed"}, example="pending"),
  *     @OA\Property(property="priority", type="string", enum={"low", "medium", "high"}, example="medium"),
  *     @OA\Property(property="order", type="integer", example=1),
  *     @OA\Property(property="user_id", type="integer", format="int64", example=1),
@@ -74,6 +74,14 @@ class Task extends Model
     public function scopeCompleted($query)
     {
         return $query->where('status', 'completed');
+    }
+
+    /**
+     * Scope a query to only include in progress tasks.
+     */
+    public function scopeInProgress($query)
+    {
+        return $query->where('status', 'in_progress');
     }
 
     /**

@@ -23,7 +23,7 @@ class TaskFactory extends Factory
         return [
             'title' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph(),
-            'status' => $this->faker->randomElement(['pending', 'completed']),
+            'status' => $this->faker->randomElement(['pending', 'in_progress', 'completed']),
             'priority' => $this->faker->randomElement(['low', 'medium', 'high']),
             'order' => $this->faker->numberBetween(0, 100),
             'user_id' => User::factory(),
@@ -47,6 +47,16 @@ class TaskFactory extends Factory
     {
         return $this->state(fn(array $attributes) => [
             'status' => 'completed',
+        ]);
+    }
+
+    /**
+     * Indicate that the task is in progress.
+     */
+    public function inProgress(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'status' => 'in_progress',
         ]);
     }
 
