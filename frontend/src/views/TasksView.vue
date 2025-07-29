@@ -58,7 +58,7 @@
       <!-- Enhanced Filter Panel -->
       <div
         ref="filterPanel"
-        class="bg-white/90 backdrop-blur-lg rounded-2xl border border-background-200/50 p-6 mb-6 shadow-sm hover:shadow-md transition-all duration-200"
+        class="filter-group bg-white/90 backdrop-blur-lg rounded-2xl border border-background-200/50 p-6 mb-6 shadow-sm hover:shadow-md transition-all duration-200"
       >
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <!-- Enhanced Search -->
@@ -96,7 +96,7 @@
               class="flex items-center text-sm font-medium text-text-700 mb-2"
             >
               <Icon
-                icon="lucide:check-circle"
+                icon="lucide:badge-check"
                 class="w-4 h-4 mr-2 text-primary-500"
               />
               Status
@@ -462,7 +462,7 @@ const filters = computed({
   get: () => taskStore.filters,
   set: (value) => {
     Object.assign(taskStore.filters, value);
-  }
+  },
 });
 
 // Computed properties
@@ -475,17 +475,23 @@ const taskStats = computed(() => {
   // If any filters are active, we should show stats for ALL tasks, not just filtered
   // But for now, we'll use the filtered results since we don't have separate stats endpoint
   const totalTasks = taskStore.tasks.length;
-  const completedTasks = taskStore.tasks.filter((task) => task.status === "completed").length;
-  const inProgressTasks = taskStore.tasks.filter((task) => task.status === "in_progress").length;
-  const pendingTasks = taskStore.tasks.filter((task) => task.status === "pending").length;
-  
+  const completedTasks = taskStore.tasks.filter(
+    (task) => task.status === "completed"
+  ).length;
+  const inProgressTasks = taskStore.tasks.filter(
+    (task) => task.status === "in_progress"
+  ).length;
+  const pendingTasks = taskStore.tasks.filter(
+    (task) => task.status === "pending"
+  ).length;
+
   return [
     {
       label: "Total Tasks",
       value: totalTasks,
     },
     {
-      label: "Completed", 
+      label: "Completed",
       value: completedTasks,
     },
     {
@@ -794,6 +800,15 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.filter-group {
+  margin-bottom: 1rem;
+}
+
+.filter-group label {
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
 /* Enhanced Stat Cards */
 .stat-card {
   background: linear-gradient(
