@@ -213,34 +213,263 @@
             <div
               v-else-if="filteredTasks.length === 0"
               ref="emptyState"
-              class="text-center py-16 px-6"
+              class="w-full min-h-[60vh] flex items-center justify-center py-20 px-6"
             >
-              <div
-                class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-primary-50 to-accent-50 flex items-center justify-center group hover:from-primary-100 hover:to-accent-100 transition-all duration-200"
-              >
-                <Icon
-                  icon="lucide:clipboard-check"
-                  class="w-8 h-8 text-primary-400 group-hover:text-primary-500 transition-colors duration-200"
-                />
+              <div class="w-full max-w-5xl mx-auto">
+                <!-- Filtered Results Empty State -->
+                <div
+                  v-if="filters.search || filters.status || filters.priority"
+                  class="w-full flex flex-col items-center justify-center text-center gap-2"
+                >
+                  <!-- Animated Search Icon -->
+                  <div class="relative mb-8">
+                    <div
+                      class="w-24 h-24 mx-auto rounded-3xl bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center relative overflow-hidden group"
+                    >
+                      <!-- Background Pattern -->
+                      <div class="absolute inset-0 opacity-5">
+                        <div
+                          class="absolute top-2 left-2 w-3 h-3 bg-amber-300 rounded-full animate-pulse"
+                        ></div>
+                        <div
+                          class="absolute bottom-3 right-4 w-2 h-2 bg-orange-300 rounded-full animate-pulse animation-delay-300"
+                        ></div>
+                        <div
+                          class="absolute top-1/2 right-2 w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse animation-delay-700"
+                        ></div>
+                      </div>
+                      <!-- Main Icon -->
+                      <Icon
+                        icon="lucide:search-x"
+                        class="w-12 h-12 text-amber-400 group-hover:text-amber-500 transition-all duration-300 group-hover:scale-110"
+                      />
+                      <!-- Floating Elements -->
+                      <div
+                        class="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-br from-orange-200 to-amber-200 rounded-full flex items-center justify-center floating-element"
+                      >
+                        <Icon
+                          icon="lucide:filter"
+                          class="w-3 h-3 text-orange-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <h3 class="text-2xl font-bold text-text-900 mb-4">
+                    No results found
+                  </h3>
+                  <p
+                    class="text-text-600 mb-8 text-lg leading-relaxed max-w-md mx-auto"
+                  >
+                    We couldn't find any tasks matching your current filters.
+                    <br class="hidden sm:block" />
+                    Try adjusting your search criteria or clearing filters.
+                  </p>
+
+                  <!-- Action Buttons for Filtered State -->
+                  <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button
+                      @click="clearFilters"
+                      class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 font-medium rounded-xl hover:from-gray-200 hover:to-gray-300 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 transform"
+                    >
+                      <Icon icon="lucide:filter-x" class="w-5 h-5 mr-2" />
+                      Clear Filters
+                    </button>
+                    <button
+                      @click="openCreateModal"
+                      class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-medium rounded-xl hover:from-primary-600 hover:to-primary-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 transform"
+                    >
+                      <Icon icon="lucide:plus" class="w-5 h-5 mr-2" />
+                      Create New Task
+                    </button>
+                  </div>
+                </div>
+
+                <!-- No Tasks Empty State -->
+                <div
+                  v-else
+                  class="w-full flex flex-col items-center justify-center text-center gap-4"
+                >
+                  <!-- Animated Illustration -->
+                  <div class="relative mb-12">
+                    <!-- Main Container -->
+                    <div
+                      class="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-primary-50 via-white to-accent-50 flex items-center justify-center relative overflow-hidden group shadow-lg"
+                    >
+                      <!-- Background Pattern -->
+                      <div class="absolute inset-0 opacity-10">
+                        <div
+                          class="absolute top-4 left-6 w-4 h-4 bg-primary-300 rounded-full animate-pulse"
+                        ></div>
+                        <div
+                          class="absolute bottom-6 right-4 w-3 h-3 bg-accent-300 rounded-full animate-pulse animation-delay-500"
+                        ></div>
+                        <div
+                          class="absolute top-1/2 left-4 w-2 h-2 bg-primary-400 rounded-full animate-pulse animation-delay-1000"
+                        ></div>
+                        <div
+                          class="absolute bottom-4 left-1/2 w-2.5 h-2.5 bg-accent-400 rounded-full animate-pulse animation-delay-700"
+                        ></div>
+                      </div>
+
+                      <!-- Central Icon -->
+                      <Icon
+                        icon="lucide:clipboard-list"
+                        class="w-16 h-16 text-primary-400 group-hover:text-primary-500 transition-all duration-500 group-hover:scale-110"
+                      />
+
+                      <!-- Floating Task Icons -->
+                      <div
+                        class="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center floating-element shadow-sm"
+                      >
+                        <Icon
+                          icon="lucide:check"
+                          class="w-4 h-4 text-green-500"
+                        />
+                      </div>
+                      <div
+                        class="absolute -bottom-2 -left-2 w-7 h-7 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center floating-element animation-delay-300 shadow-sm"
+                      >
+                        <Icon
+                          icon="lucide:clock"
+                          class="w-3.5 h-3.5 text-blue-500"
+                        />
+                      </div>
+                      <div
+                        class="absolute top-1/4 -left-3 w-6 h-6 bg-gradient-to-br from-purple-100 to-violet-100 rounded-full flex items-center justify-center floating-element animation-delay-600 shadow-sm"
+                      >
+                        <Icon
+                          icon="lucide:star"
+                          class="w-3 h-3 text-purple-500"
+                        />
+                      </div>
+                    </div>
+
+                    <!-- Orbiting Elements -->
+                    <div class="absolute inset-0 pointer-events-none">
+                      <div
+                        class="absolute top-8 left-8 w-3 h-3 bg-primary-200 rounded-full animate-bounce animation-delay-200"
+                      ></div>
+                      <div
+                        class="absolute bottom-8 right-8 w-2 h-2 bg-accent-200 rounded-full animate-bounce animation-delay-800"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <!-- Welcome Content -->
+                  <div class="mb-10 w-full max-w-3xl mx-auto">
+                    <h3
+                      class="text-3xl font-bold text-text-900 mb-4 gradient-text"
+                    >
+                      Welcome to Your Task Dashboard!
+                    </h3>
+                    <p
+                      class="text-text-600 mb-2 text-lg leading-relaxed max-w-2xl mx-auto"
+                    >
+                      Ready to boost your productivity? Start by creating your
+                      first task and take control of your day.
+                    </p>
+                    <p class="text-text-500 text-sm">
+                      Organize, prioritize, and accomplish your goals with ease.
+                    </p>
+                  </div>
+
+                  <!-- Quick Start Actions -->
+                  <div
+                    class="space-y-6 w-full max-w-2xl mx-auto flex flex-col gap-2"
+                  >
+                    <!-- Primary Action -->
+                    <div class="flex justify-center">
+                      <button
+                        @click="openCreateModal"
+                        class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-2xl hover:from-primary-600 hover:to-primary-700 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 transform text-lg shadow-lg group"
+                      >
+                        <Icon
+                          icon="lucide:plus"
+                          class="w-6 h-6 mr-3 group-hover:rotate-90 transition-transform duration-300"
+                        />
+                        Create Your First Task
+                        <Icon
+                          icon="lucide:arrow-right"
+                          class="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform duration-300"
+                        />
+                      </button>
+                    </div>
+
+                    <!-- Secondary Actions -->
+                    <div
+                      class="flex flex-col sm:flex-row gap-4 justify-center items-center"
+                    >
+                      <button
+                        @click="createQuickTask('Personal')"
+                        class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-50 to-emerald-50 text-green-700 font-medium rounded-xl hover:from-green-100 hover:to-emerald-100 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 transform border border-green-200 group"
+                      >
+                        <Icon
+                          icon="lucide:user"
+                          class="w-4 h-4 mr-2 group-hover:scale-110 transition-transform duration-200"
+                        />
+                        Quick Personal Task
+                      </button>
+                      <button
+                        @click="createQuickTask('Work')"
+                        class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 font-medium rounded-xl hover:from-blue-100 hover:to-indigo-100 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 transform border border-blue-200 group"
+                      >
+                        <Icon
+                          icon="lucide:briefcase"
+                          class="w-4 h-4 mr-2 group-hover:scale-110 transition-transform duration-200"
+                        />
+                        Quick Work Task
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Tips Section -->
+                  <div
+                    class="tips-section mt-12 p-6 bg-gradient-to-r from-gray-50/50 to-blue-50/30 rounded-2xl border border-gray-200/50 backdrop-blur-sm w-full max-w-4xl mx-auto flex flex-col items-center gap-1"
+                  >
+                    <h4
+                      class="text-md font-semibold text-gray-700 mb-3 flex items-center justify-center"
+                    >
+                      <Icon
+                        icon="lucide:lightbulb"
+                        class="w-4 h-4 mr-2 text-yellow-500"
+                      />
+                      Pro Tips
+                    </h4>
+                    <div
+                      class="tips-section grid grid-cols-1 sm:grid-cols-3 gap-1 text-sm text-gray-600 center"
+                    >
+                      <div
+                        class="flex items-center justify-center sm:justify-start"
+                      >
+                        <Icon
+                          icon="lucide:target"
+                          class="w-3 h-3 mr-2 text-red-400"
+                        />
+                        Set priorities for better focus
+                      </div>
+                      <div
+                        class="flex items-center justify-center sm:justify-start"
+                      >
+                        <Icon
+                          icon="lucide:calendar"
+                          class="w-3 h-3 mr-2 text-blue-400"
+                        />
+                        Add due dates to stay on track
+                      </div>
+                      <div
+                        class="flex items-center justify-center sm:justify-start"
+                      >
+                        <Icon
+                          icon="lucide:move"
+                          class="w-3 h-3 mr-2 text-green-400"
+                        />
+                        Drag & drop to reorder tasks
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h3 class="text-xl font-semibold text-text-900 mb-3">
-                No tasks found
-              </h3>
-              <p class="text-text-600 mb-6 max-w-md mx-auto">
-                {{
-                  filters.search || filters.status || filters.priority
-                    ? "No tasks match your current filters. Try adjusting your search criteria."
-                    : "Create your first task to get started on your productivity journey!"
-                }}
-              </p>
-              <button
-                v-if="!filters.search && !filters.status && !filters.priority"
-                @click="openCreateModal"
-                class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-medium rounded-xl hover:from-primary-600 hover:to-primary-700 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 transform"
-              >
-                <Icon icon="lucide:plus" class="w-5 h-5 mr-2" />
-                Create Your First Task
-              </button>
             </div>
 
             <!-- Tasks List/Grid -->
@@ -648,6 +877,49 @@ const closeCreateModal = () => {
   showCreateModal.value = false;
 };
 
+// Clear all filters and refresh tasks
+const clearFilters = () => {
+  // Reset all filters
+  taskStore.filters.search = "";
+  taskStore.filters.status = "";
+  taskStore.filters.priority = "";
+
+  // Animate the filter reset
+  if (filterPanel.value) {
+    gsap.fromTo(
+      filterPanel.value,
+      { scale: 0.98 },
+      { scale: 1, duration: 0.2, ease: "power2.out" }
+    );
+  }
+};
+
+// Create quick task with predefined category
+const createQuickTask = (category) => {
+  modalErrors.value = {};
+  modalLoading.value = false;
+
+  // Pre-fill some data based on category
+  selectedTask.value = {
+    title: `New ${category} Task`,
+    description: "",
+    status: "pending",
+    priority: category === "Work" ? "medium" : "low",
+    due_date: null,
+  };
+
+  showCreateModal.value = true;
+
+  // Add a subtle animation feedback
+  nextTick(() => {
+    gsap.fromTo(
+      ".modal-content",
+      { scale: 0.95, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" }
+    );
+  });
+};
+
 const handleTaskSave = async (taskData) => {
   modalLoading.value = true;
   modalErrors.value = {};
@@ -800,6 +1072,10 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.tips-section div {
+  gap: 0.25rem;
+}
+
 .filter-group {
   margin-bottom: 1rem;
 }
@@ -1081,5 +1357,173 @@ button:active {
 .page-leave-to {
   opacity: 0;
   transform: translateY(15px);
+}
+
+/* Enhanced Empty State Animations */
+.floating-element {
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+@keyframes float-gentle {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-4px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-4px) rotate(-1deg);
+  }
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animation-delay-500 {
+  animation-delay: 500ms;
+}
+
+.animation-delay-600 {
+  animation-delay: 600ms;
+}
+
+.animation-delay-700 {
+  animation-delay: 700ms;
+}
+
+.animation-delay-800 {
+  animation-delay: 800ms;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1000ms;
+}
+
+/* Enhanced Gradient Text for Empty State */
+.gradient-text {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Quick Action Button Hover Effects */
+.quick-action-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.quick-action-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.quick-action-btn:hover::before {
+  left: 100%;
+}
+
+/* Enhanced Button Ripple Effect */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ripple-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-effect::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%) scale(0);
+  animation: ripple 0.6s linear;
+}
+
+/* Pulsing Background Elements */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Enhanced Empty State Container */
+.empty-state-container {
+  position: relative;
+}
+
+.empty-state-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 200%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(59, 130, 246, 0.03) 0%,
+    transparent 70%
+  );
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* Improved Animation Performance */
+.floating-element,
+.gradient-text,
+.pulse-glow {
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 </style>
