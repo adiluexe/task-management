@@ -14,6 +14,8 @@ A modern, feature-rich task management system showcasing enterprise-level develo
 
 This task management system demonstrates **professional full-stack development** with modern Laravel and Vue.js, implementing industry best practices, comprehensive testing, and production-ready features. The application provides an intuitive interface for managing tasks with advanced features like real-time updates, drag-and-drop reordering, and comprehensive admin controls.
 
+**🖼️ [📱 View Application Screenshots & Visual Tour →](SHOWCASE.md)**
+
 ## ✨ **Key Features**
 
 ### 🚀 **Core Functionality**
