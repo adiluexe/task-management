@@ -150,33 +150,250 @@
             </div>
             <div
               v-else-if="taskStore.tasks.length === 0"
-              class="text-center py-20"
+              class="w-full min-h-[50vh] flex items-center justify-center py-20"
             >
               <div
-                class="w-20 h-20 mx-auto mb-8 rounded-2xl bg-background-100 flex items-center justify-center group hover:bg-primary-50 transition-colors duration-300"
+                class="w-full max-w-4xl mx-auto text-center flex flex-col items-center justify-center gap-4"
               >
-                <svg
-                  class="w-10 h-10 text-text-400 group-hover:text-primary-500 transition-colors duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                <!-- Animated Illustration -->
+                <div class="relative mb-12">
+                  <!-- Main Container -->
+                  <div
+                    class="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-primary-50 via-white to-accent-50 flex items-center justify-center relative overflow-hidden group shadow-lg"
+                  >
+                    <!-- Background Pattern -->
+                    <div class="absolute inset-0 opacity-10">
+                      <div
+                        class="absolute top-4 left-6 w-4 h-4 bg-primary-300 rounded-full animate-pulse"
+                      ></div>
+                      <div
+                        class="absolute bottom-6 right-4 w-3 h-3 bg-accent-300 rounded-full animate-pulse animation-delay-500"
+                      ></div>
+                      <div
+                        class="absolute top-1/2 left-4 w-2 h-2 bg-primary-400 rounded-full animate-pulse animation-delay-1000"
+                      ></div>
+                      <div
+                        class="absolute bottom-4 left-1/2 w-2.5 h-2.5 bg-accent-400 rounded-full animate-pulse animation-delay-700"
+                      ></div>
+                    </div>
+
+                    <!-- Central Icon -->
+                    <svg
+                      class="w-16 h-16 text-primary-400 group-hover:text-primary-500 transition-all duration-500 group-hover:scale-110"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                      />
+                    </svg>
+
+                    <!-- Floating Task Icons -->
+                    <div
+                      class="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center floating-element shadow-sm"
+                    >
+                      <svg
+                        class="w-4 h-4 text-green-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                    <div
+                      class="absolute -bottom-2 -left-2 w-7 h-7 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center floating-element animation-delay-300 shadow-sm"
+                    >
+                      <svg
+                        class="w-3.5 h-3.5 text-blue-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <div
+                      class="absolute top-1/4 -left-3 w-6 h-6 bg-gradient-to-br from-purple-100 to-violet-100 rounded-full flex items-center justify-center floating-element animation-delay-600 shadow-sm"
+                    >
+                      <svg
+                        class="w-3 h-3 text-purple-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+
+                  <!-- Orbiting Elements -->
+                  <div class="absolute inset-0 pointer-events-none">
+                    <div
+                      class="absolute top-8 left-8 w-3 h-3 bg-primary-200 rounded-full animate-bounce animation-delay-200"
+                    ></div>
+                    <div
+                      class="absolute bottom-8 right-8 w-2 h-2 bg-accent-200 rounded-full animate-bounce animation-delay-800"
+                    ></div>
+                  </div>
+                </div>
+
+                <!-- Welcome Content -->
+                <div class="mb-10 w-full max-w-2xl mx-auto">
+                  <h3
+                    class="text-3xl font-bold text-text-900 mb-4 gradient-text"
+                  >
+                    Ready to Get Started?
+                  </h3>
+                  <p class="text-text-600 mb-2 text-lg leading-relaxed">
+                    No tasks yet! Create your first task and start your
+                    productivity journey.
+                  </p>
+                  <p class="text-text-500 text-sm">
+                    Organize your work, set priorities, and achieve your goals.
+                  </p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="space-y-6 w-full max-w-xl mx-auto">
+                  <!-- Primary Action -->
+                  <div class="flex justify-center">
+                    <router-link
+                      to="/tasks"
+                      class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-2xl hover:from-primary-600 hover:to-primary-700 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 transform text-lg shadow-lg group"
+                    >
+                      <svg
+                        class="w-6 h-6 mr-3 group-hover:rotate-90 transition-transform duration-300"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 4v16m8-8H4"
+                        />
+                      </svg>
+                      Create Your First Task
+                      <svg
+                        class="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform duration-300"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </router-link>
+                  </div>
+                </div>
+
+                <!-- Tips Section -->
+                <div
+                  class="mt-12 p-6 bg-gradient-to-r from-gray-50/50 to-blue-50/30 rounded-2xl border border-gray-200/50 backdrop-blur-sm w-full max-w-3xl mx-auto flex flex-col items-center gap-1"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                  />
-                </svg>
+                  <h4
+                    class="text-md font-semibold text-gray-700 mb-3 flex items-center justify-center"
+                  >
+                    <svg
+                      class="w-4 h-4 mr-2 text-yellow-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                      />
+                    </svg>
+                    Quick Tips
+                  </h4>
+                  <div
+                    class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-600"
+                  >
+                    <div
+                      class="flex items-center justify-center sm:justify-start"
+                    >
+                      <svg
+                        class="w-3 h-3 mr-2 text-red-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11"
+                        />
+                      </svg>
+                      Set priorities to stay focused
+                    </div>
+                    <div
+                      class="flex items-center justify-center sm:justify-start"
+                    >
+                      <svg
+                        class="w-3 h-3 mr-2 text-blue-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                      Track deadlines effectively
+                    </div>
+                    <div
+                      class="flex items-center justify-center sm:justify-start"
+                    >
+                      <svg
+                        class="w-3 h-3 mr-2 text-green-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
+                      </svg>
+                      Boost your productivity
+                    </div>
+                  </div>
+                </div>
               </div>
-              <p class="text-text-600 mb-8 text-xl">
-                No tasks yet. Create your first task to get started!
-              </p>
-              <router-link
-                to="/tasks"
-                class="inline-flex items-center px-8 py-4 text-base font-semibold text-primary-600 bg-primary-50 rounded-2xl hover:bg-primary-100 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300"
-                >Create Task</router-link
-              >
             </div>
             <div v-else class="space-y-4 flex flex-col gap-2">
               <div
@@ -609,5 +826,82 @@ onMounted(async () => {
   border: 4px solid transparent;
   border-top-color: rgba(0, 0, 0, 0.8);
   z-index: 10;
+}
+
+/* Enhanced Empty State Animations */
+.floating-element {
+  animation: float-gentle 4s ease-in-out infinite;
+}
+
+@keyframes float-gentle {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-4px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-4px) rotate(-1deg);
+  }
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animation-delay-500 {
+  animation-delay: 500ms;
+}
+
+.animation-delay-600 {
+  animation-delay: 600ms;
+}
+
+.animation-delay-700 {
+  animation-delay: 700ms;
+}
+
+.animation-delay-800 {
+  animation-delay: 800ms;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1000ms;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+/* Enhanced Gradient Text for Empty State */
+.gradient-text {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Improved Animation Performance */
+.floating-element,
+.gradient-text {
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 </style>

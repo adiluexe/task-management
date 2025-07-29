@@ -364,7 +364,7 @@
                       Welcome to Your Task Dashboard!
                     </h3>
                     <p
-                      class="text-text-600 mb-2 text-lg leading-relaxed max-w-2xl mx-auto"
+                      class="text-text-600 mb-2 text-lg leading-relaxed max-w-full mx-auto text-center"
                     >
                       Ready to boost your productivity? Start by creating your
                       first task and take control of your day.
